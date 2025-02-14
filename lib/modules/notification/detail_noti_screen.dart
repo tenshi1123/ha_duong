@@ -1,0 +1,88 @@
+import 'package:ha_duong/utils/constants/styles.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+class DetailNotiScreen extends StatefulWidget {
+  const DetailNotiScreen({super.key});
+
+  @override
+  State<DetailNotiScreen> createState() => _DetailNotiScreenState();
+}
+
+class _DetailNotiScreenState extends State<DetailNotiScreen>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+  int activeTabIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(
+      length: 2,
+      vsync: this,
+      initialIndex: 0,
+    );
+    _tabController.addListener(() {
+      setState(() {
+        activeTabIndex = _tabController.index;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: const Color(0xff273D8C),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
+          onPressed: () {
+            Navigator.of(context).pop(false);
+          },
+        ),
+        title: Text(
+          'Chi tiết thông báo',
+          style: defaultText18B.copyWith(
+            color: Colors.white,
+          ),
+        ),
+      ),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Image(
+              image: const AssetImage('assets/images/notification.png'),
+              height: 180.h,
+              width: 343.w,
+              fit: BoxFit.fill,
+            ),
+            Text(
+              'Ra mắt khóa học tiếng anh nâng cao ',
+              style: defaultText16B,
+            ),
+            SizedBox(
+              height: 4.h,
+            ),
+            Text(
+              '20:05 - 28/10/2022',
+              style: defaultText14Re.copyWith(
+                color: const Color(0xff292929).withValues(alpha: 0.8),
+              ),
+            ),
+            SizedBox(
+              height: 8.h,
+            ),
+            Text(
+              'when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+              style: defaultText14Re.copyWith(
+                  color: const Color(0xff292929).withValues(alpha: 0.8)),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

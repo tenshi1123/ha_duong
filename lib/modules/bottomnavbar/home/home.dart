@@ -1,0 +1,405 @@
+import 'package:ha_duong/utils/constants/styles.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
+import '../../diemdanh/detail_screen.dart';
+import '../../notification/notification_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final controller1 = PageController(viewportFraction: 1, keepPage: true);
+  final controller2 = PageController(viewportFraction: 0.75, keepPage: true);
+  final controller3 = PageController(viewportFraction: 0.75, keepPage: true);
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: 375.w,
+              height: 212.h,
+              child: Stack(children: [
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  child: Image(
+                    width: MediaQuery.of(context).size.width,
+                    height: 255.h,
+                    image: const AssetImage(
+                      'assets/images/home_background.png',
+                    ),
+                    fit: BoxFit.fitWidth,
+                  ),
+                ),
+                Positioned(
+                  top: 64.h,
+                  left: 16.w,
+                  child: SizedBox(
+                    width: 340.w,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Image(
+                              image:
+                                  const AssetImage('assets/images/avatar.png'),
+                              height: 44.h,
+                              width: 44.w,
+                              fit: BoxFit.fill,
+                            ),
+                            SizedBox(
+                              width: 12.w,
+                            ),
+                            Text(
+                              'Nguyễn Thế Hoàng',
+                              style:
+                                  defaultText20B.copyWith(color: Colors.white),
+                            ),
+                            const Spacer(),
+                            InkWell(
+                              onTap: () {
+                                pushWithoutNavBar(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: ((context) =>
+                                        const NotificationScreen()),
+                                  ),
+                                );
+                              },
+                              child: Image(
+                                image:
+                                    const AssetImage('assets/images/bell.png'),
+                                height: 24.h,
+                                width: 24.w,
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 16.h,
+                        ),
+                        Container(
+                          height: 48.h,
+                          width: 343.w,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(56.r),
+                            ),
+                            color: Colors.white.withValues(alpha: 0.12),
+                          ),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 16.w,
+                              ),
+                              Image.asset('assets/images/location.png'),
+                              Text(
+                                'Căn 5A01, 17T1 Trung Văn',
+                                style: defaultText16M.copyWith(
+                                    color: Colors.white),
+                              ),
+                              const Spacer(),
+                              const Icon(
+                                Icons.arrow_drop_down,
+                                color: Colors.white,
+                              ),
+                              SizedBox(
+                                width: 16.w,
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 4.h,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  child: Container(
+                    height: 16.h,
+                    width: 375.w,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(16.r),
+                        topRight: Radius.circular(16.r),
+                      ),
+                      color: Colors.white,
+                    ),
+                  ),
+                )
+              ]),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 16.w, bottom: 10.h),
+              child: Text(
+                'Yêu cầu thanh toán',
+                style: defaultText16B,
+              ),
+            ),
+            SizedBox(
+              width: 375.w,
+              height: 200.h,
+              child: ListView.builder(
+                itemCount: 2,
+                itemBuilder: (context, index) {
+                  return Container(
+                    height: 72.h,
+                    width: 343.w,
+                    margin:
+                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                    decoration: BoxDecoration(
+                        color: const Color(0xff1B91C4),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(12.r),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.16),
+                            spreadRadius: 0,
+                            blurRadius: 16,
+                            offset: const Offset(0, 4),
+                          ),
+                        ]),
+                    child: Container(
+                      height: 72.h,
+                      width: 339.w,
+                      margin: EdgeInsets.only(left: 4.w),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.horizontal(
+                          left: Radius.circular(8.r),
+                          right: Radius.circular(12.r),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 16.w,
+                          ),
+                          Image.asset('assets/images/bill.png'),
+                          SizedBox(
+                            width: 12.w,
+                          ),
+                          Text(
+                            'Hoá đơn tháng 09/2024',
+                            style: defaultText16,
+                          ),
+                          const Spacer(),
+                          Image.asset('assets/images/arrow_right.png'),
+                          SizedBox(
+                            width: 16.w,
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            Divider(
+              thickness: 8.h,
+              color: const Color(0xffF0F0F0),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 16.w, bottom: 10.h, top: 12.h),
+              child: Text(
+                'Bảng tin toà nhà',
+                style: defaultText16B,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+//Vội vl không tách widgetwidget
+class NotificationItem extends StatelessWidget {
+  const NotificationItem({super.key, required this.index});
+  final int index;
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () async {
+        if (!await launchUrl(Uri.parse('https://ha_duong.edu.vn/'))) {
+          throw Exception('Could not launch ');
+        }
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 240.w,
+            height: 160.h,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(16.r)),
+              color: Colors.white,
+              image: DecorationImage(
+                image: AssetImage(list[index]),
+                fit: BoxFit.fill,
+              ),
+            ),
+          ),
+          Text(
+            'Đáp án Sách ngữ pháp sơ đồ tư duy Casalinnk',
+            style: defaultText14B,
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class UpcomingSchedule extends StatelessWidget {
+  const UpcomingSchedule({super.key, required this.index});
+  final int index;
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: ((context) => const DetailScreen(
+                  title1: 'P.101 - Mỹ Đình (26/06/2024)',
+                  title2: 'Bài 1: Cấu trúc câu',
+                  title3:
+                      'Nắm vững các cấu trúc câu trong tiếng Anh (sentence structure) sẽ giúp bạn cải thiện kỹ năng Writing và Speaking ngày càng linh hoạt, tự tin.',
+                )),
+          ),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.all(5),
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        width: 343.w,
+        height: 136.h,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(12.r)),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xff273D8C).withValues(alpha: 0.12),
+              blurRadius: 16,
+              spreadRadius: 0,
+              offset: const Offset(0, 4), // Shadow position
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 90.w,
+                  height: 80.h,
+                  decoration: BoxDecoration(
+                    color: const Color(0xff273D8C),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(12.r),
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        '01',
+                        style: defaultText16B.copyWith(
+                            color: Colors.white, fontSize: 24.sp),
+                      ),
+                      Text(
+                        'Tháng 12',
+                        style: defaultText16M.copyWith(color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  width: 10.w,
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Lớp NC',
+                      style: defaultText18B,
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    Text(
+                      'Thứ 6 (08:30 - 10:30)',
+                      style: defaultText14M,
+                    ),
+                  ],
+                )
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                RichText(
+                  text: TextSpan(
+                    text: 'Phòng học: ',
+                    style: defaultText16M,
+                    children: [
+                      TextSpan(
+                          text: '101',
+                          style: defaultText16B.copyWith(
+                              color: const Color(0xff273D8C))),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: 1.w,
+                  height: 20.h,
+                  color: const Color(0xff273D8C),
+                ),
+                RichText(
+                  text: TextSpan(
+                    text: 'Chi nhánh: ',
+                    style: defaultText16M,
+                    children: [
+                      TextSpan(
+                          text: 'Mỹ Đình',
+                          style: defaultText16B.copyWith(
+                              color: const Color(0xff273D8C))),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+List<String> list = [
+  'assets/images/banner.png',
+  'assets/images/banner1.png',
+  'assets/images/banner2.png',
+  'assets/images/banner3.png',
+  'assets/images/banner4.png',
+  'assets/images/banner5.png',
+];
