@@ -1,7 +1,9 @@
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ha_duong/utils/widget/custom_widget.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../diemdanh/detail_screen.dart';
 import '../../notification/notification_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -221,6 +223,63 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text(
                 'Bảng tin toà nhà',
                 style: defaultText16B,
+              ),
+            ),
+            SizedBox(
+              width: 375.w,
+              height: 218.h,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(16.r),
+                      bottomLeft: Radius.circular(16.r),
+                    ),
+                    child: SizedBox(
+                      height: 206.h,
+                      width: 375.w,
+                      child: PageView.builder(
+                        padEnds: false,
+                        controller: controller3,
+                        itemCount: 3,
+                        itemBuilder: (_, index) {
+                          return const PostItem(
+                            link: 'https://i.imgur.com/8HUYYgc.png',
+                            postTitle:
+                                'Thông báo của ban quản trị nhà chung cư 17T1 Trung Văn.',
+                            thumbnailUrl: 'https://i.imgur.com/8HUYYgc.png',
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  SmoothPageIndicator(
+                    controller: controller3,
+                    count: 3,
+                    effect: CustomizableEffect(
+                      activeDotDecoration: DotDecoration(
+                        width: 20.w,
+                        height: 8.h,
+                        color: Colors.indigo,
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      dotDecoration: DotDecoration(
+                        width: 8.w,
+                        height: 8.h,
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(16),
+                        verticalOffset: 0,
+                      ),
+                      spacing: 6.0,
+                    ),
+                    onDotClicked: (index) {
+                      controller2.animateToPage(index,
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeInOut);
+                    },
+                  ),
+                ],
               ),
             ),
           ],

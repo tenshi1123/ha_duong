@@ -42,9 +42,7 @@ class _LeaveAbsencePopUpState extends State<LeaveAbsencePopUp> {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    color: widget.type == '1'
-                        ? const Color(0xffED1C24)
-                        : const Color(0xff28B4E9),
+                    color: Colors.white,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(16.r),
                       topRight: Radius.circular(16.r),
@@ -55,60 +53,21 @@ class _LeaveAbsencePopUpState extends State<LeaveAbsencePopUp> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        Image.asset(
+                          'assets/images/personal.png',
+                          width: 34.w,
+                          height: 34.w,
+                          fit: BoxFit.fill,
+                        ),
                         Text(
-                          widget.type == '1'
-                              ? 'Nhập lý do xin nghỉ'
-                              : 'Nhập lý do xin đi muộn',
-                          style: defaultText16B.copyWith(color: Colors.white),
+                          'Thông tin khách hàng',
+                          style: defaultText16B,
                         ),
                         const CloseButton(
                           color: Colors.white,
                         ),
                       ],
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: 12.w,
-                    top: 20.h,
-                    right: 12.w,
-                  ),
-                  child: TextFormField(
-                    style: defaultText14M,
-                    controller: _dateController,
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.r),
-                        borderSide: BorderSide.none,
-                      ),
-                      // enabledBorder:
-                      //     const OutlineInputBorder(borderSide: BorderSide.none,),
-                      // focusedBorder: const OutlineInputBorder(
-                      //     borderSide: BorderSide(color: Colors.grey)),
-                      filled: true,
-                      fillColor: Colors.grey[200],
-                      hintText: widget.type == '1'
-                          ? 'Nhập ngày bạn muốn xin nghỉ'
-                          : 'Nhập ngày bạn muốn xin đi muộn',
-                      hintStyle: defaultText14M.copyWith(color: Colors.grey),
-                      suffixIcon: SvgPicture.asset(
-                        'assets/icons/calendar.svg',
-                        height: 20.h,
-                        width: 20.w,
-                        fit: BoxFit.scaleDown,
-                      ),
-                    ),
-                    onChanged: (value) {
-                      _newCategory = value;
-                    },
-                    onTap: () {
-                      _selectDate();
-                    },
-                    validator: (value) => value!.isEmpty
-                        ? 'Vui lòng nhập ngày bạn muốn xin đi muộn'
-                        : null,
                   ),
                 ),
                 Padding(
@@ -406,4 +365,56 @@ Widget feedbackItem(bool value, String title) {
           fontWeight: FontWeight.w600),
     )),
   );
+}
+
+class CustomTextFormField extends StatelessWidget {
+  final String labelText;
+  final String hintText;
+  final String? initialValue;
+  final TextEditingController? controller;
+  final FormFieldValidator<String>? validator;
+
+  const CustomTextFormField({
+    super.key,
+    required this.labelText,
+    required this.hintText,
+    this.initialValue,
+    this.controller,
+    this.validator,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      initialValue: initialValue,
+      controller: controller,
+      validator: validator,
+      decoration: InputDecoration(
+        labelText: labelText,
+        labelStyle: const TextStyle(
+          color: Colors.black,
+        ),
+        hintText: hintText,
+        hintStyle: const TextStyle(
+          color: Colors.grey,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.grey),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.blue),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.red),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.red),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+      ),
+    );
+  }
 }

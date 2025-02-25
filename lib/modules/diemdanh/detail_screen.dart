@@ -1,4 +1,4 @@
-import 'package:ha_duong/modules/bottomnavbar/screen/class_screen.dart';
+import 'package:ha_duong/modules/bottomnavbar/bill/bill_screen.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

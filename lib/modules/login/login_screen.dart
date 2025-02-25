@@ -112,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Icons.person_2_outlined,
                           color: subBlack,
                         ),
-                        hintText: 'Số điện thoại phụ huynh',
+                        hintText: 'Số điện thoại',
                         border: const OutlineInputBorder(
                             borderSide: BorderSide.none),
                         hintStyle: TextStyle(

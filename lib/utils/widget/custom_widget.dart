@@ -2,7 +2,8 @@ import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:ha_duong/utils/widget/webview_screen.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import '../../modules/chat/screen/chat_screen.dart';
 import '../constants/color.dart';
 
@@ -135,6 +136,52 @@ class ConversationItem extends StatelessWidget {
                 fit: BoxFit.scaleDown,
               ),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class PostItem extends StatelessWidget {
+  const PostItem({
+    super.key,
+    required this.link,
+    required this.postTitle,
+    required this.thumbnailUrl,
+  });
+  final String link;
+  final String postTitle;
+  final String thumbnailUrl;
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () async {
+        pushWithoutNavBar(
+          context,
+          MaterialPageRoute(
+            builder: ((context) => WebViewScreen(
+                  link: link,
+                  title: postTitle,
+                )),
+          ),
+        );
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image.network(
+            thumbnailUrl,
+            width: 240.w,
+            height: 160.h,
+            fit: BoxFit.fill,
+          ),
+          Expanded(
+            child: Text(
+              postTitle,
+              style: defaultText14B,
+              maxLines: 2,
+            ),
           ),
         ],
       ),

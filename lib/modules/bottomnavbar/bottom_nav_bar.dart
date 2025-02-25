@@ -4,9 +4,9 @@ import "package:flutter_screenutil/flutter_screenutil.dart";
 import "package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart";
 import 'package:flutter_svg/flutter_svg.dart';
 
-import "screen/class_screen.dart";
+import "bill/bill_screen.dart";
 import "info/personal_screen.dart";
-import "screen/video_course.dart";
+import "service/extension_screen.dart";
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({
@@ -40,12 +40,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
           ),
         ),
         PersistentTabConfig(
-          screen: const ClassScreen(),
+          screen: const TabBarApp(),
           item: ItemConfig(
             icon: SvgPicture.asset(
               'assets/icons/lophoc.svg',
             ),
-            title: "Lớp học",
+            title: "Hoá đơn",
             activeForegroundColor: const Color(0xff273D8C),
             inactiveIcon: SvgPicture.asset(
               'assets/icons/inactive_lophoc.svg',
@@ -56,12 +56,25 @@ class _BottomNavBarState extends State<BottomNavBar> {
           ),
         ),
         PersistentTabConfig(
-          screen: const VideoCourse(),
+          screen: const HomeScreen(),
+          item: ItemConfig(
+            icon: SvgPicture.asset(
+              'assets/icons/support.svg',
+            ),
+            title: "Hỗ trợ",
+            inactiveIcon: SvgPicture.asset(
+              'assets/icons/support.svg',
+            ),
+            inactiveBackgroundColor: Colors.white.withValues(alpha: 0.2),
+          ),
+        ),
+        PersistentTabConfig(
+          screen: const ExtensionScreen(),
           item: ItemConfig(
             icon: SvgPicture.asset(
               'assets/icons/video.svg',
             ),
-            title: "Khoá video",
+            title: "Tiện ích",
             activeForegroundColor: const Color(0xff273D8C),
             inactiveForegroundColor:
                 const Color(0xff273D8C).withValues(alpha: 0.4),
@@ -77,7 +90,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             icon: SvgPicture.asset(
               'assets/icons/personal.svg',
             ),
-            title: "Cá nhân",
+            title: "Tài khoản",
             activeForegroundColor: const Color(0xff273D8C),
             inactiveForegroundColor:
                 const Color(0xff273D8C).withValues(alpha: 0.4),
@@ -96,39 +109,27 @@ class _BottomNavBarState extends State<BottomNavBar> {
       tabs: _tabs(),
       navBarBuilder: (navBarConfig) => SizedBox(
         width: 375.w,
-        height: 81.h,
-        child: Stack(
-          children: [
-            Positioned(
-              left: 16.w,
-              top: 6.h,
-              child: SizedBox(
-                width: 343.w,
-                height: 81.h,
-                child: Style6BottomNavBar(
-                  //itemPadding: EdgeInsets.all(5.h),
-                  navBarConfig: navBarConfig,
-                  navBarDecoration: NavBarDecoration(
-                    padding: const EdgeInsets.all(5),
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(25.r),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.grey,
-                        blurRadius: 4,
-                        offset: Offset(3, 4), // Shadow position
-                      ),
-                    ],
-                  ),
-                  //itemAnimationProperties: const ItemAnimation(),
-                ),
+        height: 80.h,
+        child: Style13BottomNavBar(
+          //itemPadding: EdgeInsets.all(5.h),
+          navBarConfig: navBarConfig,
+          navBarDecoration: const NavBarDecoration(
+            //padding: const EdgeInsets.all(5),
+            color: Colors.white,
+            // borderRadius: BorderRadius.circular(25.r),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey,
+                blurRadius: 4,
+                offset: Offset(3, 4), // Shadow position
               ),
-            ),
-          ],
+            ],
+          ),
+          //itemAnimationProperties: const ItemAnimation(),
         ),
       ),
       backgroundColor: Colors.white,
-      navBarHeight: 50.h,
+      navBarHeight: 55.h,
     );
   }
 }
