@@ -95,9 +95,7 @@ class ServiceScreen extends StatelessWidget {
                     showDialog<String>(
                         context: context,
                         builder: (BuildContext context) =>
-                            const LeaveAbsencePopUp(
-                              type: '2',
-                            ));
+                            const LeaveAbsencePopUp());
                   },
                   child: Container(
                     width: 343.w,

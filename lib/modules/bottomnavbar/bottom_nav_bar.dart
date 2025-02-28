@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import "bill/bill_screen.dart";
 import "info/personal_screen.dart";
 import "service/extension_screen.dart";
+import "support/support_screen.dart";
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({
@@ -56,7 +57,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           ),
         ),
         PersistentTabConfig(
-          screen: const HomeScreen(),
+          screen: const SupportScreen(),
           item: ItemConfig(
             icon: SvgPicture.asset(
               'assets/icons/support.svg',
