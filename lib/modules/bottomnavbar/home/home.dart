@@ -158,13 +158,17 @@ class _HomeScreenState extends State<HomeScreen> {
               width: 375.w,
               height: 200.h,
               child: ListView.builder(
+                physics: const ClampingScrollPhysics(),
                 itemCount: 2,
                 itemBuilder: (context, index) {
                   return Container(
                     height: 72.h,
                     width: 343.w,
-                    margin:
-                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                    margin: EdgeInsets.only(
+                      left: 16.w,
+                      bottom: 16.h,
+                      right: 16.w,
+                    ),
                     decoration: BoxDecoration(
                         color: const Color(0xff1B91C4),
                         borderRadius: BorderRadius.all(
@@ -225,61 +229,64 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: defaultText16B,
               ),
             ),
-            SizedBox(
-              width: 375.w,
-              height: 218.h,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(16.r),
-                      bottomLeft: Radius.circular(16.r),
-                    ),
-                    child: SizedBox(
-                      height: 206.h,
-                      width: 375.w,
-                      child: PageView.builder(
-                        padEnds: false,
-                        controller: controller3,
-                        itemCount: 3,
-                        itemBuilder: (_, index) {
-                          return const PostItem(
-                            link: 'https://i.imgur.com/8HUYYgc.png',
-                            postTitle:
-                                'Thông báo của ban quản trị nhà chung cư 17T1 Trung Văn.',
-                            thumbnailUrl: 'https://i.imgur.com/8HUYYgc.png',
-                          );
-                        },
+            Padding(
+              padding: EdgeInsets.only(left: 16.w, right: 16.w),
+              child: SizedBox(
+                width: 375.w,
+                height: 218.h,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(16.r),
+                        bottomLeft: Radius.circular(16.r),
+                      ),
+                      child: SizedBox(
+                        height: 206.h,
+                        width: 375.w,
+                        child: PageView.builder(
+                          padEnds: false,
+                          controller: controller3,
+                          itemCount: 3,
+                          itemBuilder: (_, index) {
+                            return const PostItem(
+                              link: 'https://i.imgur.com/8HUYYgc.png',
+                              postTitle:
+                                  'Thông báo của ban quản trị nhà chung cư 17T1 Trung Văn.',
+                              thumbnailUrl: 'https://i.imgur.com/8HUYYgc.png',
+                            );
+                          },
+                        ),
                       ),
                     ),
-                  ),
-                  SmoothPageIndicator(
-                    controller: controller3,
-                    count: 3,
-                    effect: CustomizableEffect(
-                      activeDotDecoration: DotDecoration(
-                        width: 20.w,
-                        height: 8.h,
-                        color: Colors.indigo,
-                        borderRadius: BorderRadius.circular(24),
+                    SmoothPageIndicator(
+                      controller: controller3,
+                      count: 3,
+                      effect: CustomizableEffect(
+                        activeDotDecoration: DotDecoration(
+                          width: 20.w,
+                          height: 8.h,
+                          color: Colors.indigo,
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                        dotDecoration: DotDecoration(
+                          width: 8.w,
+                          height: 8.h,
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(16),
+                          verticalOffset: 0,
+                        ),
+                        spacing: 6.0,
                       ),
-                      dotDecoration: DotDecoration(
-                        width: 8.w,
-                        height: 8.h,
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.circular(16),
-                        verticalOffset: 0,
-                      ),
-                      spacing: 6.0,
+                      onDotClicked: (index) {
+                        controller2.animateToPage(index,
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeInOut);
+                      },
                     ),
-                    onDotClicked: (index) {
-                      controller2.animateToPage(index,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut);
-                    },
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],

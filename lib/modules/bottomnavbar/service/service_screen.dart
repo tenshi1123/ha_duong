@@ -66,7 +66,7 @@ class ServiceScreen extends StatelessWidget {
                     vertical: 12.h,
                   ),
                   child: Text(
-                    'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry',
+                    'Dịch vụ sửa chữa, bảo chì thang máy',
                     style: defaultText14Re.copyWith(
                       color: const Color(0xff3C3C3C),
                     ),

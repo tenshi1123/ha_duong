@@ -107,7 +107,7 @@ class PaymentHistory extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        'Hoá đơn tháng 09/2024',
+                        'Hoá đơn tháng 0' '${9 - index}' '/2024',
                         style: defaultText14B,
                       ),
                       const SizedBox(
@@ -218,7 +218,7 @@ class WaitingPayment extends StatelessWidget {
                   height: 5.h,
                 ),
                 Text(
-                  'Hoá đơn tháng 09/2024',
+                  'Hoá đơn tháng ${10 + index}/2024',
                   style: defaultText14B,
                 ),
                 Text(
