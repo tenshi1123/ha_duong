@@ -119,7 +119,7 @@ class SupportItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 311.w,
-      height: index == 0 ? 76.h : 60.h,
+      //height: index == 0 ? 76.h : 60.h,
       child: Column(
         children: [
           SizedBox(

@@ -18,7 +18,7 @@ class PersonalScreen extends StatelessWidget {
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/images/person_background.png"),
-            fit: BoxFit.fitWidth,
+            fit: BoxFit.fill,
           ),
         ),
         child: Column(

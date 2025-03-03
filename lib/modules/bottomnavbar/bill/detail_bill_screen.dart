@@ -302,7 +302,7 @@ class _ItemBill extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           SizedBox(
-            height: 60.h,
+            //height: 60.h,
             width: 188.w,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -311,7 +311,8 @@ class _ItemBill extends StatelessWidget {
                 Image.asset(
                   'assets/images/detail_bill.png',
                   width: 32.w,
-                  height: 32.h,
+                  //height: 32.h,
+                  fit: BoxFit.fitWidth,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
