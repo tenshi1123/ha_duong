@@ -208,10 +208,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         );
                       },
                       child: Text(
-                        'Quên mật khẩu',
+                        'Quên mật khẩu?',
                         style: TextStyle(
                           color: const Color(0xff004071),
-                          fontSize: 14.sp,
+                          fontSize: 16.sp,
                           //decoration: TextDecoration.underline,
                           fontWeight: FontWeight.w500,
                         ),
@@ -315,12 +315,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   onTap: () {},
                   child: RichText(
                     text: TextSpan(
-                      text: 'Chưa có tài khoản ?',
-                      style: defaultText16,
+                      text: 'Bạn muốn trải nghiệm ứng dụng?',
+                      style: defaultText16.copyWith(
+                          color: const Color(0xff8A8A8A),
+                          fontWeight: FontWeight.w400),
                       children: <TextSpan>[
                         TextSpan(
                           text: ' Đăng ký',
-                          style: defaultText16.copyWith(color: main1Color),
+                          style: defaultText16.copyWith(
+                              color: const Color(0xff004071),
+                              fontWeight: FontWeight.w500),
                         ),
                       ],
                     ),

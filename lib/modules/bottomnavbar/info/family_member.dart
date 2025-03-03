@@ -107,7 +107,7 @@ class FamilyMemberScreen extends StatelessWidget {
                     showDialog<String>(
                         context: context,
                         builder: (BuildContext context) =>
-                            const LeaveAbsencePopUp());
+                            const ChangeHouseholdInfoForm());
                   },
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,

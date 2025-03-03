@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
+import '../../login/login_screen.dart';
 import 'apartment_profile.dart';
 import 'registered_vehicle_screen.dart';
 
@@ -166,18 +167,29 @@ class PersonalScreen extends StatelessWidget {
             SizedBox(
               height: 40.h,
             ),
-            Container(
-              width: 343.w,
-              height: 48.h,
-              decoration: BoxDecoration(
-                color: const Color(0xff8A8A8A).withValues(alpha: 0.2),
-                borderRadius: BorderRadius.circular(8.r),
-              ),
-              child: Center(
-                child: Text(
-                  'Đăng xuất',
-                  style: defaultText16M.copyWith(
-                    color: const Color(0xff004071),
+            GestureDetector(
+              onTap: () {
+                // Đăng xuất
+                pushWithoutNavBar(
+                  context,
+                  MaterialPageRoute(
+                    builder: ((context) => const LoginScreen()),
+                  ),
+                );
+              },
+              child: Container(
+                width: 343.w,
+                height: 48.h,
+                decoration: BoxDecoration(
+                  color: const Color(0xff8A8A8A).withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(8.r),
+                ),
+                child: Center(
+                  child: Text(
+                    'Đăng xuất',
+                    style: defaultText16M.copyWith(
+                      color: const Color(0xff004071),
+                    ),
                   ),
                 ),
               ),
