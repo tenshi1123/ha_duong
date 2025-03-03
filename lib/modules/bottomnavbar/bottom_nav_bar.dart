@@ -137,7 +137,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           ),
         ),
       ),
-      margin: EdgeInsets.only(bottom: 6.h),
+      margin: EdgeInsets.only(bottom: 2.h),
       backgroundColor: Colors.white,
       //navBarHeight: 55.h,
     );
