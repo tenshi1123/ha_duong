@@ -21,7 +21,7 @@ class _AppState extends State<App> {
       builder: (_, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'ha_duong',
+          title: 'Hà Dương',
           // You can use the library anywhere in the app even in theme
           theme: ThemeData(
             primarySwatch: Colors.blue,

@@ -32,6 +32,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
           item: ItemConfig(
             icon: SvgPicture.asset(
               'assets/icons/home.svg',
+              height: 28.h,
+              width: 28.w,
+              fit: BoxFit.fill,
             ),
             title: "Trang chủ",
             inactiveIcon: SvgPicture.asset(
@@ -45,6 +48,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
           item: ItemConfig(
             icon: SvgPicture.asset(
               'assets/icons/lophoc.svg',
+              height: 28.h,
+              width: 28.w,
+              fit: BoxFit.fill,
             ),
             title: "Hoá đơn",
             activeForegroundColor: const Color(0xff273D8C),
@@ -74,6 +80,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
           item: ItemConfig(
             icon: SvgPicture.asset(
               'assets/icons/video.svg',
+              height: 28.h,
+              width: 28.w,
+              fit: BoxFit.fill,
             ),
             title: "Tiện ích",
             activeForegroundColor: const Color(0xff273D8C),
@@ -90,6 +99,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
           item: ItemConfig(
             icon: SvgPicture.asset(
               'assets/icons/personal.svg',
+              fit: BoxFit.fill,
+              height: 28.h,
+              width: 28.w,
             ),
             title: "Tài khoản",
             activeForegroundColor: const Color(0xff273D8C),
@@ -109,15 +121,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
       controller: _controller,
       tabs: _tabs(),
       navBarBuilder: (navBarConfig) => SizedBox(
-        width: 375.w,
-        height: 80.h,
+        // width: 375.w,
+        // height: 80.h,
         child: Style13BottomNavBar(
-          //itemPadding: EdgeInsets.all(5.h),
           navBarConfig: navBarConfig,
           navBarDecoration: const NavBarDecoration(
-            //padding: const EdgeInsets.all(5),
             color: Colors.white,
-            // borderRadius: BorderRadius.circular(25.r),
             boxShadow: [
               BoxShadow(
                 color: Colors.grey,
@@ -126,11 +135,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
               ),
             ],
           ),
-          //itemAnimationProperties: const ItemAnimation(),
         ),
       ),
+      margin: EdgeInsets.only(bottom: 6.h),
       backgroundColor: Colors.white,
-      navBarHeight: 55.h,
+      //navBarHeight: 55.h,
     );
   }
 }
