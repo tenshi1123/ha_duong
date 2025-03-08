@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ha_duong/utils/widget/change_canho_info_dialog.dart';
 
 import '../../../utils/constants/styles.dart';
+import '../../../utils/widget/custom_dialog.dart';
 import 'family_member.dart';
 import 'personal_screen.dart';
 
@@ -130,7 +132,14 @@ class _ApartmentItem extends StatelessWidget {
         const _FamilyMemberTile(
           memberCount: 1,
         ),
-        const _EditInfo(),
+        GestureDetector(
+          onTap: () {
+            showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => const ChangeChuHoInfo());
+          },
+          child: const _EditInfo('Chỉnh sửa thông tin Chủ hộ'),
+        ),
       ],
     );
   }
@@ -149,7 +158,7 @@ class _ApartmentInfo extends StatelessWidget {
               width: 16.w,
             ),
             Text(
-              'Thông tin cư trú',
+              'Thông tin căn hộ',
               style: defaultText16B,
             ),
             const Spacer(),
@@ -190,7 +199,16 @@ class _ApartmentInfo extends StatelessWidget {
           indent: 16.w,
           height: 24.h,
         ),
-        const _EditInfo(),
+        GestureDetector(
+            onTap: () {
+              showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => const ChangeCanHoInfo());
+            },
+            child: const _EditInfo('Chỉnh sửa thông tin căn hộ')),
+        SizedBox(
+          height: 20.h,
+        ),
       ],
     );
   }
@@ -248,8 +266,8 @@ class _FamilyMemberTile extends StatelessWidget {
 }
 
 class _EditInfo extends StatelessWidget {
-  const _EditInfo();
-
+  const _EditInfo(this.title);
+  final String title;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -285,7 +303,7 @@ class _EditInfo extends StatelessWidget {
               width: 8.w,
             ),
             Text(
-              'Chỉnh sửa thông tin Chủ hộ',
+              title,
               style: defaultText14B.copyWith(color: const Color(0xff25AAE1)),
             ),
           ],

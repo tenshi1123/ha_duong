@@ -5,6 +5,7 @@ import 'package:ha_duong/utils/constants/color.dart';
 import '../../utils/constants/styles.dart';
 import '../bottomnavbar/bottom_nav_bar.dart';
 import 'forgot_password_screen.dart';
+import 'take_info_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -311,25 +312,26 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   height: 60.h,
                 ),
-                GestureDetector(
-                  onTap: () {},
-                  child: RichText(
-                    text: TextSpan(
-                      text: 'Bạn muốn trải nghiệm ứng dụng?',
-                      style: defaultText16.copyWith(
-                          color: const Color(0xff8A8A8A),
-                          fontWeight: FontWeight.w400),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: ' Đăng ký',
-                          style: defaultText16.copyWith(
-                              color: const Color(0xff004071),
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ),
-                  ),
+                Text(
+                  'Bạn muốn trải nghiệm ứng dụng?',
+                  style: defaultText16.copyWith(
+                      color: const Color(0xff8A8A8A),
+                      fontWeight: FontWeight.w400),
                 ),
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const TakeInfoScreen(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'Để lại thông tin',
+                      style: defaultText16.copyWith(
+                          color: const Color(0xff004071),
+                          fontWeight: FontWeight.w500),
+                    )),
               ],
             ),
           ),

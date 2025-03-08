@@ -115,8 +115,8 @@ class FamilyMemberScreen extends StatelessWidget {
                     children: [
                       SvgPicture.asset(
                         'assets/icons/edit_info.svg',
-                        width: 16.w,
-                        height: 16.h,
+                        width: 20.w,
+                        height: 20.h,
                       ),
                       SizedBox(
                         width: 8.w,
@@ -131,7 +131,9 @@ class FamilyMemberScreen extends StatelessWidget {
                 )),
             AddMemberButton(
               onPressed: () {
-                // Xử lý khi nhấn nút
+                showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => const AddMember());
               },
             )
           ],
@@ -148,47 +150,35 @@ class AddMemberButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 48.h,
-      width: 343.w,
-      decoration: ShapeDecoration(
-        shape: DashedBorder(
-          borderRadius: BorderRadius.circular(10),
-          color: const Color(0xff25AAE1),
+    return InkWell(
+      onTap: onPressed,
+      child: Container(
+        height: 48.h,
+        width: 343.w,
+        decoration: ShapeDecoration(
+          shape: DashedBorder(
+            borderRadius: BorderRadius.circular(10),
+            color: const Color(0xff25AAE1),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              'assets/icons/add.svg',
+              width: 20.w,
+              height: 20.h,
+            ),
+            SizedBox(
+              width: 8.w,
+            ),
+            Text(
+              'Thêm thành viên',
+              style: defaultText14B.copyWith(color: const Color(0xff25AAE1)),
+            ),
+          ],
         ),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SvgPicture.asset(
-            'assets/icons/add.svg',
-            width: 16.w,
-            height: 16.h,
-          ),
-          SizedBox(
-            width: 8.w,
-          ),
-          const Text(
-            'Thêm thành viên',
-            style: TextStyle(color: Colors.blue, fontSize: 16),
-          ),
-        ],
-      ),
     );
-
-    // OutlinedButton.icon(
-    //   onPressed: onPressed,
-    //   icon: const Icon(Icons.add, color: Colors.blue),
-    //   label: const
-    // Text(
-    //     'Thêm thành viên',
-    //     style: TextStyle(color: Colors.blue, fontSize: 16),
-    //   ),
-    //   style: OutlinedButton.styleFrom(
-    //     side: const BorderSide(color: Colors.blue, width: 1),
-    //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-    //     padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-    //   ),
-    // );
   }
 }

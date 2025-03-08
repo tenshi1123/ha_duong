@@ -1,3 +1,4 @@
+import 'package:ha_duong/modules/bottomnavbar/bill/detail_bill_screen.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -207,7 +208,20 @@ class _HomeScreenState extends State<HomeScreen> {
                             style: defaultText16,
                           ),
                           const Spacer(),
-                          Image.asset('assets/images/arrow_right.png'),
+                          InkWell(
+                              onTap: () {
+                                pushWithoutNavBar(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: ((context) =>
+                                        const DetailBillScreen(
+                                          type: 1,
+                                        )),
+                                  ),
+                                );
+                              },
+                              child:
+                                  Image.asset('assets/images/arrow_right.png')),
                           SizedBox(
                             width: 16.w,
                           ),

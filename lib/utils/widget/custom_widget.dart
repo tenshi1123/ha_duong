@@ -188,3 +188,56 @@ class PostItem extends StatelessWidget {
     );
   }
 }
+
+class CustomTextFormField extends StatelessWidget {
+  final String labelText;
+  final String hintText;
+  final String? initialValue;
+  final TextEditingController? controller;
+  final FormFieldValidator<String>? validator;
+
+  const CustomTextFormField({
+    super.key,
+    required this.labelText,
+    required this.hintText,
+    this.initialValue,
+    this.controller,
+    this.validator,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      initialValue: initialValue,
+      controller: controller,
+      validator: validator,
+      style: defaultText14M,
+      decoration: InputDecoration(
+        labelText: labelText,
+        labelStyle: const TextStyle(
+          color: Colors.black,
+        ),
+        hintText: hintText,
+        hintStyle: const TextStyle(
+          color: Colors.grey,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.grey),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.blue),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.red),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.red),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+      ),
+    );
+  }
+}

@@ -68,6 +68,7 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
+  // Tải ảnh lên từ thư viện
   Future _pickImageFromGallery() async {
     final returnedImage = await ImagePicker().pickMultiImage();
     photos = List<File>.from(

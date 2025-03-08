@@ -86,7 +86,7 @@ class PersonalScreen extends StatelessWidget {
               thickness: 6,
               height: 30.h,
             ),
-            GestureDetector(
+            InkWell(
               onTap: () {
                 pushWithoutNavBar(
                   context,
@@ -95,37 +95,44 @@ class PersonalScreen extends StatelessWidget {
                   ),
                 );
               },
-              child: Row(
+              child: Column(
                 children: [
                   SizedBox(
-                    width: 16.w,
+                    height: 6.h,
                   ),
-                  Text(
-                    'Hồ sơ căn hộ',
-                    style: defaultText16M.copyWith(
-                      color: Colors.black,
-                    ),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 16.w,
+                      ),
+                      Text(
+                        'Hồ sơ căn hộ',
+                        style: defaultText16M.copyWith(
+                          color: Colors.black,
+                        ),
+                      ),
+                      const Spacer(),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        color: const Color(0xff383838),
+                        size: 16.w,
+                      ),
+                      SizedBox(
+                        width: 16.w,
+                      ),
+                    ],
                   ),
-                  const Spacer(),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    color: const Color(0xff383838),
-                    size: 16.w,
-                  ),
-                  SizedBox(
-                    width: 16.w,
+                  Divider(
+                    color: const Color(0xffE6E6E6),
+                    thickness: 1,
+                    endIndent: 16.w,
+                    indent: 16.w,
+                    height: 24.h,
                   ),
                 ],
               ),
             ),
-            Divider(
-              color: const Color(0xffE6E6E6),
-              thickness: 1,
-              endIndent: 16.w,
-              indent: 16.w,
-              height: 24.h,
-            ),
-            GestureDetector(
+            InkWell(
               onTap: () {
                 pushWithoutNavBar(
                   context,
@@ -134,35 +141,42 @@ class PersonalScreen extends StatelessWidget {
                   ),
                 );
               },
-              child: Row(
+              child: Column(
                 children: [
                   SizedBox(
-                    width: 16.w,
+                    height: 6.h,
                   ),
-                  Text(
-                    'Phương tiện đăng ký',
-                    style: defaultText16M.copyWith(
-                      color: Colors.black,
-                    ),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 16.w,
+                      ),
+                      Text(
+                        'Phương tiện đăng ký',
+                        style: defaultText16M.copyWith(
+                          color: Colors.black,
+                        ),
+                      ),
+                      const Spacer(),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        color: const Color(0xff383838),
+                        size: 16.w,
+                      ),
+                      SizedBox(
+                        width: 16.w,
+                      ),
+                    ],
                   ),
-                  const Spacer(),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    color: const Color(0xff383838),
-                    size: 16.w,
-                  ),
-                  SizedBox(
-                    width: 16.w,
+                  Divider(
+                    color: const Color(0xffE6E6E6),
+                    thickness: 1,
+                    endIndent: 16.w,
+                    indent: 16.w,
+                    height: 24.h,
                   ),
                 ],
               ),
-            ),
-            Divider(
-              color: const Color(0xffE6E6E6),
-              thickness: 1,
-              endIndent: 16.w,
-              indent: 16.w,
-              height: 24.h,
             ),
             SizedBox(
               height: 40.h,

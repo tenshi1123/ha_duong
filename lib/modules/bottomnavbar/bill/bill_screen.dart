@@ -137,7 +137,9 @@ class PaymentHistory extends StatelessWidget {
                     pushWithoutNavBar(
                       context,
                       MaterialPageRoute(
-                        builder: ((context) => const DetailBillScreen()),
+                        builder: ((context) => const DetailBillScreen(
+                              type: 0,
+                            )),
                       ),
                     );
                   },
@@ -232,11 +234,23 @@ class WaitingPayment extends StatelessWidget {
               ],
             ),
             const Spacer(),
-            Image.asset(
-              'assets/images/arrow_right.png',
-              height: 24.h,
-              width: 24.w,
-              fit: BoxFit.fill,
+            GestureDetector(
+              onTap: () {
+                pushWithoutNavBar(
+                  context,
+                  MaterialPageRoute(
+                    builder: ((context) => const DetailBillScreen(
+                          type: 1,
+                        )),
+                  ),
+                );
+              },
+              child: Image.asset(
+                'assets/images/arrow_right.png',
+                height: 24.h,
+                width: 24.w,
+                fit: BoxFit.fill,
+              ),
             ),
             SizedBox(
               width: 16.w,

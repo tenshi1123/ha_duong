@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 
 class DetailBillScreen extends StatelessWidget {
-  const DetailBillScreen({super.key});
-
+  const DetailBillScreen({super.key, required this.type});
+  final int type;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +34,9 @@ class DetailBillScreen extends StatelessWidget {
                 SizedBox(
                   height: 20.h,
                 ),
-                const _ItemBill(),
+                _ItemBill(
+                  type: type,
+                ),
                 SizedBox(
                   height: 20.h,
                 ),
@@ -227,48 +229,48 @@ class DetailBillScreen extends StatelessWidget {
               ],
             ),
           ),
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: Container(
-              height: 98.h,
-              width: 375.w,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.08),
-                    spreadRadius: 0,
-                    blurRadius: 16,
-                    offset: const Offset(0, -4),
-                  ),
-                ],
-              ),
-              child: Container(
-                width: 343.w,
-                height: 50.h,
-                margin: EdgeInsets.only(
-                    left: 16.w, bottom: 30.h, top: 16.w, right: 16.w),
-                constraints: BoxConstraints(maxHeight: 120.h),
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(0xFF25AAE1),
-                      Color(0xFF004071),
-                    ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    stops: [0.0, 1.0],
-                  ),
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                ),
-                child: Center(
-                    child: Text(
-                  'Thanh toán ngay',
-                  style: defaultText14B.copyWith(color: Colors.white),
-                )),
-              ),
-            ),
-          )
+          // Align(
+          //   alignment: Alignment.bottomLeft,
+          //   child: Container(
+          //     height: 98.h,
+          //     width: 375.w,
+          //     decoration: BoxDecoration(
+          //       color: Colors.white,
+          //       boxShadow: [
+          //         BoxShadow(
+          //           color: Colors.black.withValues(alpha: 0.08),
+          //           spreadRadius: 0,
+          //           blurRadius: 16,
+          //           offset: const Offset(0, -4),
+          //         ),
+          //       ],
+          //     ),
+          //     child: Container(
+          //       width: 343.w,
+          //       height: 50.h,
+          //       margin: EdgeInsets.only(
+          //           left: 16.w, bottom: 30.h, top: 16.w, right: 16.w),
+          //       constraints: BoxConstraints(maxHeight: 120.h),
+          //       decoration: const BoxDecoration(
+          //         gradient: LinearGradient(
+          //           colors: [
+          //             Color(0xFF25AAE1),
+          //             Color(0xFF004071),
+          //           ],
+          //           begin: Alignment.topCenter,
+          //           end: Alignment.bottomCenter,
+          //           stops: [0.0, 1.0],
+          //         ),
+          //         borderRadius: BorderRadius.all(Radius.circular(15)),
+          //       ),
+          //       child: Center(
+          //           child: Text(
+          //         'Thanh toán ngay',
+          //         style: defaultText14B.copyWith(color: Colors.white),
+          //       )),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
@@ -276,8 +278,8 @@ class DetailBillScreen extends StatelessWidget {
 }
 
 class _ItemBill extends StatelessWidget {
-  const _ItemBill({super.key});
-
+  const _ItemBill({required this.type});
+  final int type;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -358,11 +360,13 @@ class _ItemBill extends StatelessWidget {
                 color: const Color(0xff004071),
                 fontWeight: FontWeight.w600,
               ),
-              children: <TextSpan>[
+              children: [
                 TextSpan(
-                  text: 'Chưa thanh toán',
+                  text: type == 1 ? 'Chưa thanh toán' : 'Đã thanh toán',
                   style: defaultText14M.copyWith(
-                    color: const Color(0xff25AAE1),
+                    color: type == 0
+                        ? const Color(0xff25AAE1)
+                        : const Color(0xffED3D17),
                   ),
                 ),
               ],
