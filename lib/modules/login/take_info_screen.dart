@@ -69,7 +69,7 @@ class _TakeInfoScreenState extends State<TakeInfoScreen> {
                       Icons.person_outline,
                       color: subBlack,
                     ),
-                    hintText: 'Tên học sinh',
+                    hintText: 'Họ và tên',
                     border:
                         const OutlineInputBorder(borderSide: BorderSide.none),
                     hintStyle: TextStyle(
