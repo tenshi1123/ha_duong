@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ha_duong/models/info_model.dart';
+import 'package:ha_duong/repo/personal_repo.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
-
 import '../../login/login_screen.dart';
 import 'apartment_profile.dart';
 import 'registered_vehicle_screen.dart';
 
 class PersonalScreen extends StatelessWidget {
-  const PersonalScreen({super.key});
-
+  const PersonalScreen({super.key, required this.infoHomeModel});
+  final InfoModel infoHomeModel;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,20 +36,23 @@ class PersonalScreen extends StatelessWidget {
             SizedBox(
               height: 34.h,
             ),
-            const CircleAvatar(
+            CircleAvatar(
               radius: 60,
               backgroundColor: Colors.white,
               child: CircleAvatar(
                 radius: 55,
                 backgroundImage: NetworkImage(
-                  "https://i.pravatar.cc/300", // Thay URL ảnh đại diện
+                  infoHomeModel.resident.img,
                 ),
               ),
             ),
             SizedBox(
               height: 20.h,
             ),
-            infoItem(title: 'Họ và tên', info: 'PHẠM TUẤN KHANG'),
+            infoItem(
+              title: 'Họ và tên',
+              info: infoHomeModel.resident.fullName,
+            ),
             Divider(
               color: const Color(0xffE6E6E6),
               thickness: 1,
@@ -56,7 +60,10 @@ class PersonalScreen extends StatelessWidget {
               indent: 16.w,
               height: 24.h,
             ),
-            infoItem(title: 'Số định danh', info: '0360898908759'),
+            infoItem(
+              title: 'Số định danh',
+              info: infoHomeModel.resident.idCard,
+            ),
             Divider(
               color: const Color(0xffE6E6E6),
               thickness: 1,
@@ -64,7 +71,10 @@ class PersonalScreen extends StatelessWidget {
               indent: 16.w,
               height: 24.h,
             ),
-            infoItem(title: 'Ngày sinh', info: '02/06/1996'),
+            infoItem(
+              title: 'Ngày sinh',
+              info: infoHomeModel.resident.dob,
+            ),
             Divider(
               color: const Color(0xffE6E6E6),
               thickness: 1,
@@ -72,7 +82,10 @@ class PersonalScreen extends StatelessWidget {
               indent: 16.w,
               height: 24.h,
             ),
-            infoItem(title: 'Số điện thoại', info: '0971116262'),
+            infoItem(
+              title: 'Số điện thoại',
+              info: infoHomeModel.resident.phone,
+            ),
             Divider(
               color: const Color(0xffE6E6E6),
               thickness: 1,
@@ -80,18 +93,25 @@ class PersonalScreen extends StatelessWidget {
               indent: 16.w,
               height: 24.h,
             ),
-            infoItem(title: 'Email', info: 'Abcxyz@gmail.com'),
+            infoItem(
+              title: 'Email',
+              info: infoHomeModel.resident.email,
+            ),
             Divider(
               color: const Color(0xffE6E6E6),
               thickness: 6,
               height: 30.h,
             ),
             InkWell(
-              onTap: () {
+              onTap: () async {
+                final result = await PersonalRepo().getApartmentProfile();
                 pushWithoutNavBar(
                   context,
                   MaterialPageRoute(
-                    builder: ((context) => const ApartmentProfile()),
+                    builder: ((context) => ApartmentProfile(
+                          residentModel: result['resident'],
+                          apartmentModel: result['apartment'],
+                        )),
                   ),
                 );
               },
@@ -133,11 +153,16 @@ class PersonalScreen extends StatelessWidget {
               ),
             ),
             InkWell(
-              onTap: () {
+              onTap: () async {
+                // call api
+                List<VehicleModel> listVehicle =
+                    await PersonalRepo().getListPhuongTien();
                 pushWithoutNavBar(
                   context,
                   MaterialPageRoute(
-                    builder: ((context) => const RegisteredVehicleScreen()),
+                    builder: ((context) => RegisteredVehicleScreen(
+                          listVehicle: listVehicle,
+                        )),
                   ),
                 );
               },
@@ -232,7 +257,7 @@ Widget infoItem({
       ),
       const Spacer(),
       Text(
-        info,
+        info == '' ? "Chưa cập nhật" : info,
         style: defaultText14Re.copyWith(
           color: Colors.black,
         ),

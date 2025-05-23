@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ha_duong/models/info_model.dart';
 import 'package:ha_duong/utils/widget/change_canho_info_dialog.dart';
 
 import '../../../utils/constants/styles.dart';
@@ -9,8 +10,10 @@ import 'family_member.dart';
 import 'personal_screen.dart';
 
 class ApartmentProfile extends StatelessWidget {
-  const ApartmentProfile({super.key});
-
+  const ApartmentProfile(
+      {super.key, required this.apartmentModel, required this.residentModel});
+  final List<ApartmentModel> apartmentModel;
+  final ResidentModel residentModel;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +35,7 @@ class ApartmentProfile extends StatelessWidget {
             SizedBox(
               height: 28.h,
             ),
-            const _ApartmentItem(),
+            _ApartmentItem(residentModel),
             Divider(
               color: const Color(0xffE6E6E6),
               thickness: 6,
@@ -41,7 +44,11 @@ class ApartmentProfile extends StatelessWidget {
             SizedBox(
               height: 20.h,
             ),
-            const _ApartmentInfo(),
+            Column(
+              children: List.generate(apartmentModel.length, (index) {
+                return _ApartmentInfo(apartmentModel[index]);
+              }),
+            ),
           ],
         ),
       ),
@@ -50,8 +57,8 @@ class ApartmentProfile extends StatelessWidget {
 }
 
 class _ApartmentItem extends StatelessWidget {
-  const _ApartmentItem();
-
+  const _ApartmentItem(this.residentModel);
+  final ResidentModel residentModel;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -96,7 +103,7 @@ class _ApartmentItem extends StatelessWidget {
         SizedBox(
           height: 20.h,
         ),
-        infoItem(title: 'Họ và tên', info: 'PHẠM TUẤN KHANG'),
+        infoItem(title: 'Họ và tên', info: residentModel.fullName),
         Divider(
           color: const Color(0xffE6E6E6),
           thickness: 1,
@@ -104,7 +111,7 @@ class _ApartmentItem extends StatelessWidget {
           indent: 16.w,
           height: 24.h,
         ),
-        infoItem(title: 'Số định danh', info: '29BE-019.19'),
+        infoItem(title: 'Số định danh', info: residentModel.idCard),
         Divider(
           color: const Color(0xffE6E6E6),
           thickness: 1,
@@ -112,7 +119,7 @@ class _ApartmentItem extends StatelessWidget {
           indent: 16.w,
           height: 24.h,
         ),
-        infoItem(title: 'Ngày sinh', info: '0971116262'),
+        infoItem(title: 'Ngày sinh', info: residentModel.dob),
         Divider(
           color: const Color(0xffE6E6E6),
           thickness: 1,
@@ -120,7 +127,7 @@ class _ApartmentItem extends StatelessWidget {
           indent: 16.w,
           height: 24.h,
         ),
-        infoItem(title: 'Số điện thoại', info: '0971116262'),
+        infoItem(title: 'Số điện thoại', info: residentModel.phone),
         Divider(
           color: const Color(0xffE6E6E6),
           thickness: 1,
@@ -128,7 +135,7 @@ class _ApartmentItem extends StatelessWidget {
           indent: 16.w,
           height: 24.h,
         ),
-        infoItem(title: 'Email', info: 'Abcxyz@gmail.com'),
+        infoItem(title: 'Email', info: residentModel.email),
         const _FamilyMemberTile(
           memberCount: 1,
         ),
@@ -146,8 +153,8 @@ class _ApartmentItem extends StatelessWidget {
 }
 
 class _ApartmentInfo extends StatelessWidget {
-  const _ApartmentInfo();
-
+  const _ApartmentInfo(this.model);
+  final ApartmentModel model;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -167,7 +174,7 @@ class _ApartmentInfo extends StatelessWidget {
         SizedBox(
           height: 20.h,
         ),
-        infoItem(title: 'Số nhà ', info: '506A'),
+        infoItem(title: 'Số nhà ', info: model.name),
         Divider(
           color: const Color(0xffE6E6E6),
           thickness: 1,
@@ -175,7 +182,7 @@ class _ApartmentInfo extends StatelessWidget {
           indent: 16.w,
           height: 24.h,
         ),
-        infoItem(title: 'Tầng', info: '4'),
+        infoItem(title: 'Tầng', info: model.numberFloors),
         Divider(
           color: const Color(0xffE6E6E6),
           thickness: 1,
@@ -183,7 +190,7 @@ class _ApartmentInfo extends StatelessWidget {
           indent: 16.w,
           height: 24.h,
         ),
-        infoItem(title: 'Diện tích mặt sàn', info: '60m2'),
+        infoItem(title: 'Diện tích mặt sàn', info: '${model.acreage}m2'),
         Divider(
           color: const Color(0xffE6E6E6),
           thickness: 1,
@@ -191,7 +198,7 @@ class _ApartmentInfo extends StatelessWidget {
           indent: 16.w,
           height: 24.h,
         ),
-        infoItem(title: 'Tình trạng', info: 'Hộ gia đình'),
+        infoItem(title: 'Tình trạng', info: model.statusText),
         Divider(
           color: const Color(0xffE6E6E6),
           thickness: 1,

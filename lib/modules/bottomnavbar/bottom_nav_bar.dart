@@ -1,3 +1,4 @@
+import "package:ha_duong/models/info_model.dart";
 import "package:ha_duong/modules/bottomnavbar/home/home.dart";
 import "package:flutter/material.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
@@ -12,8 +13,9 @@ import "support/support_screen.dart";
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({
     super.key,
+    required this.infoHomeModel,
   });
-
+  final InfoModel infoHomeModel;
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();
 }
@@ -28,7 +30,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   List<PersistentTabConfig> _tabs() => [
         PersistentTabConfig(
-          screen: const HomeScreen(),
+          screen: HomeScreen(
+            infoHomeModel: widget.infoHomeModel,
+          ),
           item: ItemConfig(
             icon: SvgPicture.asset(
               'assets/icons/home.svg',
@@ -44,7 +48,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           ),
         ),
         PersistentTabConfig(
-          screen: const TabBarApp(),
+          screen: const BillScreen(),
           item: ItemConfig(
             icon: SvgPicture.asset(
               'assets/icons/lophoc.svg',
@@ -76,7 +80,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
           ),
         ),
         PersistentTabConfig(
-          screen: const ExtensionScreen(),
+          screen: ExtensionScreen(
+            id: widget.infoHomeModel.listApartment[0].id,
+          ),
           item: ItemConfig(
             icon: SvgPicture.asset(
               'assets/icons/video.svg',
@@ -95,7 +101,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
           ),
         ),
         PersistentTabConfig(
-          screen: const PersonalScreen(),
+          screen: PersonalScreen(
+            infoHomeModel: widget.infoHomeModel,
+          ),
           item: ItemConfig(
             icon: SvgPicture.asset(
               'assets/icons/personal.svg',

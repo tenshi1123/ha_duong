@@ -1,4 +1,6 @@
+import 'package:ha_duong/models/info_model.dart';
 import 'package:ha_duong/modules/bottomnavbar/bill/detail_bill_screen.dart';
+import 'package:ha_duong/repo/home_repo.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,8 +11,8 @@ import '../../notification/notification_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
-
+  const HomeScreen({super.key, required this.infoHomeModel});
+  final InfoModel infoHomeModel;
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -19,6 +21,15 @@ class _HomeScreenState extends State<HomeScreen> {
   final controller1 = PageController(viewportFraction: 1, keepPage: true);
   final controller2 = PageController(viewportFraction: 0.75, keepPage: true);
   final controller3 = PageController(viewportFraction: 0.75, keepPage: true);
+  late InfoModel infoHomeModel;
+  late ApartmentModel selectedApartment;
+  @override
+  void initState() {
+    super.initState();
+    infoHomeModel = widget.infoHomeModel;
+    selectedApartment = widget.infoHomeModel.listApartment[0];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,18 +64,28 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         Row(
                           children: [
-                            Image(
-                              image:
-                                  const AssetImage('assets/images/avatar.png'),
-                              height: 44.h,
-                              width: 44.w,
-                              fit: BoxFit.fill,
+                            ClipOval(
+                              child: Image.network(
+                                infoHomeModel.resident.img,
+                                errorBuilder: (BuildContext context,
+                                    Object exception, StackTrace? stackTrace) {
+                                  return Text(
+                                    'Error',
+                                    style: defaultText14M.copyWith(
+                                      color: Colors.white,
+                                    ),
+                                  );
+                                },
+                                height: 44.h,
+                                width: 44.w,
+                                fit: BoxFit.fill,
+                              ),
                             ),
                             SizedBox(
                               width: 12.w,
                             ),
                             Text(
-                              'Nguyễn Thế Hoàng',
+                              infoHomeModel.resident.fullName,
                               style:
                                   defaultText20B.copyWith(color: Colors.white),
                             ),
@@ -92,36 +113,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(
                           height: 16.h,
                         ),
-                        Container(
-                          height: 48.h,
-                          width: 343.w,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(56.r),
-                            ),
-                            color: Colors.white.withValues(alpha: 0.12),
-                          ),
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 16.w,
-                              ),
-                              Image.asset('assets/images/location.png'),
-                              Text(
-                                'Căn 5A01, 17T1 Trung Văn',
-                                style: defaultText16M.copyWith(
-                                    color: Colors.white),
-                              ),
-                              const Spacer(),
-                              const Icon(
-                                Icons.arrow_drop_down,
-                                color: Colors.white,
-                              ),
-                              SizedBox(
-                                width: 16.w,
-                              )
-                            ],
-                          ),
+                        ApartmentDropdown(
+                          selectedApartment: infoHomeModel.listApartment[0],
+                          apartmentList: infoHomeModel.listApartment,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedApartment = value!;
+                            });
+                          },
                         ),
                         SizedBox(
                           height: 4.h,
@@ -154,82 +153,84 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: defaultText16B,
               ),
             ),
-            SizedBox(
-              width: 375.w,
-              height: 200.h,
-              child: ListView.builder(
-                physics: const ClampingScrollPhysics(),
-                itemCount: 2,
-                itemBuilder: (context, index) {
-                  return Container(
+            Column(
+              children:
+                  List.generate(infoHomeModel.listReceipts.length, (index) {
+                return Container(
+                  height: 72.h,
+                  width: 343.w,
+                  margin: EdgeInsets.only(
+                    left: 16.w,
+                    bottom: 16.h,
+                    right: 16.w,
+                  ),
+                  decoration: BoxDecoration(
+                      color: const Color(0xff1B91C4),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(12.r),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.16),
+                          spreadRadius: 0,
+                          blurRadius: 16,
+                          offset: const Offset(0, 4),
+                        ),
+                      ]),
+                  child: Container(
                     height: 72.h,
-                    width: 343.w,
-                    margin: EdgeInsets.only(
-                      left: 16.w,
-                      bottom: 16.h,
-                      right: 16.w,
-                    ),
+                    width: 339.w,
+                    margin: EdgeInsets.only(left: 4.w),
                     decoration: BoxDecoration(
-                        color: const Color(0xff1B91C4),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(12.r),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.16),
-                            spreadRadius: 0,
-                            blurRadius: 16,
-                            offset: const Offset(0, 4),
-                          ),
-                        ]),
-                    child: Container(
-                      height: 72.h,
-                      width: 339.w,
-                      margin: EdgeInsets.only(left: 4.w),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.horizontal(
-                          left: Radius.circular(8.r),
-                          right: Radius.circular(12.r),
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 16.w,
-                          ),
-                          Image.asset('assets/images/bill.png'),
-                          SizedBox(
-                            width: 12.w,
-                          ),
-                          Text(
-                            'Hoá đơn tháng 09/2024',
-                            style: defaultText16,
-                          ),
-                          const Spacer(),
-                          InkWell(
-                              onTap: () {
-                                pushWithoutNavBar(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: ((context) =>
-                                        const DetailBillScreen(
-                                          type: 1,
-                                        )),
-                                  ),
-                                );
-                              },
-                              child:
-                                  Image.asset('assets/images/arrow_right.png')),
-                          SizedBox(
-                            width: 16.w,
-                          ),
-                        ],
+                      color: Colors.white,
+                      borderRadius: BorderRadius.horizontal(
+                        left: Radius.circular(8.r),
+                        right: Radius.circular(12.r),
                       ),
                     ),
-                  );
-                },
-              ),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 16.w,
+                        ),
+                        Image.asset('assets/images/bill.png'),
+                        SizedBox(
+                          width: 12.w,
+                        ),
+                        Text(
+                          infoHomeModel.listReceipts[index].name,
+                          style: defaultText16,
+                        ),
+                        const Spacer(),
+                        InkWell(
+                            onTap: () async {
+                              //call api
+                              ReceiptsDetailModel receiptsDetailModel =
+                                  await HomeRepo().getDetailReceipts(
+                                      infoHomeModel.listReceipts[index].id
+                                          .toString());
+
+                              pushWithoutNavBar(
+                                context,
+                                MaterialPageRoute(
+                                  builder: ((context) => DetailBillScreen(
+                                        type: 0,
+                                        receiptsDetailModel:
+                                            receiptsDetailModel,
+                                      )),
+                                ),
+                              );
+                            },
+                            child:
+                                Image.asset('assets/images/arrow_right.png')),
+                        SizedBox(
+                          width: 16.w,
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }),
             ),
             Divider(
               thickness: 8.h,
@@ -261,12 +262,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: PageView.builder(
                           padEnds: false,
                           controller: controller3,
-                          itemCount: 3,
+                          itemCount: infoHomeModel.listPost.length,
                           itemBuilder: (_, index) {
-                            return const PostItem(
+                            return PostItem(
                               link: 'https://i.imgur.com/8HUYYgc.png',
-                              postTitle:
-                                  'Thông báo của ban quản trị nhà chung cư 17T1 Trung Văn.',
+                              postTitle: infoHomeModel.listPost[index].name,
                               thumbnailUrl: 'https://i.imgur.com/8HUYYgc.png',
                             );
                           },
@@ -275,7 +275,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     SmoothPageIndicator(
                       controller: controller3,
-                      count: 3,
+                      count: infoHomeModel.listPost.length,
                       effect: CustomizableEffect(
                         activeDotDecoration: DotDecoration(
                           width: 20.w,

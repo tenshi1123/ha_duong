@@ -1,3 +1,4 @@
+import 'package:ha_duong/models/info_model.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -236,6 +237,72 @@ class CustomTextFormField extends StatelessWidget {
         focusedErrorBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: Colors.red),
           borderRadius: BorderRadius.circular(5.0),
+        ),
+      ),
+    );
+  }
+}
+
+class ApartmentDropdown extends StatelessWidget {
+  final ApartmentModel selectedApartment;
+  final List<ApartmentModel> apartmentList;
+  final void Function(ApartmentModel?) onChanged;
+
+  const ApartmentDropdown({
+    super.key,
+    required this.selectedApartment,
+    required this.apartmentList,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 48.h,
+      width: 343.w,
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(56.r)),
+        color: Colors.white.withAlpha(30), // 12% of 255 ≈ 30
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<ApartmentModel>(
+          isExpanded: true,
+          value: selectedApartment,
+          icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
+          dropdownColor: Colors.white,
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w500,
+          ),
+          onChanged: onChanged,
+          items: apartmentList
+              .map(
+                (apartment) => DropdownMenuItem<ApartmentModel>(
+                  value: apartment,
+                  child: Text(apartment.name),
+                ),
+              )
+              .toList(),
+          selectedItemBuilder: (BuildContext context) {
+            return apartmentList.map((apartment) {
+              return Row(
+                children: [
+                  Image.asset('assets/images/location.png'),
+                  SizedBox(width: 8.w),
+                  Text(
+                    apartment.name,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              );
+            }).toList();
+          },
         ),
       ),
     );

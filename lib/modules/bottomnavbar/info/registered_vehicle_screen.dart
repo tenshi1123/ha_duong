@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ha_duong/models/info_model.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
+import 'package:intl/intl.dart';
 
 import 'personal_screen.dart';
 
 class RegisteredVehicleScreen extends StatelessWidget {
-  const RegisteredVehicleScreen({super.key});
-
+  const RegisteredVehicleScreen({super.key, required this.listVehicle});
+  final List<VehicleModel> listVehicle;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,41 +23,52 @@ class RegisteredVehicleScreen extends StatelessWidget {
           },
         ),
       ),
-      body: Column(
-        children: [
-          const Divider(),
-          SizedBox(
-            height: 28.h,
-          ),
-          const VehicleItem(),
-          Divider(
-            color: const Color(0xffE6E6E6),
-            thickness: 6,
-            endIndent: 16.w,
-            indent: 16.w,
-            height: 24.h,
-          ),
-          const VehicleItem(),
-        ],
+      body: ListView.builder(
+        itemCount: listVehicle.length,
+        itemBuilder: (context, index) {
+          return VehicleItem(
+            vehicleModel: listVehicle[index],
+          );
+        },
       ),
     );
   }
 }
 
+// const Divider(),
+// SizedBox(
+//   height: 28.h,
+// ),
+// const VehicleItem(),
+// Divider(
+//   color: const Color(0xffE6E6E6),
+//   thickness: 6,
+//   endIndent: 16.w,
+//   indent: 16.w,
+//   height: 24.h,
+// ),
+// const VehicleItem(),
 class VehicleItem extends StatelessWidget {
-  const VehicleItem({super.key});
-
+  const VehicleItem({super.key, required this.vehicleModel});
+  final VehicleModel vehicleModel;
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
+        Divider(
+          color: const Color(0xffE6E6E6),
+          thickness: 6,
+          endIndent: 16.w,
+          indent: 16.w,
+          height: 24.h,
+        ),
         Row(
           children: [
             SizedBox(
               width: 16.w,
             ),
             Text(
-              'Xe máy',
+              vehicleModel.vehicleName,
               style: defaultText16B,
             ),
             const Spacer(),
@@ -89,7 +102,21 @@ class VehicleItem extends StatelessWidget {
         SizedBox(
           height: 20.h,
         ),
-        infoItem(title: 'Chủ sở hữu', info: 'PHẠM TUẤN KHANG'),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+            children: [
+              Text(
+                vehicleModel.apartmentName,
+                style: defaultText14Re.copyWith(color: Colors.black),
+              ),
+            ],
+          ),
+        ),
+        infoItem(
+          title: 'Chủ sở hữu',
+          info: vehicleModel.fullName,
+        ),
         Divider(
           color: const Color(0xffE6E6E6),
           thickness: 1,
@@ -97,7 +124,10 @@ class VehicleItem extends StatelessWidget {
           indent: 16.w,
           height: 24.h,
         ),
-        infoItem(title: 'Biển số xe', info: '29BE-019.19'),
+        infoItem(
+          title: 'Biển số xe',
+          info: vehicleModel.licensePlates,
+        ),
         Divider(
           color: const Color(0xffE6E6E6),
           thickness: 1,
@@ -105,7 +135,7 @@ class VehicleItem extends StatelessWidget {
           indent: 16.w,
           height: 24.h,
         ),
-        infoItem(title: 'Liên hệ', info: '0971116262'),
+        infoItem(title: 'Liên hệ', info: vehicleModel.phone),
         Divider(
           color: const Color(0xffE6E6E6),
           thickness: 1,
@@ -113,7 +143,7 @@ class VehicleItem extends StatelessWidget {
           indent: 16.w,
           height: 24.h,
         ),
-        infoItem(title: 'Đăng kí từ', info: '02/06/2023'),
+        infoItem(title: 'Đăng kí từ', info: vehicleModel.createAt),
         Divider(
           color: const Color(0xffE6E6E6),
           thickness: 1,
@@ -121,8 +151,32 @@ class VehicleItem extends StatelessWidget {
           indent: 16.w,
           height: 24.h,
         ),
-        infoItem(title: 'Phí gửi', info: '50.000đ/Tháng'),
+        infoItem(
+            title: 'Phí gửi',
+            info: '${formatCurrency(vehicleModel.fee)}đ/Tháng'),
       ],
     );
+  }
+}
+
+String formatCurrency(dynamic value) {
+  final formatter = NumberFormat('#,###', 'vi_VN');
+
+  try {
+    // Nếu là String, chuyển sang double
+    if (value is String) {
+      value = value.replaceAll('.', '').replaceAll(',', '');
+      value = double.parse(value);
+    }
+
+    // Nếu là int hoặc double
+    if (value is int || value is double) {
+      return formatter.format(value);
+    }
+
+    // Nếu không thuộc kiểu hợp lệ
+    return '0';
+  } catch (e) {
+    return '0';
   }
 }

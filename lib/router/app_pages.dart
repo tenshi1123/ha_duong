@@ -10,7 +10,6 @@ enum AppPages {
   Initial,
   LoginPage,
   ForgotPassScreen,
-  BottomNavBarPage,
 }
 
 final RegExp _keyPattern = RegExp('(?<=[a-z])[A-Z]');
@@ -40,8 +39,7 @@ extension AppPagesExtension on AppPages {
         return PageConfig()..pageBuilder = () => const LoginScreen();
       case AppPages.ForgotPassScreen:
         return PageConfig()..pageBuilder = () => const ForgotPassScreen();
-      case AppPages.BottomNavBarPage:
-        return PageConfig()..pageBuilder = () => const BottomNavBar();
+
       // default:
       //   throw StateError(
       //     "Missing page: ${page.toString()} in AppPagesExtension.getPageConfig()",

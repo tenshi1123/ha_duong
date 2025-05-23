@@ -1,22 +1,21 @@
-import 'package:dio/dio.dart';
+import 'dart:convert';
 
-import '../models/info_model.dart';
+import 'package:dio/dio.dart';
 import '../utils/constants/api_path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginRepo {
   Dio dio = Dio();
-  Future<bool> login(String phone, String password) async {
+  Future<bool> login(
+    String code,
+  ) async {
+    dio.options.headers['Token'] = 'BMSHD123456789';
     Response response;
-    var formData = FormData.fromMap({
-      'phone': phone,
-      'password': password,
-    });
     try {
-      response = await dio.post(
-        ApiPath.login,
-        data: formData,
-      );
+      response = await dio.post(ApiPath.login,
+          data: jsonEncode({
+            'phone': code,
+          }));
     } on DioException {
       return false;
     }
@@ -24,45 +23,8 @@ class LoginRepo {
       return false;
     }
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('token', response.data['data']["refresh_token"]);
-    return response.data['data']["refresh_token"] != null;
-  }
-
-  Future<bool> loginParent(String phone, String password) async {
-    Response response;
-    var formData = FormData.fromMap({
-      'phone': phone,
-      'password': password,
-    });
-    try {
-      response = await dio.post(
-        ApiPath.loginParent,
-        data: formData,
-      );
-    } on DioException {
-      return false;
-    }
-    if (response.data['status'] == false) {
-      return false;
-    }
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(
-        'token_parent', response.data['data']["refresh_token"]);
-    return response.data['data']["refresh_token"] != null;
-  }
-
-  Future<List<ChildrenInfoModel>> getListChillren() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? token = prefs.getString('token_parent');
-    dio.options.headers['Authorization'] = 'Bearer $token';
-    Response response;
-    response = await dio.get(
-      ApiPath.getlistChildren,
-    );
-    List<ChildrenInfoModel> result = ((response.data)['data'] as List)
-        .map((e) => ChildrenInfoModel.fromJson(e))
-        .toList();
-    return result;
+    await prefs.setString('token', response.data["refresh_token"]);
+    return response.data["refresh_token"] != null;
   }
 
   Future<String> refreshToken() async {
@@ -77,44 +39,6 @@ class LoginRepo {
     }
     await prefs.setString('token', response.data['data']["refresh_token"]);
     return response.data['data']["refresh_token"];
-  }
-
-  Future<String> contactLearned(String phone, String fullName) async {
-    Response response;
-    var formData = FormData.fromMap({
-      'phone': phone,
-      'full_name': fullName,
-    });
-    try {
-      response = await dio.post(
-        ApiPath.learned,
-        data: formData,
-      );
-    } on DioException {
-      return '';
-    }
-    return response.data["message"];
-  }
-
-  Future<String> contactAdd(String phone, String fullName, String className,
-      String subject, String typePerson) async {
-    Response response;
-    var formData = FormData.fromMap({
-      "full_name": fullName,
-      "phone": phone,
-      "class": className,
-      "subject": subject,
-      "type_person": typePerson,
-    });
-    try {
-      response = await dio.post(
-        ApiPath.contact,
-        data: formData,
-      );
-    } on DioException {
-      return '';
-    }
-    return response.data["message"];
   }
 
   Future<String> getToken() async {
@@ -158,14 +82,5 @@ class LoginRepo {
         return false;
       }
     }
-  }
-
-  Future<List<String>> getListBanner() async {
-    Response response;
-    response = await dio.get(ApiPath.getBanner);
-    List<String> result = ((response.data)['data'] as List)
-        .map((e) => e['img_desktop'].toString())
-        .toList();
-    return result;
   }
 }

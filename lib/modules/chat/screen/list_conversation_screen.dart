@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
-import '../../../utils/constants/color.dart';
 import '../../../utils/constants/styles.dart';
 import '../../../utils/widget/custom_widget.dart';
 

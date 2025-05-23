@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ha_duong/models/info_model.dart';
+import 'package:ha_duong/repo/home_repo.dart';
+import 'package:ha_duong/repo/login_repo.dart';
 import 'package:ha_duong/utils/constants/color.dart';
 import '../../utils/constants/styles.dart';
 import '../bottomnavbar/bottom_nav_bar.dart';
@@ -266,13 +269,49 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       );
                     } else {
-                      // Đăng nhập tài khoản học sinhsinh
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const BottomNavBar(),
-                        ),
+                      // Đăng nhập tài khoản học sinh
+                      bool loged = await LoginRepo().login(
+                        studenIdController?.text ?? '',
                       );
+                      if (loged == true) {
+                        InfoModel infoHomeModel =
+                            await HomeRepo().getInfoCudan();
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BottomNavBar(
+                              infoHomeModel: infoHomeModel,
+                            ),
+                          ),
+                        );
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return CupertinoAlertDialog(
+                              title: const Text('Vui lòng thử lại'),
+                              content: const Text(
+                                  'Vui lòng kiểm tra lại mã học sinh và mật khẩu của bạn'),
+                              actions: <Widget>[
+                                CupertinoDialogAction(
+                                  isDefaultAction: true,
+                                  child: Text(
+                                    'Đồng ý',
+                                    style: TextStyle(
+                                        fontSize: 20, color: key1Color),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context, rootNavigator: true)
+                                        .pop(
+                                      (_) => false,
+                                    );
+                                  },
+                                )
+                              ],
+                            );
+                          },
+                        );
+                      }
                     }
                   },
                   child: _isLoading

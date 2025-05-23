@@ -450,7 +450,9 @@ extension NavigatorStateExtension on NavigatorState {
 
     if (pageConfig.preventDuplicates &&
         widget.pages.isNotEmpty &&
-        widget.pages.last.name == page.name) _duplicatedPage(page.name);
+        widget.pages.last.name == page.name) {
+      _duplicatedPage(page.name);
+    }
 
     return push<T>(
       _createRoute(
