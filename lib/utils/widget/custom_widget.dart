@@ -1,4 +1,4 @@
-import 'package:ha_duong/models/info_model.dart';
+import 'package:ha_duong/models/apartment_model.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -212,12 +212,10 @@ class CustomTextFormField extends StatelessWidget {
       initialValue: initialValue,
       controller: controller,
       validator: validator,
-      style: defaultText14M,
+      style: defaultText16Re,
       decoration: InputDecoration(
         labelText: labelText,
-        labelStyle: const TextStyle(
-          color: Colors.black,
-        ),
+        labelStyle: defaultText14M,
         hintText: hintText,
         hintStyle: const TextStyle(
           color: Colors.grey,
@@ -306,5 +304,81 @@ class ApartmentDropdown extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class RelationshipDropdown extends StatefulWidget {
+  final String? value;
+  final Function(String?)? onChanged;
+  const RelationshipDropdown({super.key, this.value, this.onChanged});
+  @override
+  State<RelationshipDropdown> createState() => _RelationshipDropdownState();
+}
+
+class _RelationshipDropdownState extends State<RelationshipDropdown> {
+  final List<String> _options = [
+    'vo_chong',
+    'con_cai',
+    'bo_me',
+    'anh_chi_em',
+    'khach_thue',
+  ];
+
+  String? _selectedValue;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedValue = widget.value;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonFormField<String>(
+      value: _selectedValue,
+      decoration: InputDecoration(
+        labelText: 'Quan hệ với chủ hộ',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Vui lòng nhập Quan hệ với chủ hộ';
+        }
+        return null;
+      },
+      items: _options
+          .map((relation) => DropdownMenuItem(
+                value: relation,
+                child: Text(_convertToLabel(relation)),
+              ))
+          .toList(),
+      onChanged: (value) {
+        setState(() {
+          _selectedValue = value;
+        });
+        if (widget.onChanged != null) {
+          widget.onChanged!(value);
+        }
+      },
+    );
+  }
+
+  String _convertToLabel(String key) {
+    switch (key) {
+      case 'vo_chong':
+        return 'Vợ/Chồng';
+      case 'con_cai':
+        return 'Con cái';
+      case 'bo_me':
+        return 'Bố/Mẹ';
+      case 'anh_chi_em':
+        return 'Anh/Chị/Em';
+      case 'khach_thue':
+        return 'Khách thuê';
+      default:
+        return key;
+    }
   }
 }

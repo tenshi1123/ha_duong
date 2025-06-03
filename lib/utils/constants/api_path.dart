@@ -15,9 +15,20 @@ class ApiPath {
   static const String receipts = '$baseUrl/cudan/receipts';
   static const String receiptDetail = '$baseUrl/cudan/receipts/detail';
 
+  // api Hỗ trợ
+  static const String homeSupport = '$baseUrl/cudan/technical_requests';
+  static const String listSupport = '$homeSupport/list';
+  static const String supportDetail = '$homeSupport/detail';
+  static const String showSupportPopup = '$homeSupport/show_popup';
+  static const String showCreateSupport =
+      '$baseUrl/cudan/technical_requests/show_create';
+  static const String supportCreate = '$homeSupport/create_requests';
+
   // api tiện ích
   static const String utilities = '$baseUrl/cudan/utilities';
-
+  static const String utilitiesDetail = '$baseUrl/cudan/utilities/detail';
+  static const String showDangKy = '$baseUrl/cudan/utilities/show_dang_ky';
+  static const String sendDangKy = '$baseUrl/cudan/utilities/dang_ky';
   // api tài khoản
   static const String profile = '$baseUrl/cudan/profile';
 

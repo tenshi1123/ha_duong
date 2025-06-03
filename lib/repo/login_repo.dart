@@ -12,10 +12,12 @@ class LoginRepo {
     dio.options.headers['Token'] = 'BMSHD123456789';
     Response response;
     try {
-      response = await dio.post(ApiPath.login,
-          data: jsonEncode({
-            'phone': code,
-          }));
+      response = await dio.post(
+        ApiPath.login,
+        data: jsonEncode({
+          'phone': code,
+        }),
+      );
     } on DioException {
       return false;
     }

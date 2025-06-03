@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ha_duong/models/info_model.dart';
+import 'package:ha_duong/modules/bottomnavbar/service/service_screen.dart';
 import 'package:ha_duong/repo/home_repo.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import '../../../utils/constants/styles.dart';
 
 class ExtensionScreen extends StatefulWidget {
@@ -57,155 +59,74 @@ class _ExtensionScreenState extends State<ExtensionScreen> {
           ),
         ),
       ),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(12),
-        itemCount: listUtilities.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, // 2 cột
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
-          childAspectRatio: 1.2,
-        ),
-        itemBuilder: (context, index) {
-          final item = listUtilities[index];
-          return ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                Image.network(
-                  'https://bms.haduong.com.vn/images/${item.img}',
-                  fit: BoxFit.cover,
-                ),
-                Container(
-                  alignment: Alignment.bottomLeft,
-                  padding: const EdgeInsets.all(8),
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [Colors.transparent, Colors.black54],
-                    ),
-                  ),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : listUtilities.isEmpty
+              ? const Center(
                   child: Text(
-                    item.name,
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600),
+                    'Không có dữ liệu',
+                    style: TextStyle(fontSize: 16, color: Colors.black54),
                   ),
                 )
-              ],
-            ),
-          );
-        },
-      ),
-
-      //  Column(
-      //   children: [
-      //     const Divider(),
-      //     SizedBox(
-      //       height: 16.h,
-      //     ),
-      //     Row(
-      //       children: [
-      //         SizedBox(
-      //           width: 16.w,
-      //         ),
-      //         GestureDetector(
-      //           onTap: () {
-      //             pushWithoutNavBar(
-      //               context,
-      //               MaterialPageRoute(
-      //                 builder: ((context) => const ServiceScreen(
-      //                       title: 'Dịch vụ thang máy',
-      //                     )),
-      //               ),
-      //             );
-      //           },
-      //           child: Image.asset(
-      //             'assets/images/image1.png',
-      //             width: 164.w,
-      //             height: 108.h,
-      //             fit: BoxFit.fill,
-      //           ),
-      //         ),
-      //         const Spacer(),
-      //         GestureDetector(
-      //           onTap: () {
-      //             pushWithoutNavBar(
-      //               context,
-      //               MaterialPageRoute(
-      //                 builder: ((context) => const ServiceScreen(
-      //                       title: 'Dịch vụ bể bơi',
-      //                     )),
-      //               ),
-      //             );
-      //           },
-      //           child: Image.asset(
-      //             'assets/images/image2.png',
-      //             width: 164.w,
-      //             height: 108.h,
-      //             fit: BoxFit.fill,
-      //           ),
-      //         ),
-      //         SizedBox(
-      //           width: 16.w,
-      //         ),
-      //       ],
-      //     ),
-      //     SizedBox(
-      //       height: 16.h,
-      //     ),
-      //     Row(
-      //       children: [
-      //         SizedBox(
-      //           width: 16.w,
-      //         ),
-      //         GestureDetector(
-      //           onTap: () {
-      //             pushWithoutNavBar(
-      //               context,
-      //               MaterialPageRoute(
-      //                 builder: ((context) => const ServiceScreen(
-      //                       title: 'Tìm người giúp việc',
-      //                     )),
-      //               ),
-      //             );
-      //           },
-      //           child: Image.asset(
-      //             'assets/images/image3.png',
-      //             width: 164.w,
-      //             height: 108.h,
-      //             fit: BoxFit.fill,
-      //           ),
-      //         ),
-      //         const Spacer(),
-      //         GestureDetector(
-      //           onTap: () {
-      //             pushWithoutNavBar(
-      //               context,
-      //               MaterialPageRoute(
-      //                 builder: ((context) => const ServiceScreen(
-      //                       title: 'Sinh hoạt cộng đồng',
-      //                     )),
-      //               ),
-      //             );
-      //           },
-      //           child: Image.asset(
-      //             'assets/images/image4.png',
-      //             width: 164.w,
-      //             height: 108.h,
-      //             fit: BoxFit.fill,
-      //           ),
-      //         ),
-      //         SizedBox(
-      //           width: 16.w,
-      //         ),
-      //       ],
-      //     ),
-      //   ],
-      // )
+              : GridView.builder(
+                  padding: const EdgeInsets.all(12),
+                  itemCount: listUtilities.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2, // 2 cột
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
+                    childAspectRatio: 1.2,
+                  ),
+                  itemBuilder: (context, index) {
+                    final item = listUtilities[index];
+                    return GestureDetector(
+                      onTap: () async {
+                        UtilitiesModel receiptsDetailModel = await HomeRepo()
+                            .getUtilitiesDetail(listUtilities[index].id);
+                        pushWithoutNavBar(
+                          context,
+                          MaterialPageRoute(
+                            builder: ((context) => ServiceScreen(
+                                  title: 'Dịch vụ thang máy',
+                                  apartmentId: widget.id,
+                                  utilitiesModel: receiptsDetailModel,
+                                )),
+                          ),
+                        );
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            Image.network(
+                              'https://bms.haduong.com.vn/images/${item.img}',
+                              fit: BoxFit.cover,
+                            ),
+                            Container(
+                              alignment: Alignment.bottomLeft,
+                              padding: const EdgeInsets.all(8),
+                              decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [Colors.transparent, Colors.black54],
+                                ),
+                              ),
+                              child: Text(
+                                item.name,
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
     );
   }
 }

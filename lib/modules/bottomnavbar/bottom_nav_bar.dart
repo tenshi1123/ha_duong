@@ -67,7 +67,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
           ),
         ),
         PersistentTabConfig(
-          screen: const SupportScreen(),
+          screen: SupportScreen(
+            id: widget.infoHomeModel.listApartment.first.id,
+          ),
           item: ItemConfig(
             icon: SvgPicture.asset(
               'assets/icons/support.svg',
@@ -76,6 +78,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             inactiveIcon: SvgPicture.asset(
               'assets/icons/support.svg',
             ),
+            activeForegroundColor: const Color(0xff005DA4),
             inactiveBackgroundColor: Colors.white.withValues(alpha: 0.2),
           ),
         ),

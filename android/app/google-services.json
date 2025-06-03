@@ -10,6 +10,25 @@
       "client_info": {
         "mobilesdk_app_id": "1:564564392750:android:2cc900916d14382f58d8bf",
         "android_client_info": {
+          "package_name": "edu.hvg.casalink"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwYPzYvKBzM0pDayG4uFRpw-VWi_NyGl4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:564564392750:android:5842c8b0cf86c25958d8bf",
+        "android_client_info": {
           "package_name": "edu.hvg.ha_duong"
         }
       },

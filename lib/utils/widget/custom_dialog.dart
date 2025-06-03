@@ -1,345 +1,130 @@
 import 'dart:io';
-import 'package:camera_camera/camera_camera.dart';
+import 'package:ha_duong/models/apartment_model.dart';
+import 'package:ha_duong/models/info_model.dart';
+import 'package:ha_duong/models/suport_model.dart';
+import 'package:ha_duong/modules/bottomnavbar/support/technical_request_screen.dart';
+import 'package:ha_duong/repo/home_repo.dart';
+import 'package:ha_duong/repo/personal_repo.dart';
+import 'package:ha_duong/repo/support_repo.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ha_duong/utils/widget/pick_image.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 import 'custom_widget.dart';
 
-class ServiceDialog extends StatefulWidget {
-  const ServiceDialog({super.key});
-
-  @override
-  State<ServiceDialog> createState() => _ServiceDialogState();
-}
-
-class _ServiceDialogState extends State<ServiceDialog> {
+class CustomerInfoForm extends StatelessWidget {
+  final DangKyModel dangKyModel;
+  final TextEditingController nameController;
+  final TextEditingController phoneController;
+  final TextEditingController apartmentController;
+  CustomerInfoForm({
+    super.key,
+    required this.dangKyModel,
+  })  : nameController = TextEditingController(text: dangKyModel.fullName),
+        phoneController = TextEditingController(text: dangKyModel.phone),
+        apartmentController =
+            TextEditingController(text: dangKyModel.apartmentName);
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      child: SingleChildScrollView(
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(16.r)),
-            // boxShadow: const [
-            //   BoxShadow(
-            //     color: Colors.black,
-            //     offset: Offset(6, 6),
-            //     spreadRadius: 2,
-            //     blurStyle: BlurStyle.solid,
-            //   ),
-            // ],
-          ),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(
-                  height: 20.h,
-                ),
-                Container(
-                  padding: EdgeInsets.only(left: 16.w),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(16.r),
-                      topRight: Radius.circular(16.r),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Image.asset(
-                        'assets/images/personal.png',
-                        width: 34.w,
-                        height: 34.w,
-                        fit: BoxFit.fill,
-                      ),
-                      Text(
-                        'Thông tin khách hàng',
-                        style: defaultText16B,
-                      ),
-                      const CloseButton(
-                        color: Colors.white,
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: CustomTextFormField(
-                    labelText: 'Họ và tên',
-                    hintText: 'Nhập họ và tên',
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Vui lòng nhập họ và tên';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: CustomTextFormField(
-                    labelText: 'Số điện thoại',
-                    hintText: 'Nhập Số điện thoại',
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Vui lòng nhập Số điện thoại';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: CustomTextFormField(
-                    labelText: 'Căn hộ',
-                    hintText: 'Nhập Căn hộ',
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Vui lòng nhập Căn hộ';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                const SizedBox(height: 16),
-                GestureDetector(
-                  onTap: () {
-                    if (_formKey.currentState!.validate()) {
-                      showDialog<String>(
-                        context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                          title: Text(
-                            'Gửi thông tin thành công',
-                            style: defaultText16B,
-                          ),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pop(
-                                  context,
-                                );
-                                Navigator.pop(
-                                  context,
-                                );
-                              },
-                              child: const Text('OK'),
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-                  },
-                  child: Container(
-                    width: 303.w,
-                    height: 50.h,
-                    margin: EdgeInsets.only(
-                        left: 16.w, bottom: 30.h, top: 16.w, right: 16.w),
-                    constraints: BoxConstraints(maxHeight: 120.h),
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Color(0xFF25AAE1),
-                          Color(0xFF004071),
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        stops: [0.0, 1.0],
-                      ),
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                    ),
-                    child: Center(
-                        child: Text(
-                      'Gửi thông tin',
-                      style: defaultText14B.copyWith(color: Colors.white),
-                    )),
-                  ),
-                ),
-              ],
-            ),
-          ),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16.r),
         ),
-      ),
-    );
-  }
-}
-
-class ChangeHouseholdInfoForm extends StatefulWidget {
-  const ChangeHouseholdInfoForm({super.key});
-
-  @override
-  State<ChangeHouseholdInfoForm> createState() =>
-      _ChangeHouseholdInfoFormState();
-}
-
-class _ChangeHouseholdInfoFormState extends State<ChangeHouseholdInfoForm> {
-  final _formKey = GlobalKey<FormState>();
-
-  @override
-  Widget build(BuildContext context) {
-    return Dialog(
-      child: SingleChildScrollView(
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(16.r)),
-          ),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(
-                  height: 20.h,
-                ),
-                Container(
-                  padding: EdgeInsets.only(left: 16.w),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(16.r),
-                      topRight: Radius.circular(16.r),
-                    ),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Row(
+                children: [
+                  Icon(Icons.person_outline, color: Colors.blue),
+                  SizedBox(width: 8),
+                  Text(
+                    'Thông tin khách hàng',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Image.asset(
-                        'assets/images/personal.png',
-                        width: 34.w,
-                        height: 34.w,
-                        fit: BoxFit.fill,
-                      ),
-                      Text(
-                        'Thông tin khách hàng',
-                        style: defaultText16B,
-                      ),
-                      const CloseButton(
-                        color: Colors.white,
-                      ),
-                    ],
+                  Spacer(),
+                  CloseButton(
+                    color: Colors.black,
                   ),
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: CustomTextFormField(
-                    labelText: 'Họ và tên',
-                    hintText: 'Nhập họ và tên',
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Vui lòng nhập họ và tên';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: CustomTextFormField(
-                    labelText: 'Số điện thoại',
-                    hintText: 'Nhập Số điện thoại',
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Vui lòng nhập Số điện thoại';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: CustomTextFormField(
-                    labelText: 'Căn hộ',
-                    hintText: 'Nhập Căn hộ',
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Vui lòng nhập Căn hộ';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                const SizedBox(height: 16),
-                GestureDetector(
-                  onTap: () {
-                    if (_formKey.currentState!.validate()) {
-                      showDialog<String>(
-                        context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                          title: Text(
-                            'Gửi thông tin thành công',
-                            style: defaultText16B,
-                          ),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pop(
-                                  context,
-                                );
-                                Navigator.pop(
-                                  context,
-                                );
-                              },
-                              child: const Text('OK'),
-                            ),
-                          ],
+                ],
+              ),
+              const SizedBox(height: 16),
+              _buildLabelledField("Họ và tên", nameController),
+              const SizedBox(height: 16),
+              _buildLabelledField("Số điện thoại", phoneController,
+                  keyboardType: TextInputType.phone),
+              const SizedBox(height: 16),
+              _buildLabelledField("Căn hộ", apartmentController),
+              const SizedBox(height: 24),
+              GestureDetector(
+                onTap: () {
+                  if (_formKey.currentState!.validate()) {
+                    // Gửi thông tin
+                    HomeRepo().sendDangKy(
+                      '',
+                      nameController.text,
+                      phoneController.text,
+                      apartmentController.text,
+                    );
+                    showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: Text(
+                          'Gửi thông tin thành công',
+                          style: defaultText16B,
                         ),
-                      );
-                    }
-                  },
-                  child: Container(
-                    width: 303.w,
-                    height: 50.h,
-                    margin: EdgeInsets.only(
-                        left: 16.w, bottom: 30.h, top: 16.w, right: 16.w),
-                    constraints: BoxConstraints(maxHeight: 120.h),
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Color(0xFF25AAE1),
-                          Color(0xFF004071),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(
+                                context,
+                              );
+                              Navigator.pop(
+                                context,
+                              );
+                            },
+                            child: const Text('OK'),
+                          ),
                         ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        stops: [0.0, 1.0],
                       ),
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                    );
+                  }
+                },
+                child: Container(
+                  width: 303.w,
+                  height: 50.h,
+                  margin: EdgeInsets.only(
+                      left: 16.w, bottom: 30.h, top: 16.w, right: 16.w),
+                  constraints: BoxConstraints(maxHeight: 120.h),
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Color(0xFF25AAE1),
+                        Color(0xFF004071),
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      stops: [0.0, 1.0],
                     ),
-                    child: Center(
-                        child: Text(
-                      'Gửi thông tin',
-                      style: defaultText14B.copyWith(color: Colors.white),
-                    )),
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
                   ),
+                  child: Center(
+                      child: Text(
+                    'Gửi thông tin',
+                    style: defaultText14B.copyWith(color: Colors.white),
+                  )),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -356,80 +141,20 @@ class ChangeChuHoInfo extends StatefulWidget {
 
 class _ChangeChuHoInfoState extends State<ChangeChuHoInfo> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _cccdController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   List<File> photos = <File>[];
-
-  Future _pickImageFromGallery() async {
-    final returnedImage = await ImagePicker().pickMultiImage();
-    photos = List<File>.from(
-      (returnedImage).map(
-        (e) => File(e.path),
-      ),
-    );
-    //File(returnedImage!.path);
-    if (photos.isNotEmpty) {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return Dialog(
-              child: Container(
-                width: 343.w,
-                height: 334.h,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(20.r))),
-                child: Column(
-                  children: [
-                    Image.asset('assets/images/tick.png'),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      child: Text(
-                        'Yêu cầu của bạn đã được gửi tới ban quản lý thành công',
-                        style: defaultText16M.copyWith(
-                          color: const Color(0xff2D323A),
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(
-                          left: 56.w, bottom: 56.h, top: 36.h, right: 56.w),
-                      padding: EdgeInsetsDirectional.symmetric(
-                        horizontal: 16.w,
-                        vertical: 12.w,
-                      ),
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Color(0xFF25AAE1),
-                            Color(0xFF004071),
-                          ],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          stops: [0.0, 1.0],
-                        ),
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                      ),
-                      child: Center(
-                          child: Text(
-                        'Ok',
-                        style: defaultText14B.copyWith(color: Colors.white),
-                      )),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          });
-    }
-    setState(() {});
-  }
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      insetPadding: EdgeInsets.symmetric(horizontal: 8.w),
       child: SingleChildScrollView(
         child: Container(
+          width: MediaQuery.of(context).size.width * 0.95, // Gần toàn màn hình
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(16.r)),
@@ -440,11 +165,8 @@ class _ChangeChuHoInfoState extends State<ChangeChuHoInfo> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(
-                  height: 20.h,
-                ),
                 Container(
-                  padding: EdgeInsets.only(left: 16.w),
+                  padding: EdgeInsets.only(left: 16.w, bottom: 10.h, top: 20.h),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
@@ -471,14 +193,13 @@ class _ChangeChuHoInfoState extends State<ChangeChuHoInfo> {
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 20.h,
-                ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
                   child: CustomTextFormField(
                     labelText: 'Họ và tên',
                     hintText: 'Nhập họ và tên',
+                    controller: _nameController,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Vui lòng nhập họ và tên';
@@ -487,27 +208,24 @@ class _ChangeChuHoInfoState extends State<ChangeChuHoInfo> {
                     },
                   ),
                 ),
-                SizedBox(
-                  height: 20.h,
-                ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
                   child: CustomTextFormField(
                     labelText: 'Số định danh',
                     hintText: 'Nhập Số định danh',
+                    controller: _cccdController,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Vui lòng nhập Số điện thoại';
+                        return 'Vui lòng nhập Số định danh';
                       }
                       return null;
                     },
                   ),
                 ),
-                SizedBox(
-                  height: 20.h,
-                ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
                   child: TextFormField(
                     style: defaultText14M,
                     controller: _dateController,
@@ -541,21 +259,18 @@ class _ChangeChuHoInfoState extends State<ChangeChuHoInfo> {
                     onChanged: (value) {
                       // _newCategory = value;
                     },
-                    onTap: () {
-                      selectDate();
-                    },
+                    onTap: () => selectDate(context, _dateController),
                     validator: (value) =>
                         value!.isEmpty ? 'Vui lòng chọn ngày sinh' : null,
                   ),
                 ),
-                SizedBox(
-                  height: 20.h,
-                ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
                   child: CustomTextFormField(
                     labelText: 'Số điện thoại',
                     hintText: 'Nhập Số điện thoại',
+                    controller: _phoneController,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Vui lòng số điện thoại';
@@ -564,14 +279,13 @@ class _ChangeChuHoInfoState extends State<ChangeChuHoInfo> {
                     },
                   ),
                 ),
-                SizedBox(
-                  height: 20.h,
-                ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
                   child: CustomTextFormField(
                     labelText: 'Email',
                     hintText: 'Nhập Email',
+                    controller: _emailController,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Vui lòng nhập email';
@@ -579,9 +293,6 @@ class _ChangeChuHoInfoState extends State<ChangeChuHoInfo> {
                       return null;
                     },
                   ),
-                ),
-                SizedBox(
-                  height: 20.h,
                 ),
                 GestureDetector(
                   onTap: () {
@@ -609,7 +320,15 @@ class _ChangeChuHoInfoState extends State<ChangeChuHoInfo> {
                                           text: "Tải ảnh lên",
                                           onTap: () {
                                             // Xử lý tải ảnh lên
-                                            _pickImageFromGallery();
+                                            pickImageFromGallery(
+                                              context,
+                                              2,
+                                              name: _nameController.text,
+                                              cccd: _cccdController.text,
+                                              date: _dateController.text,
+                                              phone: _phoneController.text,
+                                              email: _emailController.text,
+                                            );
                                           },
                                         ),
                                         SizedBox(
@@ -621,105 +340,14 @@ class _ChangeChuHoInfoState extends State<ChangeChuHoInfo> {
                                           text: "Chụp ảnh",
                                           onTap: () {
                                             // Xử lý chụp ảnh
-                                            Navigator.push(
+                                            pickImageFromCamera(
                                               context,
-                                              MaterialPageRoute(
-                                                builder: (_) => CameraCamera(
-                                                  onFile: (file) {
-                                                    photos.add(file);
-                                                    setState(() {});
-                                                    showDialog(
-                                                        context: context,
-                                                        builder: (BuildContext
-                                                            context) {
-                                                          return Dialog(
-                                                            child: Container(
-                                                              width: 343.w,
-                                                              height: 334.h,
-                                                              decoration: BoxDecoration(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  borderRadius:
-                                                                      BorderRadius.all(
-                                                                          Radius.circular(
-                                                                              20.r))),
-                                                              child: Column(
-                                                                children: [
-                                                                  Image.asset(
-                                                                      'assets/images/tick.png'),
-                                                                  Padding(
-                                                                    padding: EdgeInsets.symmetric(
-                                                                        horizontal:
-                                                                            16.w),
-                                                                    child: Text(
-                                                                      'Yêu cầu của bạn đã được gửi tới ban quản lý thành công',
-                                                                      style: defaultText16M
-                                                                          .copyWith(
-                                                                        color: const Color(
-                                                                            0xff2D323A),
-                                                                      ),
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .center,
-                                                                    ),
-                                                                  ),
-                                                                  Container(
-                                                                    margin: EdgeInsets.only(
-                                                                        left: 56
-                                                                            .w,
-                                                                        bottom: 56
-                                                                            .h,
-                                                                        top: 36
-                                                                            .h,
-                                                                        right: 56
-                                                                            .w),
-                                                                    padding:
-                                                                        EdgeInsetsDirectional
-                                                                            .symmetric(
-                                                                      horizontal:
-                                                                          16.w,
-                                                                      vertical:
-                                                                          12.w,
-                                                                    ),
-                                                                    decoration:
-                                                                        const BoxDecoration(
-                                                                      gradient:
-                                                                          LinearGradient(
-                                                                        colors: [
-                                                                          Color(
-                                                                              0xFF25AAE1),
-                                                                          Color(
-                                                                              0xFF004071),
-                                                                        ],
-                                                                        begin: Alignment
-                                                                            .topCenter,
-                                                                        end: Alignment
-                                                                            .bottomCenter,
-                                                                        stops: [
-                                                                          0.0,
-                                                                          1.0
-                                                                        ],
-                                                                      ),
-                                                                      borderRadius:
-                                                                          BorderRadius.all(
-                                                                              Radius.circular(15)),
-                                                                    ),
-                                                                    child: Center(
-                                                                        child: Text(
-                                                                      'Ok',
-                                                                      style: defaultText14B.copyWith(
-                                                                          color:
-                                                                              Colors.white),
-                                                                    )),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          );
-                                                        });
-                                                  },
-                                                ),
-                                              ),
+                                              2,
+                                              name: _nameController.text,
+                                              cccd: _cccdController.text,
+                                              date: _dateController.text,
+                                              phone: _phoneController.text,
+                                              email: _emailController.text,
                                             );
                                           },
                                         ),
@@ -734,7 +362,7 @@ class _ChangeChuHoInfoState extends State<ChangeChuHoInfo> {
                     width: 303.w,
                     height: 50.h,
                     margin: EdgeInsets.only(
-                        left: 16.w, bottom: 30.h, top: 16.w, right: 16.w),
+                        left: 16.w, bottom: 20.h, top: 10.h, right: 16.w),
                     constraints: BoxConstraints(maxHeight: 120.h),
                     decoration: const BoxDecoration(
                       gradient: LinearGradient(
@@ -755,24 +383,25 @@ class _ChangeChuHoInfoState extends State<ChangeChuHoInfo> {
                     )),
                   ),
                 ),
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: 16.w,
+                    right: 16.w,
+                    bottom: 16.h,
+                  ),
+                  child: Text(
+                    'Lưu ý: gửi kèm ảnh chụp hồ sơ (vd: Biên bản bàn giao nhà, CCCD ...)',
+                    style: defaultText14M.copyWith(
+                      color: Colors.red,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
         ),
       ),
     );
-  }
-
-  Future<void> selectDate() async {
-    DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime(2000),
-      firstDate: DateTime(1910),
-      lastDate: DateTime(2006),
-    );
-    if (picked != null) {
-      _dateController.text = picked.toString().split(" ")[0];
-    }
   }
 }
 
@@ -803,8 +432,9 @@ Widget _buildUploadOption({
 }
 
 class AddMember extends StatefulWidget {
-  const AddMember({super.key});
-
+  const AddMember({super.key, required this.type, required this.apartmentId});
+  final String apartmentId;
+  final int type; // 0: Thêm thành viên, 1: Chỉnh sửa thông tin thành viên
   @override
   State<AddMember> createState() => _AddMemberState();
 }
@@ -812,74 +442,12 @@ class AddMember extends StatefulWidget {
 class _AddMemberState extends State<AddMember> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _cccdController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   List<File> photos = <File>[];
-
-  Future _pickImageFromGallery() async {
-    final returnedImage = await ImagePicker().pickMultiImage();
-    photos = List<File>.from(
-      (returnedImage).map(
-        (e) => File(e.path),
-      ),
-    );
-    //File(returnedImage!.path);
-    if (photos.isNotEmpty) {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return Dialog(
-              child: Container(
-                width: 343.w,
-                height: 334.h,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(20.r))),
-                child: Column(
-                  children: [
-                    Image.asset('assets/images/tick.png'),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      child: Text(
-                        'Yêu cầu của bạn đã được gửi tới ban quản lý thành công',
-                        style: defaultText16M.copyWith(
-                          color: const Color(0xff2D323A),
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(
-                          left: 56.w, bottom: 56.h, top: 36.h, right: 56.w),
-                      padding: EdgeInsetsDirectional.symmetric(
-                        horizontal: 16.w,
-                        vertical: 12.w,
-                      ),
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Color(0xFF25AAE1),
-                            Color(0xFF004071),
-                          ],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          stops: [0.0, 1.0],
-                        ),
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                      ),
-                      child: Center(
-                          child: Text(
-                        'Ok',
-                        style: defaultText14B.copyWith(color: Colors.white),
-                      )),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          });
-    }
-    setState(() {});
-  }
-
+  String? _rela;
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -889,167 +457,140 @@ class _AddMemberState extends State<AddMember> {
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(16.r)),
           ),
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
           child: Form(
             key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Image.asset(
+                      'assets/images/personal.png',
+                      width: 34.w,
+                      height: 34.w,
+                      fit: BoxFit.fill,
+                    ),
+                    Text(
+                      widget.type == 0
+                          ? 'Thêm thành viên'
+                          : 'Thay đổi thông tin',
+                      style: defaultText16B,
+                    ),
+                    const CloseButton(
+                      color: Colors.black,
+                    ),
+                  ],
+                ),
                 SizedBox(
                   height: 20.h,
                 ),
-                Container(
-                  padding: EdgeInsets.only(left: 16.w),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(16.r),
-                      topRight: Radius.circular(16.r),
+                CustomTextFormField(
+                  labelText: 'Họ và tên',
+                  hintText: 'Nhập họ và tên',
+                  controller: _nameController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Vui lòng nhập họ và tên';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                CustomTextFormField(
+                  labelText: 'Số định danh',
+                  hintText: 'Nhập Số định danh',
+                  controller: _cccdController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Vui lòng nhập Số điện thoại';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                TextFormField(
+                  style: defaultText14M,
+                  controller: _dateController,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    labelText: 'Ngày sinh',
+                    labelStyle: const TextStyle(
+                      color: Colors.black,
+                    ),
+                    hintText: 'Ngày sinh',
+                    hintStyle: const TextStyle(
+                      color: Colors.black,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.blue),
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.red),
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.red),
+                      borderRadius: BorderRadius.circular(5.0),
                     ),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Image.asset(
-                        'assets/images/personal.png',
-                        width: 34.w,
-                        height: 34.w,
-                        fit: BoxFit.fill,
-                      ),
-                      Text(
-                        'Thêm thành viên',
-                        style: defaultText16B,
-                      ),
-                      const CloseButton(
-                        color: Colors.black,
-                      ),
-                    ],
-                  ),
+                  onChanged: (value) {
+                    // _newCategory = value;
+                  },
+                  onTap: () => selectDate(context, _dateController),
+                  validator: (value) =>
+                      value!.isEmpty ? 'Vui lòng chọn ngày sinh' : null,
                 ),
                 SizedBox(
                   height: 20.h,
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: CustomTextFormField(
-                    labelText: 'Họ và tên',
-                    hintText: 'Nhập họ và tên',
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Vui lòng nhập họ và tên';
-                      }
-                      return null;
-                    },
-                  ),
+                CustomTextFormField(
+                  labelText: 'Số điện thoại',
+                  hintText: 'Nhập Số điện thoại',
+                  controller: _phoneController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Vui lòng số điện thoại';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: 20.h,
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: CustomTextFormField(
-                    labelText: 'Số định danh',
-                    hintText: 'Nhập Số định danh',
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Vui lòng nhập Số điện thoại';
-                      }
-                      return null;
-                    },
-                  ),
+                CustomTextFormField(
+                  labelText: 'Email',
+                  hintText: 'Nhập Email',
+                  controller: _emailController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Vui lòng nhập email';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: 20.h,
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: TextFormField(
-                    style: defaultText14M,
-                    controller: _dateController,
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      labelText: 'Ngày sinh',
-                      labelStyle: const TextStyle(
-                        color: Colors.black,
-                      ),
-                      hintText: 'Ngày sinh',
-                      hintStyle: const TextStyle(
-                        color: Colors.black,
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.blue),
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.red),
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.red),
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                    ),
-                    onChanged: (value) {
-                      // _newCategory = value;
-                    },
-                    onTap: () {
-                      selectDate();
-                    },
-                    validator: (value) =>
-                        value!.isEmpty ? 'Vui lòng chọn ngày sinh' : null,
-                  ),
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: CustomTextFormField(
-                    labelText: 'Số điện thoại',
-                    hintText: 'Nhập Số điện thoại',
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Vui lòng số điện thoại';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: CustomTextFormField(
-                    labelText: 'Email',
-                    hintText: 'Nhập Email',
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Vui lòng nhập email';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: CustomTextFormField(
-                    labelText: 'Quan hệ với chủ hộ',
-                    hintText: 'Nhập Quan hệ với chủ hộ',
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Vui lòng nhập Quan hệ với chủ hộ';
-                      }
-                      return null;
-                    },
-                  ),
+                RelationshipDropdown(
+                  value: _rela,
+                  onChanged: (value) {
+                    setState(() {
+                      _rela = value;
+                    });
+                    print('Giá trị key đã chọn: $_rela');
+                  },
                 ),
                 SizedBox(
                   height: 20.h,
@@ -1080,7 +621,16 @@ class _AddMemberState extends State<AddMember> {
                                           text: "Tải ảnh lên",
                                           onTap: () {
                                             // Xử lý tải ảnh lên
-                                            _pickImageFromGallery();
+                                            pickImageFromGallery(
+                                              context,
+                                              widget.type,
+                                              name: _nameController.text,
+                                              cccd: _cccdController.text,
+                                              date: _dateController.text,
+                                              phone: _phoneController.text,
+                                              email: _emailController.text,
+                                              rela: _rela,
+                                            );
                                           },
                                         ),
                                         SizedBox(
@@ -1092,105 +642,16 @@ class _AddMemberState extends State<AddMember> {
                                           text: "Chụp ảnh",
                                           onTap: () {
                                             // Xử lý chụp ảnh
-                                            Navigator.push(
+                                            pickImageFromCamera(
                                               context,
-                                              MaterialPageRoute(
-                                                builder: (_) => CameraCamera(
-                                                  onFile: (file) {
-                                                    photos.add(file);
-                                                    setState(() {});
-                                                    showDialog(
-                                                        context: context,
-                                                        builder: (BuildContext
-                                                            context) {
-                                                          return Dialog(
-                                                            child: Container(
-                                                              width: 343.w,
-                                                              height: 334.h,
-                                                              decoration: BoxDecoration(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  borderRadius:
-                                                                      BorderRadius.all(
-                                                                          Radius.circular(
-                                                                              20.r))),
-                                                              child: Column(
-                                                                children: [
-                                                                  Image.asset(
-                                                                      'assets/images/tick.png'),
-                                                                  Padding(
-                                                                    padding: EdgeInsets.symmetric(
-                                                                        horizontal:
-                                                                            16.w),
-                                                                    child: Text(
-                                                                      'Yêu cầu của bạn đã được gửi tới ban quản lý thành công',
-                                                                      style: defaultText16M
-                                                                          .copyWith(
-                                                                        color: const Color(
-                                                                            0xff2D323A),
-                                                                      ),
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .center,
-                                                                    ),
-                                                                  ),
-                                                                  Container(
-                                                                    margin: EdgeInsets.only(
-                                                                        left: 56
-                                                                            .w,
-                                                                        bottom: 56
-                                                                            .h,
-                                                                        top: 36
-                                                                            .h,
-                                                                        right: 56
-                                                                            .w),
-                                                                    padding:
-                                                                        EdgeInsetsDirectional
-                                                                            .symmetric(
-                                                                      horizontal:
-                                                                          16.w,
-                                                                      vertical:
-                                                                          12.w,
-                                                                    ),
-                                                                    decoration:
-                                                                        const BoxDecoration(
-                                                                      gradient:
-                                                                          LinearGradient(
-                                                                        colors: [
-                                                                          Color(
-                                                                              0xFF25AAE1),
-                                                                          Color(
-                                                                              0xFF004071),
-                                                                        ],
-                                                                        begin: Alignment
-                                                                            .topCenter,
-                                                                        end: Alignment
-                                                                            .bottomCenter,
-                                                                        stops: [
-                                                                          0.0,
-                                                                          1.0
-                                                                        ],
-                                                                      ),
-                                                                      borderRadius:
-                                                                          BorderRadius.all(
-                                                                              Radius.circular(15)),
-                                                                    ),
-                                                                    child: Center(
-                                                                        child: Text(
-                                                                      'Ok',
-                                                                      style: defaultText14B.copyWith(
-                                                                          color:
-                                                                              Colors.white),
-                                                                    )),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          );
-                                                        });
-                                                  },
-                                                ),
-                                              ),
+                                              widget.type,
+                                              name: _nameController.text,
+                                              cccd: _cccdController.text,
+                                              date: _dateController.text,
+                                              phone: _phoneController.text,
+                                              email: _emailController.text,
+                                              rela: _rela,
+                                              apartmentId: widget.apartmentId,
                                             );
                                           },
                                         ),
@@ -1205,7 +666,7 @@ class _AddMemberState extends State<AddMember> {
                     width: 303.w,
                     height: 50.h,
                     margin: EdgeInsets.only(
-                        left: 16.w, bottom: 30.h, top: 16.w, right: 16.w),
+                        left: 16.w, bottom: 20.h, top: 12.w, right: 16.w),
                     constraints: BoxConstraints(maxHeight: 120.h),
                     decoration: const BoxDecoration(
                       gradient: LinearGradient(
@@ -1226,6 +687,12 @@ class _AddMemberState extends State<AddMember> {
                     )),
                   ),
                 ),
+                Text(
+                  'Lưu ý: gửi kèm ảnh chụp hồ sơ (vd: Biên bản bàn giao nhà, CCCD ...)',
+                  style: defaultText14M.copyWith(
+                    color: Colors.red,
+                  ),
+                ),
               ],
             ),
           ),
@@ -1233,16 +700,141 @@ class _AddMemberState extends State<AddMember> {
       ),
     );
   }
+}
 
-  Future<void> selectDate() async {
-    DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime(2000),
-      firstDate: DateTime(1910),
-      lastDate: DateTime(2006),
-    );
-    if (picked != null) {
-      _dateController.text = picked.toString().split(" ")[0];
-    }
+Widget _buildLabelledField(String label, TextEditingController controller,
+    {TextInputType keyboardType = TextInputType.text}) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      RichText(
+        text: TextSpan(
+          text: label,
+          style: const TextStyle(
+              fontSize: 14, color: Colors.black87, fontWeight: FontWeight.w500),
+          children: const [
+            TextSpan(
+              text: ' *',
+              style: TextStyle(color: Colors.red),
+            ),
+          ],
+        ),
+      ),
+      const SizedBox(height: 6),
+      TextFormField(
+        controller: controller,
+        keyboardType: keyboardType,
+        validator: (value) {
+          if (value == null || value.trim().isEmpty) {
+            return 'Vui lòng nhập ${label.toLowerCase()}';
+          }
+          return null;
+        },
+        decoration: InputDecoration(
+          isDense: true,
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+      ),
+    ],
+  );
+}
+
+Future<void> selectDate(
+    BuildContext context, TextEditingController dateController) async {
+  DateTime? picked = await showDatePicker(
+    context: context,
+    initialDate: DateTime(2000),
+    firstDate: DateTime(1910),
+    lastDate: DateTime(2006),
+  );
+  if (picked != null) {
+    dateController.text = picked.toString().split(" ")[0];
   }
+}
+
+void showPostDialog(
+    BuildContext context, List<PostModel> posts, String apartmentId) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return Dialog(
+        backgroundColor: Colors.white,
+        insetPadding: EdgeInsets.symmetric(horizontal: 8.w),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            child: Wrap(
+              spacing: 16,
+              runSpacing: 16,
+              children: posts.map((post) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    InkWell(
+                      onTap: () async {
+                        FullRequestModel model =
+                            await SupportRepo().getShowRequest(
+                          apartmentId,
+                          post.id,
+                        );
+                        pushWithoutNavBar(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TechnicalRequestScreen(
+                              model: model,
+                            ),
+                          ),
+                        );
+                      },
+                      child: Column(
+                        children: [
+                          Container(
+                            width: 64.dm,
+                            height: 64.dm,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 15.w,
+                              vertical: 15.h,
+                            ),
+                            margin: EdgeInsets.symmetric(horizontal: 8.w),
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                colors: [
+                                  Color(0xFF25AAE1),
+                                  Color(0xFF004071),
+                                ],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                stops: [0.0, 1.0],
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Image.network(
+                              'https://bms.haduong.com.vn/images/${post.img}',
+                              fit: BoxFit.fitHeight,
+                              height: 28.h,
+                              errorBuilder: (_, __, ___) => const Icon(
+                                  Icons.broken_image,
+                                  color: Colors.white),
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            post.name,
+                            style: const TextStyle(fontSize: 14),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              }).toList(),
+            ),
+          ),
+        ),
+      );
+    },
+  );
 }

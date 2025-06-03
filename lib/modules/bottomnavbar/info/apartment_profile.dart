@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ha_duong/models/apartment_model.dart';
 import 'package:ha_duong/models/info_model.dart';
+import 'package:ha_duong/repo/personal_repo.dart';
 import 'package:ha_duong/utils/widget/change_canho_info_dialog.dart';
 
 import '../../../utils/constants/styles.dart';
@@ -22,7 +24,7 @@ class ApartmentProfile extends StatelessWidget {
         backgroundColor: Colors.white,
         title: const Text('Hồ sơ căn hộ'),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back_ios_new),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -136,8 +138,12 @@ class _ApartmentItem extends StatelessWidget {
           height: 24.h,
         ),
         infoItem(title: 'Email', info: residentModel.email),
-        const _FamilyMemberTile(
-          memberCount: 1,
+        Divider(
+          color: const Color(0xffE6E6E6),
+          thickness: 1,
+          endIndent: 16.w,
+          indent: 16.w,
+          height: 24.h,
         ),
         GestureDetector(
           onTap: () {
@@ -206,13 +212,7 @@ class _ApartmentInfo extends StatelessWidget {
           indent: 16.w,
           height: 24.h,
         ),
-        GestureDetector(
-            onTap: () {
-              showDialog<String>(
-                  context: context,
-                  builder: (BuildContext context) => const ChangeCanHoInfo());
-            },
-            child: const _EditInfo('Chỉnh sửa thông tin căn hộ')),
+        _FamilyMemberTile(model.id),
         SizedBox(
           height: 20.h,
         ),
@@ -222,52 +222,55 @@ class _ApartmentInfo extends StatelessWidget {
 }
 
 class _FamilyMemberTile extends StatelessWidget {
-  final int memberCount;
-
-  const _FamilyMemberTile({required this.memberCount});
-
+  const _FamilyMemberTile(this.apartmentId);
+  final String apartmentId;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
+        List<ResidentModel> model =
+            await PersonalRepo().getApartmentResident(apartmentId);
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: ((context) => const FamilyMemberScreen()),
+            builder: ((context) => FamilyMemberScreen(
+                  apartmentId: apartmentId,
+                  model: model,
+                )),
           ),
         );
       },
       child: Container(
-          margin: EdgeInsets.symmetric(
-            horizontal: 16.w,
-            vertical: 20.h,
-          ),
-          padding: EdgeInsets.symmetric(
-            horizontal: 16.w,
-            vertical: 10.h,
-          ),
-          decoration: BoxDecoration(
-            border: Border.all(color: const Color(0xffE6E6E6), width: 1),
-            borderRadius: BorderRadius.circular(8),
-            color: Colors.white,
-            // boxShadow: const [
-            //   BoxShadow(
-            //     color: Colors.black12,
-            //     blurRadius: 4,
-            //     offset: Offset(0, 2),
-            //   ),
-            // ],
-          ),
-          child: Row(
-            children: [
-              Text(
-                'Thành viên trong hộ gia đình ($memberCount)',
-                style: defaultText16Re,
-              ),
-              const Spacer(),
-              const Icon(Icons.arrow_forward_ios, size: 18),
-            ],
-          )),
+        margin: EdgeInsets.symmetric(
+          horizontal: 16.w,
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: 16.w,
+          vertical: 10.h,
+        ),
+        decoration: BoxDecoration(
+          border: Border.all(color: const Color(0xffE6E6E6), width: 1),
+          borderRadius: BorderRadius.circular(8),
+          color: Colors.white,
+          // boxShadow: const [
+          //   BoxShadow(
+          //     color: Colors.black12,
+          //     blurRadius: 4,
+          //     offset: Offset(0, 2),
+          //   ),
+          // ],
+        ),
+        child: Row(
+          children: [
+            Text(
+              'Thành viên trong hộ gia đình',
+              style: defaultText16Re,
+            ),
+            const Spacer(),
+            const Icon(Icons.arrow_forward_ios, size: 18),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -289,13 +292,6 @@ class _EditInfo extends StatelessWidget {
           border: Border.all(color: const Color(0xff25AAE1), width: 1),
           borderRadius: BorderRadius.circular(8),
           color: Colors.white,
-          // boxShadow: const [
-          //   BoxShadow(
-          //     color: Colors.black12,
-          //     blurRadius: 4,
-          //     offset: Offset(0, 2),
-          //   ),
-          // ],
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,

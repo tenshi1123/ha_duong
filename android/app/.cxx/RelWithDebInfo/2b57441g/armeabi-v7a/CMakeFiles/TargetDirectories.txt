@@ -1,0 +1,2 @@
+E:/project/ha_duong/android/app/.cxx/RelWithDebInfo/2b57441g/armeabi-v7a/CMakeFiles/edit_cache.dir
+E:/project/ha_duong/android/app/.cxx/RelWithDebInfo/2b57441g/armeabi-v7a/CMakeFiles/rebuild_cache.dir

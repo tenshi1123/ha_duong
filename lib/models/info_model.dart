@@ -1,3 +1,5 @@
+import 'package:ha_duong/models/apartment_model.dart';
+
 class InfoModel {
   final ResidentModel resident;
   final List<ApartmentModel> listApartment;
@@ -63,39 +65,6 @@ class ResidentModel {
       img: json['img'] ?? '',
       createdAt: json['created_at'] ?? '',
       updatedAt: json['updated_at'] ?? '',
-    );
-  }
-}
-
-class ApartmentModel {
-  final String id;
-  final String buildingId;
-  final String name;
-  final String numberFloors;
-  final String acreage;
-  final String buildingAlias;
-  final String totalResidents;
-  final String statusText;
-  ApartmentModel({
-    required this.id,
-    required this.buildingId,
-    required this.name,
-    required this.numberFloors,
-    required this.acreage,
-    required this.buildingAlias,
-    required this.totalResidents,
-    required this.statusText,
-  });
-  factory ApartmentModel.fromJson(Map<String, dynamic> json) {
-    return ApartmentModel(
-      id: json['id'] ?? '',
-      buildingId: json['building_id'] ?? '',
-      name: json['name'] ?? '',
-      numberFloors: json['number_floors'] ?? '',
-      acreage: json['acreage'] ?? '',
-      buildingAlias: json['building_alias'] ?? '',
-      totalResidents: json['total_residents'] ?? '',
-      statusText: json['status_text'] ?? '',
     );
   }
 }
@@ -220,48 +189,6 @@ class PhiToaNha {
   }
 }
 
-class VehicleModel {
-  final String fullName;
-  final String phone;
-  final String email;
-  final String vehicleId;
-  final String vehicleName;
-  final String fee;
-  final String licensePlates;
-  final String createAt;
-  final String buildingId;
-  final String apartmentName;
-  final String purposeUseId;
-  VehicleModel({
-    required this.fullName,
-    required this.phone,
-    required this.email,
-    required this.vehicleId,
-    required this.vehicleName,
-    required this.fee,
-    required this.licensePlates,
-    required this.createAt,
-    required this.buildingId,
-    required this.apartmentName,
-    required this.purposeUseId,
-  });
-  factory VehicleModel.fromJson(Map<String, dynamic> json) {
-    return VehicleModel(
-      fullName: json['full_name'] ?? '',
-      phone: json['phone'] ?? '',
-      email: json['email'] ?? '',
-      vehicleId: json['vehicle_id'] ?? '',
-      vehicleName: json['vehicle_name'] ?? '',
-      fee: json['fee'] ?? json["price"] ?? '',
-      licensePlates: json['license_plates'] ?? '',
-      createAt: json['created_at'] ?? '',
-      buildingId: json['building_id'] ?? '',
-      apartmentName: json['apartment_name'] ?? '',
-      purposeUseId: json['purpose_use_id'] ?? '',
-    );
-  }
-}
-
 class ReceiptsDetailModel {
   final String userName;
   final String receiptsTime;
@@ -308,6 +235,39 @@ class ReceiptsDetailModel {
       noteModel: (json['note'] as List<dynamic>? ?? [])
           .map((x) => NoteModel.fromJson(x))
           .toList(),
+    );
+  }
+}
+
+class UtilitiesModel {
+  final String id;
+  final String buildingId;
+  final String name;
+  final String img;
+  final String content;
+  final String isActive;
+  final String createdAt;
+  final String updatedAt;
+  UtilitiesModel({
+    required this.id,
+    required this.buildingId,
+    required this.name,
+    required this.img,
+    required this.content,
+    required this.isActive,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+  factory UtilitiesModel.fromJson(Map<String, dynamic> json) {
+    return UtilitiesModel(
+      id: json['id'] ?? '',
+      img: json['img'] ?? '',
+      name: json['name'] ?? '',
+      buildingId: json['building_id'] ?? '',
+      content: json['content'] ?? '',
+      isActive: json['is_active'] ?? '',
+      createdAt: json['created_at'] ?? '',
+      updatedAt: json['updated_at'] ?? '',
     );
   }
 }

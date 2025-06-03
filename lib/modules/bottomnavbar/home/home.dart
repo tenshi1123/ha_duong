@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ha_duong/utils/widget/custom_widget.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import '../../../models/apartment_model.dart';
 import '../../notification/notification_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -51,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     image: const AssetImage(
                       'assets/images/home_background.png',
                     ),
-                    fit: BoxFit.fitWidth,
+                    fit: BoxFit.fitHeight,
                   ),
                 ),
                 Positioned(

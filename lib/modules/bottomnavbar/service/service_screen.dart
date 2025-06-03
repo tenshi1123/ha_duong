@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ha_duong/models/apartment_model.dart';
+import 'package:ha_duong/models/info_model.dart';
+import 'package:ha_duong/repo/home_repo.dart';
 import '../../../utils/constants/styles.dart';
 import '../../../utils/widget/custom_dialog.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 class ServiceScreen extends StatelessWidget {
-  const ServiceScreen({super.key, required this.title});
+  const ServiceScreen(
+      {super.key,
+      required this.title,
+      required this.apartmentId,
+      required this.utilitiesModel});
   final String title;
-
+  final String apartmentId;
+  final UtilitiesModel utilitiesModel;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,8 +49,8 @@ class ServiceScreen extends StatelessWidget {
                     SizedBox(
                       width: 16.w,
                     ),
-                    Image.asset(
-                      'assets/images/service.png',
+                    Image.network(
+                      'https://bms.haduong.com.vn/images/${utilitiesModel.img}',
                       width: 343.w,
                       height: 180.h,
                       fit: BoxFit.fill,
@@ -65,11 +74,8 @@ class ServiceScreen extends StatelessWidget {
                     horizontal: 16.w,
                     vertical: 12.h,
                   ),
-                  child: Text(
-                    'Dịch vụ sửa chữa, bảo chì thang máy',
-                    style: defaultText14Re.copyWith(
-                      color: const Color(0xff3C3C3C),
-                    ),
+                  child: Html(
+                    data: utilitiesModel.content,
                   ),
                 ),
               ],
@@ -91,11 +97,18 @@ class ServiceScreen extends StatelessWidget {
                   ],
                 ),
                 child: GestureDetector(
-                  onTap: () {
+                  onTap: () async {
+                    DangKyModel dangKyModel = await HomeRepo()
+                        .showDangKy(utilitiesModel.id.toString(), apartmentId);
                     showDialog<String>(
                         context: context,
-                        builder: (BuildContext context) =>
-                            const ServiceDialog());
+                        builder: (BuildContext context) => CustomerInfoForm(
+                              dangKyModel: dangKyModel,
+                            )
+                        // ServiceDialog(
+                        //       dangKyModel: dangKyModel,
+                        //     )
+                        );
                   },
                   child: Container(
                     width: 343.w,

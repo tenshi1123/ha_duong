@@ -28,6 +28,7 @@ class _SplshscreenState extends State<Splshscreen> {
       checked = (token != null && token != '');
       if (checked) {
         InfoModel infoHomeModel = await HomeRepo().getInfoCudan();
+        if (!mounted) return;
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -37,6 +38,7 @@ class _SplshscreenState extends State<Splshscreen> {
           ),
         );
       } else {
+        if (!mounted) return;
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -45,16 +47,6 @@ class _SplshscreenState extends State<Splshscreen> {
         );
       }
     });
-    Timer(
-      const Duration(seconds: 1),
-      () => Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const LoginScreen(),
-          //builder: (context) => const BottomNavBar(),
-        ),
-      ),
-    );
   }
 
   @override

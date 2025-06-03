@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ha_duong/models/apartment_model.dart';
 import 'package:ha_duong/models/info_model.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:intl/intl.dart';
@@ -17,7 +18,7 @@ class RegisteredVehicleScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         title: const Text('Phương tiện đăng ký'),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back_ios_new),
           onPressed: () {
             Navigator.pop(context);
           },

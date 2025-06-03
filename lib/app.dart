@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'modules/splash/splash_screen.dart';
 
 class App extends StatefulWidget {
@@ -20,6 +20,16 @@ class _AppState extends State<App> {
       // Use builder only if you need to use library outside ScreenUtilInit context
       builder: (_, child) {
         return MaterialApp(
+          locale: const Locale('vi'),
+          supportedLocales: const [
+            Locale('vi'), // 🇻🇳 Tiếng Việt
+            Locale('en'), // 🇺🇸 Tiếng Anh (nếu cần)
+          ],
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
           debugShowCheckedModeBanner: false,
           title: 'Hà Dương',
           // You can use the library anywhere in the app even in theme
