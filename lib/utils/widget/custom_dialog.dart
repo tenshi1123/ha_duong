@@ -792,8 +792,8 @@ void showPostDialog(
                       child: Column(
                         children: [
                           Container(
-                            width: 64.dm,
-                            height: 64.dm,
+                            width: 60.dm,
+                            height: 60.dm,
                             padding: EdgeInsets.symmetric(
                               horizontal: 15.w,
                               vertical: 15.h,
@@ -814,17 +814,14 @@ void showPostDialog(
                             child: Image.network(
                               'https://bms.haduong.com.vn/images/${post.img}',
                               fit: BoxFit.fitHeight,
-                              height: 28.h,
+                              height: 25.h,
                               errorBuilder: (_, __, ___) => const Icon(
                                   Icons.broken_image,
                                   color: Colors.white),
                             ),
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            post.name,
-                            style: const TextStyle(fontSize: 14),
-                          ),
+                          const SizedBox(height: 6),
+                          Text(post.name, style: defaultText16M),
                         ],
                       ),
                     ),

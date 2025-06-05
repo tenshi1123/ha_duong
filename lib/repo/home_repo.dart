@@ -1,20 +1,39 @@
 import 'package:dio/dio.dart';
 import 'package:ha_duong/models/apartment_model.dart';
 import 'package:ha_duong/models/info_model.dart';
+import 'package:ha_duong/repo/login_repo.dart';
 import 'package:ha_duong/utils/constants/api_path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeRepo {
   Dio dio = Dio();
-  Future<InfoModel> getInfoCudan() async {
+  Future<InfoModel?> getInfoCudan() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');
     dio.options.headers['Authorization'] = 'Bearer $token';
     Response response;
-    response = await dio.post(
-      ApiPath.home,
-    );
-    return InfoModel.fromJson(response.data['data']);
+
+    try {
+      response = await dio.post(
+        ApiPath.home,
+      );
+      return InfoModel.fromJson(response.data['data']);
+      //break;
+    } on DioException {
+      String newToken = await LoginRepo().refreshToken();
+      if (newToken == '') {
+        return null;
+      }
+      await prefs.setString('token', newToken);
+      dio.options.headers['Authorization'] = 'Bearer $newToken';
+      response = await dio.get(
+        ApiPath.home,
+      );
+      return InfoModel.fromJson(response.data['data']);
+    } catch (e) {
+      await prefs.remove('token');
+    }
+    return null;
   }
 
   Future<ListReceiptsModel> getListReceipts() async {
@@ -56,6 +75,20 @@ class HomeRepo {
     return (response.data['data']['value'] as List)
         .map((e) => PostModel.fromJson(e))
         .toList();
+  }
+
+  Future<PostModel> getDetailPostModel(String id) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+    dio.options.headers['Authorization'] = 'Bearer $token';
+    Response response;
+    response = await dio.post(
+      ApiPath.postDetail,
+      data: {
+        'id': int.parse(id),
+      },
+    );
+    return PostModel.fromJson(response.data['data']['post']);
   }
 
   Future<UtilitiesModel> getUtilitiesDetail(String id) async {

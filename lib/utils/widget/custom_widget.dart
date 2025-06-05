@@ -1,4 +1,7 @@
 import 'package:ha_duong/models/apartment_model.dart';
+import 'package:ha_duong/models/info_model.dart';
+import 'package:ha_duong/modules/notification/detail_post_screen.dart';
+import 'package:ha_duong/repo/home_repo.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -147,23 +150,20 @@ class ConversationItem extends StatelessWidget {
 class PostItem extends StatelessWidget {
   const PostItem({
     super.key,
-    required this.link,
-    required this.postTitle,
-    required this.thumbnailUrl,
+    required this.postModel,
   });
-  final String link;
-  final String postTitle;
-  final String thumbnailUrl;
+  final PostModel postModel;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
+        PostModel detailModel =
+            await HomeRepo().getDetailPostModel(postModel.id);
         pushWithoutNavBar(
           context,
           MaterialPageRoute(
-            builder: ((context) => WebViewScreen(
-                  link: link,
-                  title: postTitle,
+            builder: ((context) => DetailPostScreen(
+                  postModel: detailModel,
                 )),
           ),
         );
@@ -172,14 +172,17 @@ class PostItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Image.network(
-            thumbnailUrl,
+            'https://bms.haduong.com.vn/images/${postModel.img}',
             width: 240.w,
             height: 160.h,
             fit: BoxFit.fill,
           ),
+          SizedBox(
+            height: 10.h,
+          ),
           Expanded(
             child: Text(
-              postTitle,
+              postModel.name,
               style: defaultText14B,
               maxLines: 2,
             ),

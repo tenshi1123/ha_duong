@@ -229,7 +229,7 @@ class WaitingPayment extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: ((context) => DetailBillScreen(
-                  type: 0,
+                  type: 1,
                   receiptsDetailModel: receiptsDetailModel,
                 )),
           ),

@@ -5,6 +5,7 @@ import 'package:ha_duong/models/info_model.dart';
 import 'package:ha_duong/repo/personal_repo.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../login/login_screen.dart';
 import 'apartment_profile.dart';
 import 'registered_vehicle_screen.dart';
@@ -208,8 +209,12 @@ class PersonalScreen extends StatelessWidget {
               height: 40.h,
             ),
             GestureDetector(
-              onTap: () {
+              onTap: () async {
                 // Đăng xuất
+                // delete token
+                final SharedPreferences prefs =
+                    await SharedPreferences.getInstance();
+                prefs.clear;
                 pushWithoutNavBar(
                   context,
                   MaterialPageRoute(

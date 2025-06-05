@@ -29,7 +29,11 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
     _phoneController.text = widget.model.request.phone;
     _apartmentController.text = widget.model.request.apartmentName;
     statuses = widget.model.settingSupportStates;
-    selectedStatus = statuses[0];
+    if (statuses.isNotEmpty) {
+      selectedStatus = statuses.first;
+    } else {
+      selectedStatus = null; // hoặc xử lý mặc định
+    }
   }
 
   @override
@@ -69,6 +73,8 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
                                     border: OutlineInputBorder(),
                                   ),
                                   value: selectedStatus,
+                                  hint: const Text(
+                                      'Không có tình trạng khả dụng'),
                                   items: statuses
                                       .map((status) => DropdownMenuItem(
                                             value: status,

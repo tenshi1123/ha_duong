@@ -52,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     image: const AssetImage(
                       'assets/images/home_background.png',
                     ),
-                    fit: BoxFit.fitHeight,
+                    fit: BoxFit.fill,
                   ),
                 ),
                 Positioned(
@@ -266,9 +266,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           itemCount: infoHomeModel.listPost.length,
                           itemBuilder: (_, index) {
                             return PostItem(
-                              link: 'https://i.imgur.com/8HUYYgc.png',
-                              postTitle: infoHomeModel.listPost[index].name,
-                              thumbnailUrl: 'https://i.imgur.com/8HUYYgc.png',
+                              postModel: infoHomeModel.listPost[index],
                             );
                           },
                         ),

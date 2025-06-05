@@ -274,16 +274,18 @@ class _LoginScreenState extends State<LoginScreen> {
                         studenIdController?.text ?? '',
                       );
                       if (loged == true) {
-                        InfoModel infoHomeModel =
+                        InfoModel? infoHomeModel =
                             await HomeRepo().getInfoCudan();
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => BottomNavBar(
-                              infoHomeModel: infoHomeModel,
+                        if (infoHomeModel != null) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => BottomNavBar(
+                                infoHomeModel: infoHomeModel,
+                              ),
                             ),
-                          ),
-                        );
+                          );
+                        }
                       } else {
                         showDialog(
                           context: context,
@@ -291,7 +293,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             return CupertinoAlertDialog(
                               title: const Text('Vui lòng thử lại'),
                               content: const Text(
-                                  'Vui lòng kiểm tra lại mã học sinh và mật khẩu của bạn'),
+                                  'Vui lòng kiểm tra lại SDT và mật khẩu của bạn'),
                               actions: <Widget>[
                                 CupertinoDialogAction(
                                   isDefaultAction: true,

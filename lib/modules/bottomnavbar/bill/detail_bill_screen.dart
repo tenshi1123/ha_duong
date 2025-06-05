@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ha_duong/models/info_model.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:flutter_dash/flutter_dash.dart';
+import 'package:intl/intl.dart';
 
 class DetailBillScreen extends StatelessWidget {
   const DetailBillScreen(
@@ -42,6 +43,7 @@ class DetailBillScreen extends StatelessWidget {
                   ),
                   _ItemBill(
                     type: type,
+                    receiptsDetailModel: receiptsDetailModel,
                   ),
                   SizedBox(
                     height: 20.h,
@@ -273,7 +275,7 @@ class DetailBillScreen extends StatelessWidget {
                                             style: defaultText14M),
                                         Text(vehicle.vehicleName,
                                             style: defaultText14M),
-                                        Text(vehicle.fee,
+                                        Text('${formatCurrency(vehicle.fee)}  ',
                                             style: defaultText14M),
                                         Text(vehicle.licensePlates,
                                             style: defaultText14M),
@@ -373,9 +375,7 @@ class DetailBillScreen extends StatelessWidget {
                                           .noteModel[0].phiToaNha.dienTich,
                                       style: defaultText14M),
                                   Text(
-                                      receiptsDetailModel
-                                          .noteModel[0].phiToaNha.phi
-                                          .toStringAsFixed(2),
+                                      '${formatCurrency(receiptsDetailModel.noteModel[0].phiToaNha.phi.toStringAsFixed(0))}  ',
                                       style: defaultText14M),
                                   Text(
                                       receiptsDetailModel
@@ -476,7 +476,8 @@ class DetailBillScreen extends StatelessWidget {
 }
 
 class _ItemBill extends StatelessWidget {
-  const _ItemBill({required this.type});
+  const _ItemBill({required this.type, required this.receiptsDetailModel});
+  final ReceiptsDetailModel receiptsDetailModel;
   final int type;
   @override
   Widget build(BuildContext context) {
@@ -532,7 +533,8 @@ class _ItemBill extends StatelessWidget {
                         ),
                         children: <TextSpan>[
                           TextSpan(
-                            text: '2.969.000 đ',
+                            text:
+                                '${formatCurrency(receiptsDetailModel.fee)}  ',
                             style: defaultText14B.copyWith(
                               color: const Color(0xff004071),
                             ),
@@ -541,7 +543,7 @@ class _ItemBill extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'tháng 09/2024',
+                      receiptsDetailModel.receiptsTime,
                       style: defaultText14B.copyWith(
                         color: const Color(0xff004071),
                       ),
@@ -624,29 +626,10 @@ List<String> parkingBill = [
   'Chi tiết',
   'Tổng tiền:',
 ];
-List<String> electricMoney = [
-  '171',
-  '26',
-  '247',
-  'KWh',
-  '',
-  '84.672 đ',
-  '84.672 đ',
-  '84.672 đ',
-  '84.672 đ',
-  '84.672 đ',
-  '84.672 đ',
-  '84.672 đ',
-];
-List<String> waterMoney = [
-  '42',
-  '56',
-  '98',
-  'Khối',
-  '',
-  '84.672 đ',
-  '84.672 đ',
-  '84.672 đ',
-  '84.672 đ',
-  '84.672 đ',
-];
+
+String formatCurrency(String input) {
+  final number = int.tryParse(input);
+  if (number == null) return input; // fallback nếu input không hợp lệ
+  final formatter = NumberFormat('#,###', 'vi_VN');
+  return formatter.format(number);
+}

@@ -27,16 +27,18 @@ class _SplshscreenState extends State<Splshscreen> {
       final String? token = prefs.getString('token');
       checked = (token != null && token != '');
       if (checked) {
-        InfoModel infoHomeModel = await HomeRepo().getInfoCudan();
+        InfoModel? infoHomeModel = await HomeRepo().getInfoCudan();
         if (!mounted) return;
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => BottomNavBar(
-              infoHomeModel: infoHomeModel,
+        if (infoHomeModel != null) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BottomNavBar(
+                infoHomeModel: infoHomeModel,
+              ),
             ),
-          ),
-        );
+          );
+        }
       } else {
         if (!mounted) return;
         Navigator.pushReplacement(
