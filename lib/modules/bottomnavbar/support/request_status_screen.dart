@@ -5,12 +5,14 @@ import 'package:ha_duong/utils/constants/styles.dart';
 
 class RequestStatusScreen extends StatelessWidget {
   final List<RequestStatusModel> requestStatus;
-  const RequestStatusScreen({super.key, required this.requestStatus});
+  final String createAt;
+  const RequestStatusScreen(
+      {super.key, required this.requestStatus, required this.createAt});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffD9D9D9),
+      backgroundColor: const Color(0xFFF0F0F0),
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
@@ -39,8 +41,8 @@ class RequestStatusScreen extends StatelessWidget {
               : [
                   _buildStepItem(
                     RequestStatusModel(
-                      name: 'Chưa tiếp nhận',
-                      createAt: '',
+                      name: 'Tạo yêu cầu',
+                      createAt: createAt,
                       type: '1',
                     ),
                     isLast: true,

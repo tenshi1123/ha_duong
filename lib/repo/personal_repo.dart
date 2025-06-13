@@ -58,6 +58,7 @@ class PersonalRepo {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');
     dio.options.headers['Authorization'] = 'Bearer $token';
+    // in ra log lỗi
     dio.interceptors.add(LogInterceptor(
       responseBody: true,
       requestBody: true,

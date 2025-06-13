@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ha_duong/models/apartment_model.dart';
 import 'package:ha_duong/models/info_model.dart';
 import 'package:ha_duong/repo/personal_repo.dart';
-import 'package:ha_duong/utils/widget/change_canho_info_dialog.dart';
 
 import '../../../utils/constants/styles.dart';
 import '../../../utils/widget/custom_dialog.dart';
@@ -149,7 +148,9 @@ class _ApartmentItem extends StatelessWidget {
           onTap: () {
             showDialog<String>(
                 context: context,
-                builder: (BuildContext context) => const ChangeChuHoInfo());
+                builder: (BuildContext context) => ChangeChuHoInfo(
+                      model: residentModel,
+                    ));
           },
           child: const _EditInfo('Chỉnh sửa thông tin Chủ hộ'),
         ),

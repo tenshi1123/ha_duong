@@ -144,6 +144,7 @@ class _RequestScreenState extends State<RequestScreen>
                 MaterialPageRoute(
                   builder: ((context) => RequestStatusScreen(
                         requestStatus: requestStatus,
+                        createAt: model.createAt,
                       )),
                 ),
               );

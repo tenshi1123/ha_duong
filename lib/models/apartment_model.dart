@@ -23,7 +23,7 @@ class ApartmentModel {
       buildingId: json['building_id'] ?? '',
       name: json['name'] ?? '',
       numberFloors: json['number_floors'] ?? '',
-      acreage: json['acreage'] ?? '',
+      acreage: json['acreage'] ?? 'không xác định',
       buildingAlias: json['building_alias'] ?? '',
       totalResidents: json['total_residents'] ?? '',
       statusText: json['status_text'] ?? '',

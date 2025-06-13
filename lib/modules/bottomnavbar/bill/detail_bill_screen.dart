@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ha_duong/models/info_model.dart';
+import 'package:ha_duong/modules/bottomnavbar/bill/payment_screen.dart';
+import 'package:ha_duong/utils/constants/color.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:flutter_dash/flutter_dash.dart';
 import 'package:intl/intl.dart';
@@ -8,8 +10,27 @@ import 'package:intl/intl.dart';
 class DetailBillScreen extends StatelessWidget {
   const DetailBillScreen(
       {super.key, required this.type, required this.receiptsDetailModel});
-  final ReceiptsDetailModel receiptsDetailModel;
+  final AllReceiptDetailModel receiptsDetailModel;
   final int type;
+  int get totalFinalFee {
+    int fee = int.tryParse(receiptsDetailModel.receiptsDetailModel.fee) ?? 0;
+    int feeDebt =
+        int.tryParse(receiptsDetailModel.receiptsDetailModel.feeDebt) ?? 0;
+    int feePaid =
+        int.tryParse(receiptsDetailModel.receiptsDetailModel.feePaid) ?? 0;
+    int phiThuThua =
+        int.tryParse(receiptsDetailModel.receiptsDetailModel.phiThuThua) ?? 0;
+
+    if (receiptsDetailModel.receiptsDetailModel.code != null &&
+        receiptsDetailModel.receiptsDetailModel.code!.isNotEmpty) {
+      int amountMoney =
+          int.parse(receiptsDetailModel.receiptsDetailModel.amountMoney ?? '0');
+      return fee + feeDebt - feePaid - phiThuThua - amountMoney;
+    } else {
+      return fee + feeDebt - feePaid - phiThuThua;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +64,8 @@ class DetailBillScreen extends StatelessWidget {
                   ),
                   _ItemBill(
                     type: type,
-                    receiptsDetailModel: receiptsDetailModel,
+                    receiptsDetailModel:
+                        receiptsDetailModel.receiptsDetailModel,
                   ),
                   SizedBox(
                     height: 20.h,
@@ -72,7 +94,7 @@ class DetailBillScreen extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              receiptsDetailModel.fullName,
+                              receiptsDetailModel.receiptsDetailModel.fullName,
                               style: defaultText14.copyWith(
                                 color: const Color(0xff383838),
                                 fontWeight: FontWeight.w700,
@@ -102,7 +124,8 @@ class DetailBillScreen extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              receiptsDetailModel.receiptsTime,
+                              receiptsDetailModel
+                                  .receiptsDetailModel.receiptsTime,
                               style: defaultText14.copyWith(
                                 color: const Color(0xff383838),
                                 fontWeight: FontWeight.w700,
@@ -201,17 +224,19 @@ class DetailBillScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: receiptsDetailModel
-                            .noteModel[0].vehicleModel.length *
+                    height: receiptsDetailModel.receiptsDetailModel.noteModel[0]
+                            .vehicleModel.length *
                         170.h, // hoặc dùng MediaQuery nếu cần scroll toàn màn
                     child: ListView.builder(
                       physics:
                           const NeverScrollableScrollPhysics(), // nếu bạn đang bọc trong SingleChildScrollView
                       shrinkWrap: true,
-                      itemCount:
-                          receiptsDetailModel.noteModel[0].vehicleModel.length,
+                      itemCount: receiptsDetailModel
+                          .receiptsDetailModel.noteModel[0].vehicleModel.length,
                       itemBuilder: (context, index) {
-                        final vehicle = receiptsDetailModel.noteModel[0]
+                        final vehicle = receiptsDetailModel
+                            .receiptsDetailModel
+                            .noteModel[0]
                             .vehicleModel[index]; // giả sử luôn có 1 vehicle
 
                         return Padding(
@@ -275,7 +300,8 @@ class DetailBillScreen extends StatelessWidget {
                                             style: defaultText14M),
                                         Text(vehicle.vehicleName,
                                             style: defaultText14M),
-                                        Text('${formatCurrency(vehicle.fee)}  ',
+                                        Text(
+                                            '${formatCurrency(vehicle.fee)}  đ',
                                             style: defaultText14M),
                                         Text(vehicle.licensePlates,
                                             style: defaultText14M),
@@ -371,28 +397,27 @@ class DetailBillScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text(
-                                      receiptsDetailModel
-                                          .noteModel[0].phiToaNha.dienTich,
+                                      '${receiptsDetailModel.receiptsDetailModel.noteModel[0].phiToaNha.dienTich} m2',
                                       style: defaultText14M),
                                   Text(
-                                      '${formatCurrency(receiptsDetailModel.noteModel[0].phiToaNha.phi.toStringAsFixed(0))}  ',
+                                      '${formatCurrency(receiptsDetailModel.receiptsDetailModel.noteModel[0].phiToaNha.phi.toStringAsFixed(0))}  đ',
                                       style: defaultText14M),
                                   Text(
-                                      receiptsDetailModel
+                                      receiptsDetailModel.receiptsDetailModel
                                           .noteModel[0].phiToaNha.phiThuThem,
                                       style: defaultText14M),
                                   Text(
-                                      receiptsDetailModel
+                                      receiptsDetailModel.receiptsDetailModel
                                           .noteModel[0].phiToaNha.phiBaoTri
                                           .toString(),
                                       style: defaultText14M),
                                   Text(
-                                      receiptsDetailModel
+                                      receiptsDetailModel.receiptsDetailModel
                                           .noteModel[0].phiToaNha.tienDien
                                           .toString(),
                                       style: defaultText14M),
                                   Text(
-                                      receiptsDetailModel
+                                      receiptsDetailModel.receiptsDetailModel
                                           .noteModel[0].phiToaNha.tienNuoc
                                           .toString(),
                                       style: defaultText14M),
@@ -411,9 +436,102 @@ class DetailBillScreen extends StatelessWidget {
                       ],
                     ),
                   ),
+                  type == 1
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Hạn thanh toán', style: defaultText14M),
+                            Text(
+                              receiptsDetailModel
+                                  .receiptsDetailModel.hanThanhToan,
+                              style: defaultText14B.copyWith(
+                                color: type == 1
+                                    ? const Color(0xffE80707)
+                                    : keyBlack,
+                              ),
+                            )
+                          ],
+                        )
+                      : const SizedBox(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Tổng Phí', style: defaultText14M),
+                      Text(
+                        '${formatCurrency(receiptsDetailModel.receiptsDetailModel.fee)} đ',
+                        style: defaultText14B.copyWith(
+                          color: type == 1 ? const Color(0xffE80707) : keyBlack,
+                        ),
+                      )
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Phí Nợ', style: defaultText14M),
+                      Text(
+                        '${formatCurrency(receiptsDetailModel.receiptsDetailModel.feeDebt)} đ',
+                        style: defaultText14B.copyWith(
+                          color: type == 1 ? const Color(0xffE80707) : keyBlack,
+                        ),
+                      )
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Phí đã thanh toán', style: defaultText14M),
+                      Text(
+                        '${formatCurrency(receiptsDetailModel.receiptsDetailModel.feePaid)} đ',
+                        style: defaultText14B.copyWith(
+                          color: type == 1 ? const Color(0xffE80707) : keyBlack,
+                        ),
+                      )
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Phí thu thừa', style: defaultText14M),
+                      Text(
+                        '${formatCurrency(receiptsDetailModel.receiptsDetailModel.phiThuThua)} đ',
+                        style: defaultText14B.copyWith(
+                          color: type == 1 ? const Color(0xffE80707) : keyBlack,
+                        ),
+                      )
+                    ],
+                  ),
+                  (receiptsDetailModel.receiptsDetailModel.code != null)
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Mã giảm giá', style: defaultText14M),
+                            Text(
+                              '${formatCurrency(receiptsDetailModel.receiptsDetailModel.amountMoney ?? '0')} đ',
+                              style: defaultText14B.copyWith(
+                                color: type == 1
+                                    ? const Color(0xffE80707)
+                                    : keyBlack,
+                              ),
+                            )
+                          ],
+                        )
+                      : const SizedBox(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Phí thanh toán thực tế', style: defaultText14M),
+                      Text(
+                        '${formatCurrency(totalFinalFee.toString())} đ',
+                        style: defaultText14B.copyWith(
+                          color: type == 1 ? const Color(0xffE80707) : keyBlack,
+                        ),
+                      )
+                    ],
+                  ),
                   SizedBox(
-                    height: 108.h,
-                  )
+                    height: 120.h,
+                  ),
                 ],
               ),
             ),
@@ -434,38 +552,56 @@ class DetailBillScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              child: Container(
-                width: 343.w,
-                height: 50.h,
-                margin: EdgeInsets.only(
-                    left: 16.w, bottom: 30.h, top: 16.w, right: 16.w),
-                constraints: BoxConstraints(maxHeight: 120.h),
-                decoration: BoxDecoration(
-                  gradient: type == 1
-                      ? const LinearGradient(
-                          colors: [
-                            Color(0xFF25AAE1),
-                            Color(0xFF004071),
-                          ],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          stops: [0.0, 1.0],
-                        )
-                      : LinearGradient(
-                          colors: [
-                            const Color(0xFF8A8A8A).withValues(alpha: 0.12),
-                            const Color(0xFF8A8A8A).withValues(alpha: 0.12),
-                          ],
-                        ),
-                  borderRadius: const BorderRadius.all(Radius.circular(15)),
+              child: GestureDetector(
+                onTap: type == 1
+                    ? () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: ((context) => PaymentScreen(
+                                  paymentInforModel:
+                                      receiptsDetailModel.paymentInforModel,
+                                  totalFinalFee: totalFinalFee,
+                                  receiptTime: receiptsDetailModel
+                                      .receiptsDetailModel.receiptsTime,
+                                )),
+                          ),
+                        );
+                      }
+                    : () {},
+                child: Container(
+                  width: 343.w,
+                  height: 50.h,
+                  margin: EdgeInsets.only(
+                      left: 16.w, bottom: 30.h, top: 16.w, right: 16.w),
+                  constraints: BoxConstraints(maxHeight: 120.h),
+                  decoration: BoxDecoration(
+                    gradient: type == 1
+                        ? const LinearGradient(
+                            colors: [
+                              Color(0xFF25AAE1),
+                              Color(0xFF004071),
+                            ],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            stops: [0.0, 1.0],
+                          )
+                        : LinearGradient(
+                            colors: [
+                              const Color(0xFF8A8A8A).withValues(alpha: 0.12),
+                              const Color(0xFF8A8A8A).withValues(alpha: 0.12),
+                            ],
+                          ),
+                    borderRadius: const BorderRadius.all(Radius.circular(15)),
+                  ),
+                  child: Center(
+                      child: Text(
+                    type == 1 ? 'Thanh toán ngay' : "Đã thanh toán",
+                    style: defaultText14B.copyWith(
+                        color:
+                            type == 1 ? Colors.white : const Color(0xff004071)),
+                  )),
                 ),
-                child: Center(
-                    child: Text(
-                  type == 1 ? 'Thanh toán ngay' : "Đã thanh toán",
-                  style: defaultText14B.copyWith(
-                      color:
-                          type == 1 ? Colors.white : const Color(0xff004071)),
-                )),
               ),
             ),
           ),
@@ -504,7 +640,7 @@ class _ItemBill extends StatelessWidget {
         children: [
           SizedBox(
             //height: 60.h,
-            width: 188.w,
+            width: 200.w,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -534,7 +670,7 @@ class _ItemBill extends StatelessWidget {
                         children: <TextSpan>[
                           TextSpan(
                             text:
-                                '${formatCurrency(receiptsDetailModel.fee)}  ',
+                                '${formatCurrency(receiptsDetailModel.fee)}  đ',
                             style: defaultText14B.copyWith(
                               color: const Color(0xff004071),
                             ),
@@ -542,10 +678,20 @@ class _ItemBill extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Text(
-                      receiptsDetailModel.receiptsTime,
-                      style: defaultText14B.copyWith(
-                        color: const Color(0xff004071),
+                    RichText(
+                      text: TextSpan(
+                        text: 'Tháng: ',
+                        style: defaultText14M.copyWith(
+                          color: const Color(0xff8A8A8A).withValues(alpha: 0.8),
+                        ),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: receiptsDetailModel.receiptsTime,
+                            style: defaultText14B.copyWith(
+                              color: const Color(0xff004071),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],

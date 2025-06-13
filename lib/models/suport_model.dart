@@ -7,6 +7,7 @@ class TechnicalSupportModel {
   final String settingSupportName;
   final String settingSupportStateName;
   final String? latestStatusName;
+  final String? latestStatusType;
   TechnicalSupportModel({
     required this.id,
     required this.fullName,
@@ -16,6 +17,7 @@ class TechnicalSupportModel {
     required this.settingSupportName,
     required this.settingSupportStateName,
     this.latestStatusName,
+    this.latestStatusType,
   });
   factory TechnicalSupportModel.fromJson(Map<String, dynamic> json) {
     return TechnicalSupportModel(
@@ -27,6 +29,7 @@ class TechnicalSupportModel {
       settingSupportName: json['setting_support_name'] ?? '',
       settingSupportStateName: json['setting_support_state_name'] ?? '',
       latestStatusName: json['latest_status_name'],
+      latestStatusType: json['latest_status_type'],
     );
   }
 }

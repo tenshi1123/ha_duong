@@ -43,6 +43,7 @@ class ResidentModel {
   final String img;
   final String createdAt;
   final String updatedAt;
+  final String relationshipType;
   ResidentModel({
     required this.id,
     required this.fullName,
@@ -53,6 +54,7 @@ class ResidentModel {
     required this.img,
     required this.createdAt,
     required this.updatedAt,
+    required this.relationshipType,
   });
   factory ResidentModel.fromJson(Map<String, dynamic> json) {
     return ResidentModel(
@@ -65,6 +67,7 @@ class ResidentModel {
       img: json['img'] ?? '',
       createdAt: json['created_at'] ?? '',
       updatedAt: json['updated_at'] ?? '',
+      relationshipType: json['relationship_type'] ?? '',
     );
   }
 }
@@ -92,16 +95,18 @@ class ListReceiptsModel {
 class ReceiptsModel {
   final String id;
   final String name;
+  final String hanThanhToan;
 
   ReceiptsModel({
     required this.id,
     required this.name,
+    required this.hanThanhToan,
   });
   factory ReceiptsModel.fromJson(Map<String, dynamic> json) {
     return ReceiptsModel(
-      id: json['id'] ?? '',
-      name: json['name'] ?? '',
-    );
+        id: json['id'] ?? '',
+        name: json['name'] ?? '',
+        hanThanhToan: json['han_thanh_toan'] ?? '');
   }
 }
 
@@ -135,11 +140,12 @@ class PostModel {
   });
   factory PostModel.fromJson(Map<String, dynamic> json) {
     return PostModel(
-        id: json['id'] ?? '',
-        img: json['img'] ?? '',
-        name: json['name'] ?? '',
-        content: json['content'] ?? '',
-        updatedAt: json['update_at'] ?? '');
+      id: json['id'] ?? '',
+      img: json['img'] ?? '',
+      name: json['name'] ?? '',
+      content: json['content'] ?? '',
+      updatedAt: json['update_at'] ?? '',
+    );
   }
 }
 
@@ -193,6 +199,31 @@ class PhiToaNha {
   }
 }
 
+class AllReceiptDetailModel {
+  final PaymentInforModel paymentInforModel;
+  final ReceiptsDetailModel receiptsDetailModel;
+  final List<ChiTietMucDienNuoc> receiptsDien;
+  final List<ChiTietMucDienNuoc> receiptsNuoc;
+  AllReceiptDetailModel({
+    required this.paymentInforModel,
+    required this.receiptsDetailModel,
+    required this.receiptsDien,
+    required this.receiptsNuoc,
+  });
+  factory AllReceiptDetailModel.fromJson(Map<String, dynamic> json) {
+    return AllReceiptDetailModel(
+      paymentInforModel: PaymentInforModel.fromJson(json['apartment'] ?? {}),
+      receiptsDetailModel: ReceiptsDetailModel.fromJson(json['value'] ?? {}),
+      receiptsDien: (json['receiptsDien'] as List<dynamic>? ?? [])
+          .map((x) => ChiTietMucDienNuoc.fromJson(x))
+          .toList(),
+      receiptsNuoc: (json['receiptsNuoc'] as List<dynamic>? ?? [])
+          .map((x) => ChiTietMucDienNuoc.fromJson(x))
+          .toList(),
+    );
+  }
+}
+
 class ReceiptsDetailModel {
   final String userName;
   final String receiptsTime;
@@ -207,6 +238,8 @@ class ReceiptsDetailModel {
   final String feeDebt;
   final String phiThuThua;
   final List<NoteModel> noteModel;
+  final String? code;
+  final String? amountMoney;
   ReceiptsDetailModel({
     required this.userName,
     required this.receiptsTime,
@@ -221,10 +254,12 @@ class ReceiptsDetailModel {
     required this.feeDebt,
     required this.phiThuThua,
     required this.noteModel,
+    required this.code,
+    required this.amountMoney,
   });
   factory ReceiptsDetailModel.fromJson(Map<String, dynamic> json) {
     return ReceiptsDetailModel(
-      userName: json['user_name'] ?? '',
+      userName: json['user_name'] ?? json['purpose_use_name'] ?? '',
       receiptsTime: json['receipt_time'] ?? '',
       hanThanhToan: json['han_thanh_toan'] ?? '',
       startDay: json['start_day'] ?? '',
@@ -239,6 +274,8 @@ class ReceiptsDetailModel {
       noteModel: (json['note'] as List<dynamic>? ?? [])
           .map((x) => NoteModel.fromJson(x))
           .toList(),
+      code: json['code'],
+      amountMoney: json['amount_money'] ?? '0',
     );
   }
 }
@@ -277,3 +314,84 @@ class UtilitiesModel {
 }
 
 // Được này mất kia thôi, sao t không vào cái thế không được gì hết không mất gì hết, sống như phật, không ham dục vọng, không màng hư vinh. Chỉ tập chung vào những giá trị cốt lỗi của con người, nâng tầm kiến thức, sức khỏe, giao tiếp
+class PaymentInforModel {
+  final String buildingName;
+  final String alias;
+  final String address;
+  final String bankName;
+  final String accName;
+  final String accNumber;
+  final String branch;
+  final String bankCode;
+  final String hotline;
+  final String note;
+  final String title;
+  final String logo;
+  final String apartmentName;
+
+  PaymentInforModel({
+    required this.buildingName,
+    required this.alias,
+    required this.address,
+    required this.bankName,
+    required this.accName,
+    required this.accNumber,
+    required this.branch,
+    required this.bankCode,
+    required this.hotline,
+    required this.note,
+    required this.title,
+    required this.logo,
+    required this.apartmentName,
+  });
+  factory PaymentInforModel.fromJson(Map<String, dynamic> json) {
+    return PaymentInforModel(
+      buildingName: json['building_name'] ?? '',
+      alias: json['alias'] ?? '',
+      address: json['address'] ?? '',
+      bankName: json['bank_name'] ?? '',
+      accName: json['acc_name'] ?? '',
+      accNumber: json['acc_number'] ?? '',
+      branch: json['branch'] ?? '',
+      bankCode: json['bank_code'] ?? '',
+      hotline: json['hotline'] ?? '',
+      note: json['note'] ?? '',
+      title: json['title'] ?? '',
+      logo: json['logo'] ?? '',
+      apartmentName: json['apartment_name'] ?? '',
+    );
+  }
+}
+
+class ChiTietMucDienNuoc {
+  final String? name;
+  final int? number;
+  final double? price;
+  final double? thanhTien;
+
+  ChiTietMucDienNuoc({this.name, this.number, this.price, this.thanhTien});
+
+  factory ChiTietMucDienNuoc.fromJson(Map<String, dynamic> json) {
+    return ChiTietMucDienNuoc(
+      name: json['name'] as String?,
+      number: json['number'] != null
+          ? int.tryParse(json['number'].toString())
+          : null,
+      price: json['price'] != null
+          ? double.tryParse(json['price'].toString())
+          : null,
+      thanhTien: json['thanh_tien'] != null
+          ? double.tryParse(json['thanh_tien'].toString())
+          : null,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'number': number,
+      'price': price,
+      'thanh_tien': thanhTien,
+    };
+  }
+}

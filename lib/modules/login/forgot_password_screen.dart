@@ -63,7 +63,7 @@ class _ForgotPassScreenState extends State<ForgotPassScreen> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
                   child: Text(
-                    'Hãy nhập Email hoặc SĐT đã đăng ký để đặt lại mật khẩu.',
+                    'Hãy nhập SĐT đã đăng ký để đặt lại mật khẩu.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: const Color(0xff8A8A8A),

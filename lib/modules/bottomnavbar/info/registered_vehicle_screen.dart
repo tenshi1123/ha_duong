@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ha_duong/models/apartment_model.dart';
-import 'package:ha_duong/models/info_model.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:intl/intl.dart';
 

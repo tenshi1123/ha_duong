@@ -47,7 +47,7 @@ class HomeRepo {
     return ListReceiptsModel.fromJson(response.data['data']);
   }
 
-  Future<ReceiptsDetailModel> getDetailReceipts(String id) async {
+  Future<AllReceiptDetailModel> getDetailReceipts(String id) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');
     dio.options.headers['Authorization'] = 'Bearer $token';
@@ -58,7 +58,7 @@ class HomeRepo {
         'receipts_id': int.parse(id),
       },
     );
-    return ReceiptsDetailModel.fromJson(response.data['data']['value']);
+    return AllReceiptDetailModel.fromJson(response.data['data']);
   }
 
   Future<List<PostModel>> getUtilities(String id) async {

@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ha_duong/models/suport_model.dart';
 import 'package:ha_duong/repo/support_repo.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
+import 'package:ha_duong/utils/widget/custom_dialog.dart';
+import 'package:ha_duong/utils/widget/pick_image.dart';
+import 'package:image_picker/image_picker.dart';
 
 class TechnicalRequestScreen extends StatefulWidget {
   const TechnicalRequestScreen({super.key, required this.model});
@@ -21,6 +26,18 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
   SettingSupportState? selectedStatus;
 
   late List<SettingSupportState> statuses;
+  final ImagePicker _picker = ImagePicker();
+  final List<File> _imageFiles = [];
+
+  Future<void> _pickImage(ImageSource source) async {
+    final XFile? pickedFile = await _picker.pickImage(source: source);
+    if (pickedFile != null) {
+      setState(() {
+        _imageFiles.add(File(pickedFile.path));
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -39,7 +56,7 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffD9D9D9),
+      backgroundColor: const Color.fromARGB(255, 245, 245, 245),
       appBar: AppBar(
         title: const Text('Yêu cầu kỹ thuật'),
         backgroundColor: Colors.white,
@@ -71,10 +88,16 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
                                   decoration: const InputDecoration(
                                     labelText: 'Tình trạng',
                                     border: OutlineInputBorder(),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(
+                                            0xff8A8A8A), // Màu viền khi focus
+                                        width: 1.5,
+                                      ),
+                                    ),
                                   ),
-                                  value: selectedStatus,
-                                  hint: const Text(
-                                      'Không có tình trạng khả dụng'),
+                                  //value: selectedStatus,
+                                  hint: const Text('Tình trạng của quý khách'),
                                   items: statuses
                                       .map((status) => DropdownMenuItem(
                                             value: status,
@@ -100,6 +123,13 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
                                     TextFormField(
                                       controller: _contactController,
                                       decoration: const InputDecoration(
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Color(
+                                                0xff8A8A8A), // Màu viền khi focus
+                                            width: 1.5,
+                                          ),
+                                        ),
                                         labelText: 'Người liên hệ *',
                                         border: OutlineInputBorder(),
                                       ),
@@ -112,6 +142,13 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
                                     TextFormField(
                                       controller: _phoneController,
                                       decoration: const InputDecoration(
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Color(
+                                                0xff8A8A8A), // Màu viền khi focus
+                                            width: 1.5,
+                                          ),
+                                        ),
                                         labelText: 'Số điện thoại *',
                                         border: OutlineInputBorder(),
                                       ),
@@ -125,6 +162,13 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
                                     TextFormField(
                                       controller: _apartmentController,
                                       decoration: const InputDecoration(
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Color(
+                                                0xff8A8A8A), // Màu viền khi focus
+                                            width: 1.5,
+                                          ),
+                                        ),
                                         labelText: 'Căn hộ *',
                                         border: OutlineInputBorder(),
                                       ),
@@ -144,11 +188,64 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
                                   controller: _noteController,
                                   maxLines: 4,
                                   decoration: const InputDecoration(
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(
+                                            0xff8A8A8A), // Màu viền khi focus
+                                        width: 1.5,
+                                      ),
+                                    ),
                                     hintText: 'Nhập ghi chú',
                                     border: OutlineInputBorder(),
                                   ),
                                 ),
                               ),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  buildUploadOption(
+                                    icon: Icons.image_outlined,
+                                    text: "Tải ảnh lên",
+                                    onTap: () =>
+                                        _pickImage(ImageSource.gallery),
+                                  ),
+                                  const SizedBox(width: 56),
+                                  buildUploadOption(
+                                    icon: Icons.camera_alt_outlined,
+                                    text: "Chụp ảnh",
+                                    onTap: () => _pickImage(ImageSource.camera),
+                                  ),
+                                ],
+                              ),
+
+                              const SizedBox(height: 20),
+
+                              // Image Grid
+                              if (_imageFiles.isNotEmpty)
+                                SizedBox(
+                                  height: 200,
+                                  child: GridView.builder(
+                                    shrinkWrap: true,
+                                    // physics:
+                                    //     const NeverScrollableScrollPhysics(),
+                                    itemCount: _imageFiles.length,
+                                    gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 3, // số cột
+                                      crossAxisSpacing: 8,
+                                      mainAxisSpacing: 8,
+                                    ),
+                                    itemBuilder: (context, index) {
+                                      return Image.file(
+                                        _imageFiles[index],
+                                        fit: BoxFit.cover,
+                                      );
+                                    },
+                                  ),
+                                ),
                             ],
                           ),
                         ),
@@ -188,17 +285,39 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
                               fullName: _contactController.text,
                               phone: _phoneController.text,
                               note: _noteController.text,
+                              photos: _imageFiles,
                             );
                             if (success) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('Yêu cầu đã được gửi!')),
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: const Text('Thành công'),
+                                  content: const Text('Yêu cầu đã được gửi!'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context); // đóng dialog
+                                        Navigator.pop(
+                                            context); // đóng màn gửi yêu cầu
+                                      },
+                                      child: const Text('OK'),
+                                    ),
+                                  ],
+                                ),
                               );
-                              Navigator.pop(context);
                             } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('Gửi yêu cầu thất bại!')),
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: const Text('Thất bại'),
+                                  content: const Text('Gửi yêu cầu thất bại!'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text('Thử lại'),
+                                    ),
+                                  ],
+                                ),
                               );
                             }
                           }

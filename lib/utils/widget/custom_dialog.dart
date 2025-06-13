@@ -4,13 +4,11 @@ import 'package:ha_duong/models/info_model.dart';
 import 'package:ha_duong/models/suport_model.dart';
 import 'package:ha_duong/modules/bottomnavbar/support/technical_request_screen.dart';
 import 'package:ha_duong/repo/home_repo.dart';
-import 'package:ha_duong/repo/personal_repo.dart';
 import 'package:ha_duong/repo/support_repo.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ha_duong/utils/widget/pick_image.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 import 'custom_widget.dart';
@@ -133,8 +131,8 @@ class CustomerInfoForm extends StatelessWidget {
 }
 
 class ChangeChuHoInfo extends StatefulWidget {
-  const ChangeChuHoInfo({super.key});
-
+  const ChangeChuHoInfo({super.key, required this.model});
+  final ResidentModel model;
   @override
   State<ChangeChuHoInfo> createState() => _ChangeChuHoInfoState();
 }
@@ -147,6 +145,16 @@ class _ChangeChuHoInfoState extends State<ChangeChuHoInfo> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   List<File> photos = <File>[];
+  @override
+  void initState() {
+    // TODO: implement initState
+    _nameController.text = widget.model.fullName;
+    _cccdController.text = widget.model.idCard;
+    _phoneController.text = widget.model.phone;
+    _emailController.text = widget.model.email;
+    _dateController.text = widget.model.dob;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -315,7 +323,7 @@ class _ChangeChuHoInfoState extends State<ChangeChuHoInfo> {
                                           MainAxisAlignment.center,
                                       children: [
                                         // Nút Tải ảnh lên
-                                        _buildUploadOption(
+                                        buildUploadOption(
                                           icon: Icons.image_outlined,
                                           text: "Tải ảnh lên",
                                           onTap: () {
@@ -335,7 +343,7 @@ class _ChangeChuHoInfoState extends State<ChangeChuHoInfo> {
                                             width: 56
                                                 .w), // Khoảng cách giữa hai nút
                                         // Nút Chụp ảnh
-                                        _buildUploadOption(
+                                        buildUploadOption(
                                           icon: Icons.camera_alt_outlined,
                                           text: "Chụp ảnh",
                                           onTap: () {
@@ -405,7 +413,7 @@ class _ChangeChuHoInfoState extends State<ChangeChuHoInfo> {
   }
 }
 
-Widget _buildUploadOption({
+Widget buildUploadOption({
   required IconData icon,
   required String text,
   required VoidCallback onTap,
@@ -616,7 +624,7 @@ class _AddMemberState extends State<AddMember> {
                                           MainAxisAlignment.center,
                                       children: [
                                         // Nút Tải ảnh lên
-                                        _buildUploadOption(
+                                        buildUploadOption(
                                           icon: Icons.image_outlined,
                                           text: "Tải ảnh lên",
                                           onTap: () {
@@ -637,7 +645,7 @@ class _AddMemberState extends State<AddMember> {
                                             width: 56
                                                 .w), // Khoảng cách giữa hai nút
                                         // Nút Chụp ảnh
-                                        _buildUploadOption(
+                                        buildUploadOption(
                                           icon: Icons.camera_alt_outlined,
                                           text: "Chụp ảnh",
                                           onTap: () {
@@ -814,7 +822,7 @@ void showPostDialog(
                             child: Image.network(
                               'https://bms.haduong.com.vn/images/${post.img}',
                               fit: BoxFit.fitHeight,
-                              height: 25.h,
+                              height: 20.h,
                               errorBuilder: (_, __, ___) => const Icon(
                                   Icons.broken_image,
                                   color: Colors.white),

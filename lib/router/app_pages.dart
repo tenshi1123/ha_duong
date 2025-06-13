@@ -1,7 +1,5 @@
 // ignore_for_file: constant_identifier_names
 
-import 'package:ha_duong/modules/bottomnavbar/bottom_nav_bar.dart';
-
 import '../modules/login/forgot_password_screen.dart';
 import '../modules/login/login_screen.dart';
 import 'page_config.dart';

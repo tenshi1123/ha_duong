@@ -1,0 +1,154 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:ha_duong/models/info_model.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'dart:typed_data'; // Để làm việc với dữ liệu byte
+import 'package:gal/gal.dart';
+
+class PaymentScreen extends StatefulWidget {
+  const PaymentScreen(
+      {super.key,
+      required this.paymentInforModel,
+      required this.totalFinalFee,
+      required this.receiptTime}); // Ví dụ
+  final PaymentInforModel paymentInforModel;
+  final int totalFinalFee;
+  final String receiptTime;
+  @override
+  State<PaymentScreen> createState() => _PaymentScreenState();
+}
+
+class _PaymentScreenState extends State<PaymentScreen> {
+  ScreenshotController screenshotController = ScreenshotController();
+  @override
+  Widget build(BuildContext context) {
+    // Encode các thông tin để tránh lỗi URL
+    final String encodedApartmentName =
+        Uri.encodeComponent(widget.paymentInforModel.apartmentName);
+    final String encodedBuildingName =
+        Uri.encodeComponent(widget.paymentInforModel.buildingName);
+    final String encodedAddInfo =
+        '$encodedApartmentName+$encodedBuildingName+${widget.receiptTime}';
+    final String encodedAccountName =
+        Uri.encodeComponent(widget.paymentInforModel.accName);
+
+    final String qrCodeImageUrl =
+        'https://img.vietqr.io/image/${widget.paymentInforModel.bankCode}-${widget.paymentInforModel.accNumber}-compact2.jpg?amount=${widget.totalFinalFee}&addInfo=$encodedAddInfo&accountName=$encodedAccountName';
+
+    final String htmlContent = '''
+      <img src="$qrCodeImageUrl" alt="QR Code">
+    ''';
+
+    return Scaffold(
+      backgroundColor: const Color(0xffD0D0D0),
+      appBar: AppBar(
+        title: const Text('Thanh toán'),
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Screenshot(
+                  controller: screenshotController,
+                  child: Html(
+                    data: htmlContent,
+                    // Cấu hình thêm nếu cần
+                    // onImageTap: (src, _, __) {
+                    //   print('Đã click vào hình ảnh: $src');
+                    // },
+                    // style: {
+                    //   "img": Style(
+                    //     maxWidth: MediaQuery.of(context).size.width * 0.8,
+                    //     height: AutoCSS(), // Hoặc một giá trị cố định
+                    //   ),
+                    // },
+                  ),
+                ),
+              ),
+              const SizedBox(height: 30),
+              ElevatedButton.icon(
+                onPressed: () {
+                  _captureAndSaveWidget();
+                },
+                icon: const Icon(Icons.download),
+                label: const Text('Chụp và lưu mã QR'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<dynamic> ShowCapturedWidget(
+      BuildContext context, Uint8List capturedImage) {
+    return showDialog(
+      useSafeArea: false,
+      context: context,
+      builder: (context) => Scaffold(
+        appBar: AppBar(
+          title: const Text("Mã Qr đã lưu"),
+        ),
+        body: Center(child: Image.memory(capturedImage)),
+      ),
+    );
+  }
+
+  // Hàm xử lý việc chụp và lưu ảnh widget
+  Future<void> _captureAndSaveWidget() async {
+    try {
+      // 1. Kiểm tra và yêu cầu quyền bằng gal (nếu cần)
+      // gal.hasAccess(toAlbum: false) kiểm tra quyền truy cập thư viện
+      // gal.requestAccess(toAlbum: false) yêu cầu quyền. gal sẽ tự xử lý trên Android 10+
+      // Nếu bạn muốn lưu vào một album cụ thể, toAlbum: true sẽ yêu cầu quyền đó.
+      final bool hasPermission = await Gal.hasAccess(toAlbum: false);
+      if (!hasPermission) {
+        final bool granted = await Gal.requestAccess(toAlbum: false);
+        if (!granted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text('Quyền truy cập thư viện ảnh bị từ chối.')),
+          );
+          // Tùy chọn: Mở cài đặt ứng dụng để người dùng cấp quyền thủ công
+          if (await Permission.photos.isPermanentlyDenied) {
+            // Hoặc Permission.storage
+            openAppSettings();
+          }
+          return;
+        }
+      }
+
+      // 2. Chụp ảnh widget bằng ScreenshotController.capture(...)
+      final Uint8List? byteData = await screenshotController.capture(
+        delay: const Duration(milliseconds: 10),
+        pixelRatio: MediaQuery.of(context).devicePixelRatio,
+      );
+
+      if (byteData != null) {
+        // 3. Lưu hình ảnh vào thư viện ảnh bằng gal
+        // gal.putImageBytes() là cách trực tiếp để lưu dữ liệu byte
+        await Gal.putImageBytes(
+          byteData,
+          name:
+              "VietQR_Screenshot_${DateTime.now().millisecondsSinceEpoch}", // Tên file tùy chọn
+        );
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Đã lưu ảnh mã QR vào thư viện ảnh!')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Không thể chụp ảnh widget.')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Lỗi: $e')),
+      );
+      print('Lỗi khi chụp hoặc lưu hình ảnh: $e');
+    }
+  }
+}

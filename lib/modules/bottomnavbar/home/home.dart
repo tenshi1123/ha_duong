@@ -194,7 +194,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(
                           width: 16.w,
                         ),
-                        Image.asset('assets/images/bill.png'),
+                        Image.asset(
+                          'assets/images/bill.png',
+                          height: 40.h,
+                        ),
                         SizedBox(
                           width: 12.w,
                         ),
@@ -206,7 +209,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         InkWell(
                             onTap: () async {
                               //call api
-                              ReceiptsDetailModel receiptsDetailModel =
+                              AllReceiptDetailModel receiptsDetailModel =
                                   await HomeRepo().getDetailReceipts(
                                       infoHomeModel.listReceipts[index].id
                                           .toString());
@@ -245,7 +248,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 16.w, right: 16.w),
+              padding: EdgeInsets.only(left: 20.w, right: 20.w),
               child: SizedBox(
                 width: 375.w,
                 height: 218.h,

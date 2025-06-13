@@ -56,6 +56,11 @@ class _BillScreenState extends State<BillScreen> {
           backgroundColor: Colors.white,
           title: const Center(child: Text('Hoá đơn')),
           bottom: TabBar(
+            labelColor: const Color(0xff0F2645), // Màu chữ tab khi được chọn
+            unselectedLabelColor: Colors.grey, // Màu chữ tab không được chọn
+            indicatorColor:
+                const Color(0xff0F2645), // Màu gạch dưới khi được chọn
+            indicatorWeight: 2.0, // Độ dày của gạch dưới
             tabs: <Widget>[
               Tab(
                   child: Text(
@@ -116,7 +121,7 @@ class PaymentHistory extends StatelessWidget {
     return InkWell(
       onTap: () async {
         //call api
-        ReceiptsDetailModel receiptsDetailModel =
+        AllReceiptDetailModel receiptsDetailModel =
             await HomeRepo().getDetailReceipts(model.id);
 
         pushWithoutNavBar(
@@ -185,9 +190,9 @@ class PaymentHistory extends StatelessWidget {
                       ],
                     ),
                     Text(
-                      'Phí dịch vụ',
+                      'Đã thanh toán',
                       style: defaultText12B.copyWith(
-                          color: const Color(0xff8A8A8A)),
+                          color: const Color(0xff129F20)),
                     ),
                     SizedBox(
                       height: 5.h,
@@ -222,7 +227,7 @@ class WaitingPayment extends StatelessWidget {
     return InkWell(
       onTap: () async {
         //call api
-        ReceiptsDetailModel receiptsDetailModel =
+        AllReceiptDetailModel receiptsDetailModel =
             await HomeRepo().getDetailReceipts(model.id);
 
         pushWithoutNavBar(
@@ -293,10 +298,26 @@ class WaitingPayment extends StatelessWidget {
                     model.name,
                     style: defaultText14B,
                   ),
-                  Text(
-                    'Phí dịch vụ',
-                    style:
-                        defaultText12B.copyWith(color: const Color(0xff8A8A8A)),
+                  // Text(
+                  //   'Hạn thanh toán ${model.hanThanhToan}',
+                  //   style:
+                  //       defaultText12B.copyWith(color: const Color(0xff8A8A8A)),
+                  // ),
+                  RichText(
+                    text: TextSpan(
+                      text: 'Hạn thanh toán: ',
+                      style: defaultText14M.copyWith(
+                        color: const Color(0xff8A8A8A).withValues(alpha: 0.8),
+                      ),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: model.hanThanhToan,
+                          style: defaultText14B.copyWith(
+                            color: const Color(0xffE80707),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   SizedBox(
                     height: 5.h,

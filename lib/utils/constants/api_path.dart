@@ -4,7 +4,7 @@ class ApiPath {
   //api về đăng nhập
   static const String login = '$baseUrl/cudan/login';
   static const String refreshToken = '$baseUrl/cudan/refresh_token';
-
+  static const String putOnesignal = '$baseUrl/cudan/onesignal';
   // api home
   static const String home = '$baseUrl/cudan';
   static const String changeApartment = '$baseUrl/cudan/change_apartment';
@@ -42,7 +42,7 @@ class ApiPath {
   static const String listPhuongTien =
       '$baseUrl/cudan/apartment/list_phuong_tien';
   //Gửi thông tin onesignal id
-  static const String pushOnsignalId = '$baseUrl/notify/onesignal_id';
+  static const String pushOnsignalId = '$baseUrl/cudan/onesignal';
   //Xóa thông tin onesignal id
   static const String deleteOnsignalId = '$baseUrl/notify/remove/onesignal_id';
 }

@@ -6,7 +6,6 @@ import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:ha_duong/utils/widget/webview_screen.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import '../../modules/chat/screen/chat_screen.dart';
 import '../constants/color.dart';
@@ -171,11 +170,15 @@ class PostItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.network(
-            'https://bms.haduong.com.vn/images/${postModel.img}',
-            width: 240.w,
-            height: 160.h,
-            fit: BoxFit.fill,
+          Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(16.r))),
+            child: Image.network(
+              'https://bms.haduong.com.vn/images/${postModel.img}',
+              width: 240.w,
+              height: 160.h,
+              fit: BoxFit.fill,
+            ),
           ),
           SizedBox(
             height: 10.h,
@@ -290,7 +293,10 @@ class ApartmentDropdown extends StatelessWidget {
             return apartmentList.map((apartment) {
               return Row(
                 children: [
-                  Image.asset('assets/images/location.png'),
+                  Image.asset(
+                    'assets/images/location.png',
+                    height: 20.5.h,
+                  ),
                   SizedBox(width: 8.w),
                   Text(
                     apartment.name,

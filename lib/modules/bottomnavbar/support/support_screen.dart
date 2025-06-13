@@ -4,7 +4,9 @@ import 'package:ha_duong/models/info_model.dart';
 import 'package:ha_duong/models/suport_model.dart';
 import 'package:ha_duong/modules/bottomnavbar/support/request_screen.dart';
 import 'package:ha_duong/modules/bottomnavbar/support/request_status_screen.dart';
+import 'package:ha_duong/modules/chat/screen/list_conversation_screen.dart';
 import 'package:ha_duong/repo/support_repo.dart';
+import 'package:ha_duong/utils/constants/color.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:ha_duong/utils/widget/custom_dialog.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
@@ -16,7 +18,7 @@ class SupportScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color(0xffD9D9D9),
+        backgroundColor: const Color(0xffD9D9D9).withValues(alpha: 0.2),
         appBar: AppBar(
           backgroundColor: Colors.white,
           title: Center(
@@ -99,12 +101,16 @@ class SupportScreen extends StatelessWidget {
                                 MaterialPageRoute(
                                   builder: ((context) => RequestStatusScreen(
                                         requestStatus: requestStatus,
+                                        createAt:
+                                            snapshot.data![index].createAt,
                                       )),
                                 ),
                               );
                             },
                             child: SupportItem(
                               model: snapshot.data![index],
+                              isdivider:
+                                  snapshot.data![index] != snapshot.data!.last,
                             ),
                           );
                         },
@@ -146,15 +152,25 @@ class SupportScreen extends StatelessWidget {
                 SizedBox(
                   width: 16.w,
                 ),
-                Container(
-                  width: 164.w,
-                  height: 86.h,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
-                  child: const Image(
-                    image: AssetImage('assets/images/chat.png'),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: ((context) => const ListConversationScreen()),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    width: 164.w,
+                    height: 86.h,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12.r),
+                    ),
+                    child: const Image(
+                      image: AssetImage('assets/images/chat.png'),
+                    ),
                   ),
                 ),
                 const Spacer(),
@@ -198,8 +214,9 @@ class SupportScreen extends StatelessWidget {
 }
 
 class SupportItem extends StatelessWidget {
-  const SupportItem({super.key, required this.model});
+  const SupportItem({super.key, required this.model, required this.isdivider});
   final TechnicalSupportModel model;
+  final bool isdivider;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -232,15 +249,28 @@ class SupportItem extends StatelessWidget {
                         padding: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
                           // common color
-                          color: const Color(0xff005DA4),
+                          color: model.latestStatusType == null
+                              ? const Color(0xff8A8A8A).withValues(alpha: 0.08)
+                              : model.latestStatusType == '0'
+                                  ? const Color(0xff004071)
+                                      .withValues(alpha: 0.08)
+                                  : model.latestStatusType == '1'
+                                      ? const Color(0xff129F20)
+                                          .withValues(alpha: 0.08)
+                                      : const Color(0xffE80707)
+                                          .withValues(alpha: 0.08),
 
                           borderRadius: BorderRadius.circular(6.r),
                         ),
-                        child: Text(
-                            model.latestStatusName ??
-                                model.settingSupportStateName,
+                        child: Text(model.latestStatusName ?? 'chưa xử lý',
                             style: defaultText14M.copyWith(
-                              color: Colors.white,
+                              color: model.latestStatusType == null
+                                  ? const Color(0xff8A8A8A)
+                                  : model.latestStatusType == '0'
+                                      ? const Color(0xff004071)
+                                      : model.latestStatusType == '1'
+                                          ? const Color(0xff129F20)
+                                          : const Color(0xffE80707),
                             )),
                       ),
                     ],
@@ -264,12 +294,16 @@ class SupportItem extends StatelessWidget {
               ),
             ],
           ),
-          Divider(
-            color: const Color(0xffD9D9D9),
-            thickness: 1,
-            indent: 16.w,
-            endIndent: 16.w,
-          )
+          isdivider
+              ? Divider(
+                  color: const Color(0xffD9D9D9),
+                  thickness: 1,
+                  indent: 16.w,
+                  endIndent: 16.w,
+                )
+              : SizedBox(
+                  height: 10.h,
+                ),
         ],
       ),
     );

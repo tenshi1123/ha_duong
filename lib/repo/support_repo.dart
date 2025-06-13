@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:ha_duong/models/info_model.dart';
@@ -101,22 +101,27 @@ class SupportRepo {
     required String fullName,
     required String phone,
     required String note,
+    required List<File> photos,
   }) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');
     dio.options.headers['Authorization'] = 'Bearer $token';
     Response response;
-    response = await dio.post(
-      ApiPath.supportCreate,
-      data: {
-        'apartment_id': int.parse(apartmentId),
-        'setting_support_id': int.parse(settingSupportId),
-        'setting_support_state_id': int.parse(settingSupportStateId),
-        'full_name': fullName,
-        'phone': phone,
-        'note': note,
-      },
+    List<MultipartFile> photoFiles = await Future.wait(
+      photos.map(
+        (file) => MultipartFile.fromFile(file.path),
+      ),
     );
+    final formData = FormData.fromMap({
+      'apartment_id': int.parse(apartmentId),
+      'setting_support_id': int.parse(settingSupportId),
+      'setting_support_state_id': int.parse(settingSupportStateId),
+      'full_name': fullName,
+      'phone': phone,
+      'note': note,
+      'files[]': photoFiles, // 👈 Key dạng mảng (tùy theo server)
+    });
+    response = await dio.post(ApiPath.supportCreate, data: formData);
     return response.data['type'] == 'success';
   }
 }

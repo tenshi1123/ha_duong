@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import '../utils/constants/api_path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -43,22 +44,19 @@ class LoginRepo {
     return response.data['data']["refresh_token"];
   }
 
-  Future<String> getToken() async {
-    final response = await Dio()
-        .get('https://61df53d20f3bdb0017934a35.mockapi.io/se06/swaper');
-    String mocktoken = response.data[0]['token'].toString();
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('token', mocktoken);
-    return mocktoken;
-  }
-
-  Future pushOnesignalId(String id) async {
+  Future pushOnesignalId(
+      {required String apatmentId, required String onesignalId}) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');
     var formData = FormData.fromMap({
-      'onesignal_id': id,
+      'apartment_id': apatmentId,
+      'onesignal_id': onesignalId,
     });
-
+    dio.interceptors.add(LogInterceptor(
+      responseBody: true,
+      requestBody: true,
+      logPrint: (obj) => debugPrint('📦 $obj'),
+    ));
     if (token != null) {
       dio.options.headers['Authorization'] = 'Bearer $token';
       try {
