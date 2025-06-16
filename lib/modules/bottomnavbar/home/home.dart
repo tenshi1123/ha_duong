@@ -26,11 +26,29 @@ class _HomeScreenState extends State<HomeScreen> {
   final controller3 = PageController(viewportFraction: 0.75, keepPage: true);
   late InfoModel infoHomeModel;
   late ApartmentModel selectedApartment;
+  String selectedCategoryId = "1";
+  List<PostModel> posts = [];
   @override
   void initState() {
     super.initState();
     infoHomeModel = widget.infoHomeModel;
     selectedApartment = widget.infoHomeModel.listApartment[0];
+    fetchPostsByCategory(selectedCategoryId);
+  }
+
+  Future<void> fetchPostsByCategory(String categoryId) async {
+    setState(() {
+      selectedCategoryId = categoryId;
+    });
+
+    // Replace this with your actual API URL
+    List<PostModel> postModel = await HomeRepo().changeCategory(
+        apartmentId: widget.infoHomeModel.listApartment[0].id,
+        categoryId: categoryId);
+
+    setState(() {
+      posts = postModel;
+    });
   }
 
   @override
@@ -252,6 +270,89 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: defaultText16B,
               ),
             ),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Row(
+                children: infoHomeModel.listCategory.map((cat) {
+                  final bool isSelected = cat.id == selectedCategoryId;
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: ChoiceChip(
+                      label: Text(cat.name),
+                      selected: isSelected,
+                      onSelected: (_) => fetchPostsByCategory(cat.id),
+                      selectedColor: Colors.blue.shade50,
+                      labelStyle: TextStyle(
+                        color: isSelected ? Colors.blue : Colors.grey[700],
+                        fontWeight:
+                            isSelected ? FontWeight.bold : FontWeight.normal,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          color:
+                              isSelected ? Colors.blue : Colors.grey.shade300,
+                        ),
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      backgroundColor: Colors.white,
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+            const SizedBox(height: 12),
+            // ConstrainedBox(
+            //   constraints: const BoxConstraints(
+            //     maxHeight: 100,
+            //   ),
+            //   child: GridView.builder(
+            //     padding: const EdgeInsets.symmetric(horizontal: 16),
+            //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            //       crossAxisCount: 2,
+            //       mainAxisSpacing: 12,
+            //       crossAxisSpacing: 12,
+            //       childAspectRatio: 0.9,
+            //     ),
+            //     itemCount: posts.length,
+            //     itemBuilder: (_, index) {
+            //       final post = posts[index];
+            //       return Column(
+            //         crossAxisAlignment: CrossAxisAlignment.start,
+            //         children: [
+            //           ClipRRect(
+            //             borderRadius: BorderRadius.only(
+            //               topLeft: Radius.circular(16.r),
+            //               bottomLeft: Radius.circular(16.r),
+            //             ),
+            //             child: SizedBox(
+            //               height: 206.h,
+            //               width: 375.w,
+            //               child: PageView.builder(
+            //                 padEnds: false,
+            //                 controller: controller3,
+            //                 itemCount: infoHomeModel.listPost.length,
+            //                 itemBuilder: (_, index) {
+            //                   return PostItem(
+            //                     postModel: infoHomeModel.listPost[index],
+            //                   );
+            //                 },
+            //               ),
+            //             ),
+            //           ),
+            //           const SizedBox(height: 6),
+            //           Text(
+            //             post.name,
+            //             maxLines: 2,
+            //             overflow: TextOverflow.ellipsis,
+            //             style: const TextStyle(
+            //                 fontSize: 14, fontWeight: FontWeight.w500),
+            //           ),
+            //         ],
+            //       );
+            //     },
+            //   ),
+            // ),
             Padding(
               padding: EdgeInsets.only(left: 20.w, right: 20.w),
               child: SizedBox(
@@ -271,40 +372,42 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: PageView.builder(
                           padEnds: false,
                           controller: controller3,
-                          itemCount: infoHomeModel.listPost.length,
+                          itemCount: posts.length,
                           itemBuilder: (_, index) {
                             return PostItem(
-                              postModel: infoHomeModel.listPost[index],
+                              postModel: posts[index],
                             );
                           },
                         ),
                       ),
                     ),
-                    SmoothPageIndicator(
-                      controller: controller3,
-                      count: infoHomeModel.listPost.length,
-                      effect: CustomizableEffect(
-                        activeDotDecoration: DotDecoration(
-                          width: 20.w,
-                          height: 8.h,
-                          color: Colors.indigo,
-                          borderRadius: BorderRadius.circular(24),
-                        ),
-                        dotDecoration: DotDecoration(
-                          width: 8.w,
-                          height: 8.h,
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(16),
-                          verticalOffset: 0,
-                        ),
-                        spacing: 6.0,
-                      ),
-                      onDotClicked: (index) {
-                        controller2.animateToPage(index,
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut);
-                      },
-                    ),
+                    infoHomeModel.listPost.length < 3
+                        ? const SizedBox()
+                        : SmoothPageIndicator(
+                            controller: controller3,
+                            count: 3,
+                            effect: CustomizableEffect(
+                              activeDotDecoration: DotDecoration(
+                                width: 20.w,
+                                height: 8.h,
+                                color: Colors.indigo,
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                              dotDecoration: DotDecoration(
+                                width: 8.w,
+                                height: 8.h,
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(16),
+                                verticalOffset: 0,
+                              ),
+                              spacing: 6.0,
+                            ),
+                            onDotClicked: (index) {
+                              controller2.animateToPage(index,
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeInOut);
+                            },
+                          ),
                   ],
                 ),
               ),

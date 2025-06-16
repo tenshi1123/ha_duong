@@ -143,4 +143,22 @@ class HomeRepo {
     }
     return true;
   }
+
+  Future<List<PostModel>> changeCategory(
+      {required String apartmentId, required String categoryId}) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+    dio.options.headers['Authorization'] = 'Bearer $token';
+    Response response;
+    response = await dio.post(
+      ApiPath.changeCategory,
+      data: {
+        'apartment_id': int.parse(apartmentId),
+        'category_id': int.parse(categoryId),
+      },
+    );
+    return (response.data['data']['post'] as List)
+        .map((e) => PostModel.fromJson(e))
+        .toList();
+  }
 }

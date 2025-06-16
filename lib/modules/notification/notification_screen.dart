@@ -99,10 +99,10 @@ class _NotificationScreenState extends State<NotificationScreen>
 
   Widget _buildTabs() {
     return SizedBox(
-      height: 50,
+      height: 56.h,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
         itemCount: _notiModel.listNotiType.length,
         separatorBuilder: (_, __) => const SizedBox(width: 8),
         itemBuilder: (_, index) {
@@ -115,7 +115,7 @@ class _NotificationScreenState extends State<NotificationScreen>
               });
             },
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
               decoration: BoxDecoration(
                 color: isSelected
                     ? Colors.white

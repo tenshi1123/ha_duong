@@ -23,7 +23,6 @@ class _ExtensionScreenState extends State<ExtensionScreen> {
 
   Future<void> fetchData() async {
     try {
-      // Gọi API ở đây - thay thế bằng logic thật của bạn
       final response = await HomeRepo().getUtilities(widget.id);
 
       // Cập nhật state sau khi có dữ liệu
