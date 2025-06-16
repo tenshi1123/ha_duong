@@ -1,10 +1,12 @@
+import 'package:ha_duong/models/chat_model.dart';
+import 'package:ha_duong/utils/constants/color.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DetailNotiScreen extends StatefulWidget {
-  const DetailNotiScreen({super.key});
-
+  const DetailNotiScreen({super.key, required this.notiModel});
+  final NotiValueModel notiModel;
   @override
   State<DetailNotiScreen> createState() => _DetailNotiScreenState();
 }
@@ -34,17 +36,24 @@ class _DetailNotiScreenState extends State<DetailNotiScreen>
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: const Color(0xff273D8C),
+        backgroundColor: Colors.white,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
+          icon: Icon(Icons.arrow_back_ios_new, color: keyBlack),
           onPressed: () {
             Navigator.of(context).pop(false);
           },
         ),
         title: Text(
           'Chi tiết thông báo',
-          style: defaultText18B.copyWith(
-            color: Colors.white,
+          style: defaultText18B,
+        ),
+        centerTitle: true,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1),
+          child: Divider(
+            height: 1,
+            thickness: 1,
+            color: Colors.grey.shade300,
           ),
         ),
       ),
@@ -59,6 +68,7 @@ class _DetailNotiScreenState extends State<DetailNotiScreen>
             //   width: 343.w,
             //   fit: BoxFit.fill,
             // ),
+
             Text(
               'Thông báo nhân viên kỹ thuật phục vụ yêu cầu hỗ trợ',
               style: defaultText16B,

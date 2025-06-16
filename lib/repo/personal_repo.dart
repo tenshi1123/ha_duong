@@ -78,7 +78,7 @@ class PersonalRepo {
         'phone': phone,
         'email': email,
         'dob': dob,
-        'files[]': photoFiles, // 👈 Key dạng mảng (tùy theo server)
+        'files[]': photoFiles,
       });
       // type, 0: Thêm thành viên, 1: Chỉnh sửa thông tin thành viên, 2: Sửa thông tin chủ hộ
       // mỗi type một api khác nhau

@@ -1,0 +1,2 @@
+E:/project/ha_duong/android/app/.cxx/Debug/p475r2n6/x86/CMakeFiles/edit_cache.dir
+E:/project/ha_duong/android/app/.cxx/Debug/p475r2n6/x86/CMakeFiles/rebuild_cache.dir

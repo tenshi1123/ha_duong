@@ -22,6 +22,7 @@ class ApartmentProfile extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: const Text('Hồ sơ căn hộ'),
+        centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new),
           onPressed: () {

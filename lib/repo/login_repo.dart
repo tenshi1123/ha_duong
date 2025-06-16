@@ -46,25 +46,23 @@ class LoginRepo {
 
   Future pushOnesignalId(
       {required String apatmentId, required String onesignalId}) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? token = prefs.getString('token');
-    var formData = FormData.fromMap({
-      'apartment_id': apatmentId,
-      'onesignal_id': onesignalId,
-    });
+    // var formData = FormData.fromMap({
+    //   'apartment_id': apatmentId,
+    //   'onesignal_id': onesignalId,
+    // });
     dio.interceptors.add(LogInterceptor(
       responseBody: true,
       requestBody: true,
       logPrint: (obj) => debugPrint('📦 $obj'),
     ));
-    if (token != null) {
-      dio.options.headers['Authorization'] = 'Bearer $token';
-      try {
-        await dio.post(ApiPath.pushOnsignalId, data: formData);
-      } on DioException {
-        return false;
-      }
-    }
+    dio.options.headers['Token'] = 'BMSHD123456789';
+    await dio.post(
+      ApiPath.pushOnsignalId,
+      data: jsonEncode({
+        'apartment_id': apatmentId,
+        'onesignal_id': onesignalId,
+      }),
+    );
   }
 
   Future deleteOnesignalId(String id) async {

@@ -55,6 +55,7 @@ class _BillScreenState extends State<BillScreen> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           title: const Center(child: Text('Hoá đơn')),
+          centerTitle: true,
           bottom: TabBar(
             labelColor: const Color(0xff0F2645), // Màu chữ tab khi được chọn
             unselectedLabelColor: Colors.grey, // Màu chữ tab không được chọn

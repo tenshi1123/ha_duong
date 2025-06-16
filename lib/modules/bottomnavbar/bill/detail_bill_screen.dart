@@ -37,9 +37,8 @@ class DetailBillScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Center(
-          child: Text('Chi tiết hoá đơn        '),
-        ),
+        title: const Text('Chi tiết hoá đơn'),
+        centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
           onPressed: () {

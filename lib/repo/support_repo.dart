@@ -119,7 +119,7 @@ class SupportRepo {
       'full_name': fullName,
       'phone': phone,
       'note': note,
-      'files[]': photoFiles, // 👈 Key dạng mảng (tùy theo server)
+      'files[]': photoFiles,
     });
     response = await dio.post(ApiPath.supportCreate, data: formData);
     return response.data['type'] == 'success';

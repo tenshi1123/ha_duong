@@ -145,6 +145,7 @@ class _RequestScreenState extends State<RequestScreen>
                   builder: ((context) => RequestStatusScreen(
                         requestStatus: requestStatus,
                         createAt: model.createAt,
+                        technicalSupportModel: model,
                       )),
                 ),
               );

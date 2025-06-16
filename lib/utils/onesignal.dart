@@ -1,13 +1,11 @@
+import 'package:ha_duong/repo/login_repo.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-import '../repo/login_repo.dart';
 
 const oneSignalAppId = "";
 
 Future<void> initOneSignal() async {
   OneSignal.initialize('de0e64c9-755d-49f3-a46c-c37b494cbfe2');
   OneSignal.Notifications.requestPermission(true).then((value) {});
-  var onesignalId = await OneSignal.User.getOnesignalId();
-  //await LoginRepo().pushOnesignalId(onesignalId ?? '');
 }
 
 void registerOneSignalEventListener({

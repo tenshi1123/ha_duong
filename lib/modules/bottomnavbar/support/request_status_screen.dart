@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ha_duong/models/suport_model.dart';
@@ -6,8 +8,12 @@ import 'package:ha_duong/utils/constants/styles.dart';
 class RequestStatusScreen extends StatelessWidget {
   final List<RequestStatusModel> requestStatus;
   final String createAt;
+  final TechnicalSupportModel technicalSupportModel;
   const RequestStatusScreen(
-      {super.key, required this.requestStatus, required this.createAt});
+      {super.key,
+      required this.requestStatus,
+      required this.createAt,
+      required this.technicalSupportModel});
 
   @override
   Widget build(BuildContext context) {
@@ -31,23 +37,90 @@ class RequestStatusScreen extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
         ),
-        child: Column(
-          children: requestStatus.isNotEmpty
-              ? List.generate(requestStatus.length, (index) {
-                  final step = requestStatus[index];
-                  return _buildStepItem(step,
-                      isLast: index == requestStatus.length - 1);
-                })
-              : [
-                  _buildStepItem(
-                    RequestStatusModel(
-                      name: 'Tạo yêu cầu',
-                      createAt: createAt,
-                      type: '1',
-                    ),
-                    isLast: true,
+        child: SingleChildScrollView(
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            RichText(
+              text: TextSpan(
+                text: 'Người gửi : ',
+                style: defaultText14M.copyWith(
+                  color: const Color(0xff8A8A8A).withValues(alpha: 0.8),
+                ),
+                children: [
+                  TextSpan(
+                    text: technicalSupportModel.fullName,
+                    style: defaultText14M,
                   ),
                 ],
+              ),
+            ),
+            RichText(
+              text: TextSpan(
+                text: 'Yêu cầu : ',
+                style: defaultText14M.copyWith(
+                  color: const Color(0xff8A8A8A).withValues(alpha: 0.8),
+                ),
+                children: [
+                  TextSpan(
+                    text: technicalSupportModel.settingSupportName,
+                    style: defaultText14M,
+                  ),
+                ],
+              ),
+            ),
+            RichText(
+              text: TextSpan(
+                text: 'Tình trạng : ',
+                style: defaultText14M.copyWith(
+                  color: const Color(0xff8A8A8A).withValues(alpha: 0.8),
+                ),
+                children: [
+                  TextSpan(
+                    text: technicalSupportModel.settingSupportStateName,
+                    style: defaultText14M,
+                  ),
+                ],
+              ),
+            ),
+            RichText(
+              text: TextSpan(
+                text: 'Note : ',
+                style: defaultText14M.copyWith(
+                  color: const Color(0xff8A8A8A).withValues(alpha: 0.8),
+                ),
+                children: [
+                  TextSpan(
+                    text: technicalSupportModel.note,
+                    style: defaultText14M,
+                  ),
+                ],
+              ),
+            ),
+            _buildImageContent(technicalSupportModel.img),
+            Padding(
+              padding: EdgeInsets.only(bottom: 16.h, top: 6.h),
+              child: Text(
+                'Tiến trình xử lý:',
+                style: defaultText14M,
+              ),
+            ),
+            ...requestStatus.isNotEmpty
+                ? List.generate(requestStatus.length, (index) {
+                    final step = requestStatus[index];
+                    return _buildStepItem(step,
+                        isLast: index == requestStatus.length - 1);
+                  })
+                : [
+                    _buildStepItem(
+                      RequestStatusModel(
+                        name: 'Tạo yêu cầu',
+                        createAt: createAt,
+                        type: '1',
+                      ),
+                      isLast: true,
+                    ),
+                  ],
+          ]),
         ),
         //  Column(
         //   children: List.generate(requestStatus.length, (index) {
@@ -124,4 +197,41 @@ class StatusStep {
 
   StatusStep(this.title, this.time,
       {this.isCurrent = false, this.isError = false});
+}
+
+Widget _buildImageContent(String content) {
+  List<String> imageUrls = List<String>.from(json.decode(content));
+  if (imageUrls.isEmpty) {
+    return const SizedBox();
+  } else if (imageUrls.length == 1) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(12),
+      child: Image.network(
+        imageUrls[0],
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) => const Icon(Icons.error),
+      ),
+    );
+  }
+
+  return GridView.builder(
+    shrinkWrap: true,
+    physics: const NeverScrollableScrollPhysics(),
+    itemCount: imageUrls.length,
+    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 2, // hoặc 3 tùy bố cục bạn muốn
+      crossAxisSpacing: 8,
+      mainAxisSpacing: 8,
+    ),
+    itemBuilder: (context, index) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Image.network(
+          imageUrls[index],
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) => const Icon(Icons.error),
+        ),
+      );
+    },
+  );
 }

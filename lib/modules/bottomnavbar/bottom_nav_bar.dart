@@ -4,6 +4,7 @@ import "package:ha_duong/models/info_model.dart";
 import "package:ha_duong/modules/bottomnavbar/home/home.dart";
 import "package:flutter/material.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
+import "package:ha_duong/repo/login_repo.dart";
 import "package:ha_duong/utils/onesignal.dart";
 import "package:onesignal_flutter/onesignal_flutter.dart";
 import "package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart";
@@ -34,6 +35,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   Future<void> setupOneSignal() async {
     await initOneSignal();
+    var onesignalId = await OneSignal.User.getOnesignalId();
+    await LoginRepo().pushOnesignalId(
+        apatmentId: widget.infoHomeModel.listApartment[0].id,
+        onesignalId: onesignalId ?? '');
     if (Platform.isAndroid) {
       OneSignal.Notifications.addClickListener((event) {});
     } else {

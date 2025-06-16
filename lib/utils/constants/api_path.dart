@@ -41,6 +41,15 @@ class ApiPath {
 
   static const String listPhuongTien =
       '$baseUrl/cudan/apartment/list_phuong_tien';
+  //chat
+  static const String homeChat = '$baseUrl/cudan/chat';
+  static const String loadMore =
+      '$baseUrl/cudan/chat/load_content_chat_messages';
+  static const String sendChat = '$baseUrl/cudan/chat/send_chat_messages';
+  static const String sendChatImg = '$baseUrl/cudan/chat/send_chat_img';
+  // thông báo
+  static const String notification = '$baseUrl/cudan/notification';
+  static const String detailNoti = '$baseUrl/cudan/notification/detail';
   //Gửi thông tin onesignal id
   static const String pushOnsignalId = '$baseUrl/cudan/onesignal';
   //Xóa thông tin onesignal id

@@ -3,6 +3,7 @@ class TechnicalSupportModel {
   final String fullName;
   final String phone;
   final String note;
+  final String img;
   final String createAt;
   final String settingSupportName;
   final String settingSupportStateName;
@@ -13,6 +14,7 @@ class TechnicalSupportModel {
     required this.fullName,
     required this.phone,
     required this.note,
+    required this.img,
     required this.createAt,
     required this.settingSupportName,
     required this.settingSupportStateName,
@@ -25,6 +27,7 @@ class TechnicalSupportModel {
       fullName: json['full_name'] ?? '',
       phone: json['phone'] ?? '',
       note: json['note'] ?? '',
+      img: json['img'] ?? "[]",
       createAt: json['created_at'] ?? '',
       settingSupportName: json['setting_support_name'] ?? '',
       settingSupportStateName: json['setting_support_state_name'] ?? '',

@@ -1,5 +1,7 @@
+import 'package:ha_duong/models/chat_model.dart';
 import 'package:ha_duong/models/info_model.dart';
 import 'package:ha_duong/modules/bottomnavbar/bill/detail_bill_screen.dart';
+import 'package:ha_duong/repo/chat_noti_repo.dart';
 import 'package:ha_duong/repo/home_repo.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:flutter/material.dart';
@@ -92,12 +94,15 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             const Spacer(),
                             InkWell(
-                              onTap: () {
+                              onTap: () async {
+                                NotificationModel notimodel = await ChatRepo()
+                                    .getHomeNoti(selectedApartment.id);
                                 pushWithoutNavBar(
                                   context,
                                   MaterialPageRoute(
-                                    builder: ((context) =>
-                                        const NotificationScreen()),
+                                    builder: ((context) => NotificationScreen(
+                                          notiModel: notimodel,
+                                        )),
                                   ),
                                 );
                               },
