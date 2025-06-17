@@ -39,7 +39,7 @@ class ApartmentProfile extends StatelessWidget {
             ),
             _ApartmentItem(residentModel),
             Divider(
-              color: const Color(0xffE6E6E6),
+              color: const Color(0xffF0F0F0),
               thickness: 6,
               height: 24.h,
             ),
@@ -107,7 +107,7 @@ class _ApartmentItem extends StatelessWidget {
         ),
         infoItem(title: 'Họ và tên', info: residentModel.fullName),
         Divider(
-          color: const Color(0xffE6E6E6),
+          color: const Color(0xffF0F0F0),
           thickness: 1,
           endIndent: 16.w,
           indent: 16.w,
@@ -115,7 +115,7 @@ class _ApartmentItem extends StatelessWidget {
         ),
         infoItem(title: 'Số định danh', info: residentModel.idCard),
         Divider(
-          color: const Color(0xffE6E6E6),
+          color: const Color(0xffF0F0F0),
           thickness: 1,
           endIndent: 16.w,
           indent: 16.w,
@@ -123,7 +123,7 @@ class _ApartmentItem extends StatelessWidget {
         ),
         infoItem(title: 'Ngày sinh', info: residentModel.dob),
         Divider(
-          color: const Color(0xffE6E6E6),
+          color: const Color(0xffF0F0F0),
           thickness: 1,
           endIndent: 16.w,
           indent: 16.w,
@@ -131,7 +131,7 @@ class _ApartmentItem extends StatelessWidget {
         ),
         infoItem(title: 'Số điện thoại', info: residentModel.phone),
         Divider(
-          color: const Color(0xffE6E6E6),
+          color: const Color(0xffF0F0F0),
           thickness: 1,
           endIndent: 16.w,
           indent: 16.w,
@@ -139,7 +139,7 @@ class _ApartmentItem extends StatelessWidget {
         ),
         infoItem(title: 'Email', info: residentModel.email),
         Divider(
-          color: const Color(0xffE6E6E6),
+          color: const Color(0xffF0F0F0),
           thickness: 1,
           endIndent: 16.w,
           indent: 16.w,
@@ -184,7 +184,7 @@ class _ApartmentInfo extends StatelessWidget {
         ),
         infoItem(title: 'Số nhà ', info: model.name),
         Divider(
-          color: const Color(0xffE6E6E6),
+          color: const Color(0xffF0F0F0),
           thickness: 1,
           endIndent: 16.w,
           indent: 16.w,
@@ -192,7 +192,7 @@ class _ApartmentInfo extends StatelessWidget {
         ),
         infoItem(title: 'Tầng', info: model.numberFloors),
         Divider(
-          color: const Color(0xffE6E6E6),
+          color: const Color(0xffF0F0F0),
           thickness: 1,
           endIndent: 16.w,
           indent: 16.w,
@@ -200,7 +200,7 @@ class _ApartmentInfo extends StatelessWidget {
         ),
         infoItem(title: 'Diện tích mặt sàn', info: '${model.acreage}m2'),
         Divider(
-          color: const Color(0xffE6E6E6),
+          color: const Color(0xffF0F0F0),
           thickness: 1,
           endIndent: 16.w,
           indent: 16.w,
@@ -208,7 +208,7 @@ class _ApartmentInfo extends StatelessWidget {
         ),
         infoItem(title: 'Tình trạng', info: model.statusText),
         Divider(
-          color: const Color(0xffE6E6E6),
+          color: const Color(0xffF0F0F0),
           thickness: 1,
           endIndent: 16.w,
           indent: 16.w,
@@ -251,7 +251,7 @@ class _FamilyMemberTile extends StatelessWidget {
           vertical: 10.h,
         ),
         decoration: BoxDecoration(
-          border: Border.all(color: const Color(0xffE6E6E6), width: 1),
+          border: Border.all(color: const Color(0xffF0F0F0), width: 1),
           borderRadius: BorderRadius.circular(8),
           color: Colors.white,
           // boxShadow: const [

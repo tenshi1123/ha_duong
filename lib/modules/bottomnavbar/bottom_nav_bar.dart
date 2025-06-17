@@ -236,8 +236,9 @@ Widget customNavBarWithCenterCircle(BuildContext context, NavBarConfig config) {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: List.generate(config.items.length, (index) {
-              if (index == 2)
+              if (index == 2) {
                 return SizedBox(width: 64.w); // chừa chỗ icon giữa
+              }
               final item = config.items[index];
               final isSelected = config.selectedIndex == index;
               return GestureDetector(

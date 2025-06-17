@@ -11,7 +11,6 @@ import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../../models/apartment_model.dart';
 import '../../notification/notification_screen.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.infoHomeModel});
@@ -127,9 +126,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Image(
                                 image:
                                     const AssetImage('assets/images/bell.png'),
-                                height: 24.h,
+                                //height: 24.h,
                                 width: 24.w,
-                                fit: BoxFit.fill,
+                                fit: BoxFit.fitWidth,
                               ),
                             ),
                           ],

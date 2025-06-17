@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ha_duong/models/suport_model.dart';
 import 'package:ha_duong/repo/support_repo.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
@@ -78,49 +79,97 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
                       child: Form(
                         key: _formKey,
                         child: Padding(
-                          padding: const EdgeInsets.all(16),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 16.w, vertical: 16.h),
                           child: Column(
                             children: [
                               buildSection(
-                                icon: Icons.sync,
+                                icon: 'assets/icons/tinh_trang.svg',
                                 title: 'Tình trạng',
-                                child: DropdownButtonFormField<
-                                    SettingSupportState>(
-                                  decoration: const InputDecoration(
-                                    labelText: 'Tình trạng',
-                                    border: OutlineInputBorder(),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Color(
-                                            0xff8A8A8A), // Màu viền khi focus
-                                        width: 1.5,
-                                      ),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        RichText(
+                                          text: TextSpan(
+                                            text: 'Tình trạng ',
+                                            style: defaultText14M.copyWith(
+                                                color: const Color(0xff8A8A8A)),
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                text: '*',
+                                                style: defaultText14B.copyWith(
+                                                  color:
+                                                      const Color(0xffE80707),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                  //value: selectedStatus,
-                                  hint: const Text('Tình trạng của quý khách'),
-                                  items: statuses
-                                      .map((status) => DropdownMenuItem(
-                                            value: status,
-                                            child: Text(status.name),
-                                          ))
-                                      .toList(),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      selectedStatus = value;
-                                    });
-                                  },
-                                  validator: (value) => value == null
-                                      ? 'Vui lòng chọn tình trạng'
-                                      : null,
+                                    SizedBox(
+                                      height: 10.h,
+                                    ),
+                                    DropdownButtonFormField<
+                                        SettingSupportState>(
+                                      decoration: const InputDecoration(
+                                        //labelText: 'Tình trạng',
+                                        border: OutlineInputBorder(),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Color(
+                                                0xff8A8A8A), // Màu viền khi focus
+                                            width: 1.5,
+                                          ),
+                                        ),
+                                      ),
+                                      //value: selectedStatus,
+                                      hint: const Text(
+                                          'Tình trạng của quý khách'),
+                                      items: statuses
+                                          .map((status) => DropdownMenuItem(
+                                                value: status,
+                                                child: Text(status.name),
+                                              ))
+                                          .toList(),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedStatus = value;
+                                        });
+                                      },
+                                      validator: (value) => value == null
+                                          ? 'Vui lòng chọn tình trạng'
+                                          : null,
+                                    ),
+                                  ],
                                 ),
                               ),
                               const SizedBox(height: 16),
                               buildSection(
-                                icon: Icons.person_outline,
+                                icon: 'assets/icons/info_icon.svg',
                                 title: 'Thông tin khách hàng',
                                 child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+                                    RichText(
+                                      text: TextSpan(
+                                        text: 'Người liên hệ ',
+                                        style: defaultText14M.copyWith(
+                                            color: const Color(0xff8A8A8A)),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                            text: '*',
+                                            style: defaultText14B.copyWith(
+                                              color: const Color(0xffE80707),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 12.h,
+                                    ),
                                     TextFormField(
                                       controller: _contactController,
                                       decoration: const InputDecoration(
@@ -131,13 +180,36 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
                                             width: 1.5,
                                           ),
                                         ),
-                                        labelText: 'Người liên hệ *',
-                                        border: OutlineInputBorder(),
+
+                                        //labelText: 'Người liên hệ *',
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Color(
+                                                0xff8A8A8A), // Màu viền khi focus
+                                            width: 1,
+                                          ),
+                                        ),
                                       ),
                                       validator: (value) =>
                                           value == null || value.isEmpty
                                               ? 'Bắt buộc nhập'
                                               : null,
+                                    ),
+                                    SizedBox(height: 20.h),
+                                    RichText(
+                                      text: TextSpan(
+                                        text: 'Số điện thoại ',
+                                        style: defaultText14M.copyWith(
+                                            color: const Color(0xff8A8A8A)),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                            text: '*',
+                                            style: defaultText14B.copyWith(
+                                              color: const Color(0xffE80707),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                     const SizedBox(height: 12),
                                     TextFormField(
@@ -150,7 +222,6 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
                                             width: 1.5,
                                           ),
                                         ),
-                                        labelText: 'Số điện thoại *',
                                         border: OutlineInputBorder(),
                                       ),
                                       keyboardType: TextInputType.phone,
@@ -158,6 +229,22 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
                                           value == null || value.isEmpty
                                               ? 'Bắt buộc nhập'
                                               : null,
+                                    ),
+                                    const SizedBox(height: 20),
+                                    RichText(
+                                      text: TextSpan(
+                                        text: 'Căn hộ ',
+                                        style: defaultText14M.copyWith(
+                                            color: const Color(0xff8A8A8A)),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                            text: '*',
+                                            style: defaultText14B.copyWith(
+                                              color: const Color(0xffE80707),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                     const SizedBox(height: 12),
                                     TextFormField(
@@ -170,7 +257,6 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
                                             width: 1.5,
                                           ),
                                         ),
-                                        labelText: 'Căn hộ *',
                                         border: OutlineInputBorder(),
                                       ),
                                       validator: (value) =>
@@ -183,7 +269,7 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
                               ),
                               const SizedBox(height: 16),
                               buildSection(
-                                icon: Icons.edit_note_outlined,
+                                icon: 'assets/icons/note.svg',
                                 title: 'Ghi chú',
                                 child: TextFormField(
                                   controller: _noteController,
@@ -221,17 +307,12 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
                                   ),
                                 ],
                               ),
-
-                              const SizedBox(height: 20),
-
-                              // Image Grid
+                              SizedBox(height: 10.h),
                               if (_imageFiles.isNotEmpty)
                                 SizedBox(
                                   height: 200,
                                   child: GridView.builder(
                                     shrinkWrap: true,
-                                    // physics:
-                                    //     const NeverScrollableScrollPhysics(),
                                     itemCount: _imageFiles.length,
                                     gridDelegate:
                                         const SliverGridDelegateWithFixedCrossAxisCount(
@@ -354,7 +435,7 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
   }
 
   Widget buildSection(
-      {required IconData icon, required String title, required Widget child}) {
+      {required String icon, required String title, required Widget child}) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -366,12 +447,26 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
         children: [
           Row(
             children: [
-              Icon(icon, color: Colors.blue),
+              Container(
+                  height: 34.dg,
+                  width: 34.dg,
+                  padding: const EdgeInsets.all(7),
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Color(0xffE9EFF4),
+                  ),
+                  child: SvgPicture.asset(icon)),
               const SizedBox(width: 8),
-              Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+              Text(
+                title,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
             ],
           ),
-          const SizedBox(height: 12),
+          Padding(
+            padding: EdgeInsets.only(top: 6.h, bottom: 10.h),
+            child: const Divider(),
+          ),
           child,
         ],
       ),

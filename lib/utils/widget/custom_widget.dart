@@ -171,7 +171,10 @@ class PostItem extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(16.r))),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(16.r),
+                ),
+                border: Border.all(color: const Color(0xfff0f0f0))),
             child: Image.network(
               'https://bms.haduong.com.vn/images/${postModel.img}',
               width: 240.w,
@@ -183,10 +186,13 @@ class PostItem extends StatelessWidget {
             height: 10.h,
           ),
           Expanded(
-            child: Text(
-              postModel.name,
-              style: defaultText14B,
-              maxLines: 2,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 6.w),
+              child: Text(
+                postModel.name,
+                style: defaultText14B,
+                maxLines: 2,
+              ),
             ),
           ),
         ],
@@ -213,35 +219,62 @@ class CustomTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      initialValue: initialValue,
-      controller: controller,
-      validator: validator,
-      style: defaultText16Re,
-      decoration: InputDecoration(
-        labelText: labelText,
-        labelStyle: defaultText14M,
-        hintText: hintText,
-        hintStyle: const TextStyle(
-          color: Colors.grey,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: 16.h,
         ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.grey),
-          borderRadius: BorderRadius.circular(5.0),
+        RichText(
+          text: TextSpan(
+            text: labelText,
+            style: defaultText14M.copyWith(color: const Color(0xff8A8A8A)),
+            children: <TextSpan>[
+              TextSpan(
+                text: ' *',
+                style: defaultText14B.copyWith(
+                  color: const Color(0xffE80707),
+                ),
+              ),
+            ],
+          ),
         ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.blue),
-          borderRadius: BorderRadius.circular(5.0),
+        SizedBox(
+          height: 12.h,
         ),
-        errorBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.red),
-          borderRadius: BorderRadius.circular(5.0),
+        TextFormField(
+          initialValue: initialValue,
+          controller: controller,
+          validator: validator,
+          style: defaultText16Re,
+          decoration: InputDecoration(
+            //labelText: labelText,
+            labelStyle: defaultText14M,
+            hintText: hintText,
+            hintStyle: const TextStyle(
+              color: Colors.grey,
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                  color: const Color(0xff8A8A8A).withValues(alpha: 0.36)),
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide:
+                  const BorderSide(color: Color(0xff8A8A8A), width: 1.5),
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.red),
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.red),
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+          ),
         ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.red),
-          borderRadius: BorderRadius.circular(5.0),
-        ),
-      ),
+      ],
     );
   }
 }
@@ -345,9 +378,18 @@ class _RelationshipDropdownState extends State<RelationshipDropdown> {
     return DropdownButtonFormField<String>(
       value: _selectedValue,
       decoration: InputDecoration(
-        labelText: 'Quan hệ với chủ hộ',
+        // labelText: 'Quan hệ với chủ hộ',
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+              color: const Color(0xff8A8A8A).withValues(alpha: 0.36)),
+          borderRadius: BorderRadius.circular(8.r),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Color(0xff8A8A8A), width: 1.5),
+          borderRadius: BorderRadius.circular(8.r),
         ),
       ),
       validator: (value) {

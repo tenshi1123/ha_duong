@@ -156,13 +156,11 @@ class RequestStatusScreen extends StatelessWidget {
               margin: const EdgeInsets.only(top: 4),
               width: 16,
               height: 16,
-              decoration: BoxDecoration(
-                color: step.type == '0' ? (Colors.blue) : Colors.grey.shade300,
+              decoration: const BoxDecoration(
+                color: Colors.blue,
                 shape: BoxShape.circle,
               ),
-              child: step.type == '0'
-                  ? const Icon(Icons.done, size: 12, color: Colors.white)
-                  : null,
+              child: const Icon(Icons.done, size: 12, color: Colors.white),
             ),
             if (!isLast)
               Container(

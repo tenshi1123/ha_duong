@@ -41,7 +41,7 @@ class RegisteredVehicleScreen extends StatelessWidget {
 // ),
 // const VehicleItem(),
 // Divider(
-//   color: const Color(0xffE6E6E6),
+//   color: const Color(0xffF0F0F0),
 //   thickness: 6,
 //   endIndent: 16.w,
 //   indent: 16.w,
@@ -56,7 +56,7 @@ class VehicleItem extends StatelessWidget {
     return Column(
       children: [
         Divider(
-          color: const Color(0xffE6E6E6),
+          color: const Color(0xffF0F0F0),
           thickness: 6,
           endIndent: 16.w,
           indent: 16.w,
@@ -118,7 +118,7 @@ class VehicleItem extends StatelessWidget {
           info: vehicleModel.fullName,
         ),
         Divider(
-          color: const Color(0xffE6E6E6),
+          color: const Color(0xffF0F0F0),
           thickness: 1,
           endIndent: 16.w,
           indent: 16.w,
@@ -129,7 +129,7 @@ class VehicleItem extends StatelessWidget {
           info: vehicleModel.licensePlates,
         ),
         Divider(
-          color: const Color(0xffE6E6E6),
+          color: const Color(0xffF0F0F0),
           thickness: 1,
           endIndent: 16.w,
           indent: 16.w,
@@ -137,7 +137,7 @@ class VehicleItem extends StatelessWidget {
         ),
         infoItem(title: 'Liên hệ', info: vehicleModel.phone),
         Divider(
-          color: const Color(0xffE6E6E6),
+          color: const Color(0xffF0F0F0),
           thickness: 1,
           endIndent: 16.w,
           indent: 16.w,
@@ -145,7 +145,7 @@ class VehicleItem extends StatelessWidget {
         ),
         infoItem(title: 'Đăng kí từ', info: vehicleModel.createAt),
         Divider(
-          color: const Color(0xffE6E6E6),
+          color: const Color(0xffF0F0F0),
           thickness: 1,
           endIndent: 16.w,
           indent: 16.w,

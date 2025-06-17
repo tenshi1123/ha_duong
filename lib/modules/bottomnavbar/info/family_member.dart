@@ -129,7 +129,7 @@ class FamilyMember extends StatelessWidget {
         ),
         infoItem(title: 'Số định danh', info: model.idCard),
         Divider(
-          color: const Color(0xffE6E6E6),
+          color: const Color(0xffF0F0F0),
           thickness: 1,
           endIndent: 16.w,
           indent: 16.w,
@@ -137,7 +137,7 @@ class FamilyMember extends StatelessWidget {
         ),
         infoItem(title: 'Ngày sinh', info: model.dob),
         Divider(
-          color: const Color(0xffE6E6E6),
+          color: const Color(0xffF0F0F0),
           thickness: 1,
           endIndent: 16.w,
           indent: 16.w,
@@ -145,7 +145,7 @@ class FamilyMember extends StatelessWidget {
         ),
         infoItem(title: 'Số điện thoại', info: model.phone),
         Divider(
-          color: const Color(0xffE6E6E6),
+          color: const Color(0xffF0F0F0),
           thickness: 1,
           endIndent: 16.w,
           indent: 16.w,
@@ -153,7 +153,7 @@ class FamilyMember extends StatelessWidget {
         ),
         infoItem(title: 'Email', info: model.email),
         Divider(
-          color: const Color(0xffE6E6E6),
+          color: const Color(0xffF0F0F0),
           thickness: 1,
           endIndent: 16.w,
           indent: 16.w,

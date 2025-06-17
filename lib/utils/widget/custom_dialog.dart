@@ -169,42 +169,41 @@ class _ChangeChuHoInfoState extends State<ChangeChuHoInfo> {
           ),
           child: Form(
             key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  padding: EdgeInsets.only(left: 16.w, bottom: 10.h, top: 20.h),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(16.r),
-                      topRight: Radius.circular(16.r),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(top: 20.h),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(16.r),
+                        topRight: Radius.circular(16.r),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Image.asset(
+                          'assets/images/personal.png',
+                          width: 34.w,
+                          height: 34.w,
+                          fit: BoxFit.fill,
+                        ),
+                        Text(
+                          'Thay đổi thông tin chủ hộ',
+                          style: defaultText16B,
+                        ),
+                        const CloseButton(
+                          color: Colors.black,
+                        ),
+                      ],
                     ),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Image.asset(
-                        'assets/images/personal.png',
-                        width: 34.w,
-                        height: 34.w,
-                        fit: BoxFit.fill,
-                      ),
-                      Text(
-                        'Thay đổi thông tin chủ hộ',
-                        style: defaultText16B,
-                      ),
-                      const CloseButton(
-                        color: Colors.black,
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-                  child: CustomTextFormField(
+                  CustomTextFormField(
                     labelText: 'Họ và tên',
                     hintText: 'Nhập họ và tên',
                     controller: _nameController,
@@ -215,11 +214,7 @@ class _ChangeChuHoInfoState extends State<ChangeChuHoInfo> {
                       return null;
                     },
                   ),
-                ),
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-                  child: CustomTextFormField(
+                  CustomTextFormField(
                     labelText: 'Số định danh',
                     hintText: 'Nhập Số định danh',
                     controller: _cccdController,
@@ -230,16 +225,33 @@ class _ChangeChuHoInfoState extends State<ChangeChuHoInfo> {
                       return null;
                     },
                   ),
-                ),
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-                  child: TextFormField(
+                  SizedBox(
+                    height: 16.h,
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      text: 'Ngày sinh ',
+                      style: defaultText14M.copyWith(
+                          color: const Color(0xff8A8A8A)),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: '*',
+                          style: defaultText14B.copyWith(
+                            color: const Color(0xffE80707),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 12.h,
+                  ),
+                  TextFormField(
                     style: defaultText14M,
                     controller: _dateController,
                     readOnly: true,
                     decoration: InputDecoration(
-                      labelText: 'Ngày sinh',
+                      //labelText: 'Ngày sinh',
                       labelStyle: const TextStyle(
                         color: Colors.black,
                       ),
@@ -271,11 +283,7 @@ class _ChangeChuHoInfoState extends State<ChangeChuHoInfo> {
                     validator: (value) =>
                         value!.isEmpty ? 'Vui lòng chọn ngày sinh' : null,
                   ),
-                ),
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-                  child: CustomTextFormField(
+                  CustomTextFormField(
                     labelText: 'Số điện thoại',
                     hintText: 'Nhập Số điện thoại',
                     controller: _phoneController,
@@ -286,11 +294,7 @@ class _ChangeChuHoInfoState extends State<ChangeChuHoInfo> {
                       return null;
                     },
                   ),
-                ),
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-                  child: CustomTextFormField(
+                  CustomTextFormField(
                     labelText: 'Email',
                     hintText: 'Nhập Email',
                     controller: _emailController,
@@ -301,110 +305,106 @@ class _ChangeChuHoInfoState extends State<ChangeChuHoInfo> {
                       return null;
                     },
                   ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    if (_formKey.currentState!.validate()) {
-                      showDialog<String>(
-                          context: context,
-                          builder: (BuildContext context) => Dialog(
-                                child: Container(
-                                  height: 166.h,
-                                  width: 343.w,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(20.r),
+                  GestureDetector(
+                    onTap: () {
+                      if (_formKey.currentState!.validate()) {
+                        showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => Dialog(
+                                  child: Container(
+                                    height: 166.h,
+                                    width: 343.w,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(20.r),
+                                      ),
+                                      color: Colors.white,
                                     ),
-                                    color: Colors.white,
-                                  ),
-                                  child: Center(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        // Nút Tải ảnh lên
-                                        buildUploadOption(
-                                          icon: Icons.image_outlined,
-                                          text: "Tải ảnh lên",
-                                          onTap: () {
-                                            // Xử lý tải ảnh lên
-                                            pickImageFromGallery(
-                                              context,
-                                              2,
-                                              name: _nameController.text,
-                                              cccd: _cccdController.text,
-                                              date: _dateController.text,
-                                              phone: _phoneController.text,
-                                              email: _emailController.text,
-                                            );
-                                          },
-                                        ),
-                                        SizedBox(
-                                            width: 56
-                                                .w), // Khoảng cách giữa hai nút
-                                        // Nút Chụp ảnh
-                                        buildUploadOption(
-                                          icon: Icons.camera_alt_outlined,
-                                          text: "Chụp ảnh",
-                                          onTap: () {
-                                            // Xử lý chụp ảnh
-                                            pickImageFromCamera(
-                                              context,
-                                              2,
-                                              name: _nameController.text,
-                                              cccd: _cccdController.text,
-                                              date: _dateController.text,
-                                              phone: _phoneController.text,
-                                              email: _emailController.text,
-                                            );
-                                          },
-                                        ),
-                                      ],
+                                    child: Center(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          // Nút Tải ảnh lên
+                                          buildUploadOption(
+                                            icon: Icons.image_outlined,
+                                            text: "Tải ảnh lên",
+                                            onTap: () {
+                                              // Xử lý tải ảnh lên
+                                              pickImageFromGallery(
+                                                context,
+                                                2,
+                                                name: _nameController.text,
+                                                cccd: _cccdController.text,
+                                                date: _dateController.text,
+                                                phone: _phoneController.text,
+                                                email: _emailController.text,
+                                              );
+                                            },
+                                          ),
+                                          SizedBox(
+                                              width: 56
+                                                  .w), // Khoảng cách giữa hai nút
+                                          // Nút Chụp ảnh
+                                          buildUploadOption(
+                                            icon: Icons.camera_alt_outlined,
+                                            text: "Chụp ảnh",
+                                            onTap: () {
+                                              // Xử lý chụp ảnh
+                                              pickImageFromCamera(
+                                                context,
+                                                2,
+                                                name: _nameController.text,
+                                                cccd: _cccdController.text,
+                                                date: _dateController.text,
+                                                phone: _phoneController.text,
+                                                email: _emailController.text,
+                                              );
+                                            },
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ));
-                    }
-                  },
-                  child: Container(
-                    width: 303.w,
-                    height: 50.h,
-                    margin: EdgeInsets.only(
-                        left: 16.w, bottom: 20.h, top: 10.h, right: 16.w),
-                    constraints: BoxConstraints(maxHeight: 120.h),
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Color(0xFF25AAE1),
-                          Color(0xFF004071),
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        stops: [0.0, 1.0],
+                                ));
+                      }
+                    },
+                    child: Container(
+                      width: 303.w,
+                      height: 50.h,
+                      margin: EdgeInsets.only(
+                          left: 16.w, bottom: 20.h, top: 10.h, right: 16.w),
+                      constraints: BoxConstraints(maxHeight: 120.h),
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(0xFF25AAE1),
+                            Color(0xFF004071),
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          stops: [0.0, 1.0],
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
                       ),
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      child: Center(
+                          child: Text(
+                        'Gửi thông tin',
+                        style: defaultText14B.copyWith(color: Colors.white),
+                      )),
                     ),
-                    child: Center(
-                        child: Text(
-                      'Gửi thông tin',
-                      style: defaultText14B.copyWith(color: Colors.white),
-                    )),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: 16.w,
-                    right: 16.w,
-                    bottom: 16.h,
-                  ),
-                  child: Text(
+                  Text(
                     'Lưu ý: gửi kèm ảnh chụp hồ sơ (vd: Biên bản bàn giao nhà, CCCD ...)',
                     style: defaultText14M.copyWith(
                       color: Colors.red,
                     ),
                   ),
-                ),
-              ],
+                  SizedBox(
+                    height: 20.h,
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -492,9 +492,6 @@ class _AddMemberState extends State<AddMember> {
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 20.h,
-                ),
                 CustomTextFormField(
                   labelText: 'Họ và tên',
                   hintText: 'Nhập họ và tên',
@@ -505,9 +502,6 @@ class _AddMemberState extends State<AddMember> {
                     }
                     return null;
                   },
-                ),
-                SizedBox(
-                  height: 20.h,
                 ),
                 CustomTextFormField(
                   labelText: 'Số định danh',
@@ -521,14 +515,32 @@ class _AddMemberState extends State<AddMember> {
                   },
                 ),
                 SizedBox(
-                  height: 20.h,
+                  height: 16.h,
+                ),
+                RichText(
+                  text: TextSpan(
+                    text: 'Ngày sinh ',
+                    style:
+                        defaultText14M.copyWith(color: const Color(0xff8A8A8A)),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: '*',
+                        style: defaultText14B.copyWith(
+                          color: const Color(0xffE80707),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 12.h,
                 ),
                 TextFormField(
                   style: defaultText14M,
                   controller: _dateController,
                   readOnly: true,
                   decoration: InputDecoration(
-                    labelText: 'Ngày sinh',
+                    //labelText: 'Ngày sinh',
                     labelStyle: const TextStyle(
                       color: Colors.black,
                     ),
@@ -560,9 +572,6 @@ class _AddMemberState extends State<AddMember> {
                   validator: (value) =>
                       value!.isEmpty ? 'Vui lòng chọn ngày sinh' : null,
                 ),
-                SizedBox(
-                  height: 20.h,
-                ),
                 CustomTextFormField(
                   labelText: 'Số điện thoại',
                   hintText: 'Nhập Số điện thoại',
@@ -573,9 +582,6 @@ class _AddMemberState extends State<AddMember> {
                     }
                     return null;
                   },
-                ),
-                SizedBox(
-                  height: 20.h,
                 ),
                 CustomTextFormField(
                   labelText: 'Email',
@@ -589,7 +595,25 @@ class _AddMemberState extends State<AddMember> {
                   },
                 ),
                 SizedBox(
-                  height: 20.h,
+                  height: 16.h,
+                ),
+                RichText(
+                  text: TextSpan(
+                    text: 'Quan hệ với chủ hộ ',
+                    style:
+                        defaultText14M.copyWith(color: const Color(0xff8A8A8A)),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: '*',
+                        style: defaultText14B.copyWith(
+                          color: const Color(0xffE80707),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 12.h,
                 ),
                 RelationshipDropdown(
                   value: _rela,
@@ -599,9 +623,6 @@ class _AddMemberState extends State<AddMember> {
                     });
                     print('Giá trị key đã chọn: $_rela');
                   },
-                ),
-                SizedBox(
-                  height: 20.h,
                 ),
                 GestureDetector(
                   onTap: () {
