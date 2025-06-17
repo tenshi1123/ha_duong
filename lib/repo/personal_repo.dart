@@ -58,12 +58,7 @@ class PersonalRepo {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');
     dio.options.headers['Authorization'] = 'Bearer $token';
-    // in ra log lỗi
-    dio.interceptors.add(LogInterceptor(
-      responseBody: true,
-      requestBody: true,
-      logPrint: (obj) => debugPrint('📦 $obj'),
-    ));
+
     try {
       // Chuyển đổi danh sách File -> List<MultipartFile>
       List<MultipartFile> photoFiles = await Future.wait(

@@ -1,4 +1,3 @@
-import 'package:ha_duong/repo/login_repo.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 const oneSignalAppId = "";

@@ -10,6 +10,9 @@ class App extends StatefulWidget {
   State<App> createState() => _AppState();
 }
 
+final RouteObserver<ModalRoute<void>> routeObserver =
+    RouteObserver<ModalRoute<void>>();
+
 class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
@@ -20,6 +23,7 @@ class _AppState extends State<App> {
       // Use builder only if you need to use library outside ScreenUtilInit context
       builder: (_, child) {
         return MaterialApp(
+          navigatorObservers: [routeObserver],
           locale: const Locale('vi'),
           supportedLocales: const [
             Locale('vi'), // 🇻🇳 Tiếng Việt

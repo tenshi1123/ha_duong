@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:ha_duong/models/info_model.dart';
 import 'package:ha_duong/models/suport_model.dart';
 import 'package:ha_duong/utils/constants/api_path.dart';
@@ -107,20 +108,33 @@ class SupportRepo {
     final String? token = prefs.getString('token');
     dio.options.headers['Authorization'] = 'Bearer $token';
     Response response;
+    // in ra log lỗi
+    dio.interceptors.add(LogInterceptor(
+      responseBody: true,
+      requestBody: true,
+      logPrint: (obj) => debugPrint('📦 $obj'),
+    ));
     List<MultipartFile> photoFiles = await Future.wait(
       photos.map(
         (file) => MultipartFile.fromFile(file.path),
       ),
     );
-    final formData = FormData.fromMap({
+    final Map<String, dynamic> data = {
       'apartment_id': int.parse(apartmentId),
       'setting_support_id': int.parse(settingSupportId),
       'setting_support_state_id': int.parse(settingSupportStateId),
       'full_name': fullName,
       'phone': phone,
       'note': note,
-      'files[]': photoFiles,
-    });
+    };
+
+// Thêm 'files[]' nếu photoFiles không rỗng
+    if (photoFiles.isNotEmpty) {
+      data['files[]'] = photoFiles;
+    }
+
+    final formData = FormData.fromMap(data);
+
     response = await dio.post(ApiPath.supportCreate, data: formData);
     return response.data['type'] == 'success';
   }

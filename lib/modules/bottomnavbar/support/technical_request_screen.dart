@@ -6,12 +6,13 @@ import 'package:ha_duong/models/suport_model.dart';
 import 'package:ha_duong/repo/support_repo.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:ha_duong/utils/widget/custom_dialog.dart';
-import 'package:ha_duong/utils/widget/pick_image.dart';
 import 'package:image_picker/image_picker.dart';
 
 class TechnicalRequestScreen extends StatefulWidget {
-  const TechnicalRequestScreen({super.key, required this.model});
+  const TechnicalRequestScreen(
+      {super.key, required this.model, required this.title});
   final FullRequestModel model;
+  final String title;
   @override
   State<TechnicalRequestScreen> createState() => _TechnicalRequestScreenState();
 }
@@ -58,7 +59,7 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 245, 245, 245),
       appBar: AppBar(
-        title: const Text('Yêu cầu kỹ thuật'),
+        title: Text('Yêu cầu ${widget.title}'),
         backgroundColor: Colors.white,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),

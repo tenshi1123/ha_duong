@@ -15,7 +15,6 @@ class NotificationScreen extends StatefulWidget {
 
 class _NotificationScreenState extends State<NotificationScreen>
     with SingleTickerProviderStateMixin {
-  late TabController _tabController;
   int activeTabIndex = 0;
   int selectedIndex = 0;
   int selectedType = 1;
@@ -25,17 +24,6 @@ class _NotificationScreenState extends State<NotificationScreen>
   void initState() {
     super.initState();
     _notiModel = widget.notiModel;
-
-    _tabController = TabController(
-      length: 2,
-      vsync: this,
-      initialIndex: 0,
-    );
-    _tabController.addListener(() {
-      setState(() {
-        activeTabIndex = _tabController.index;
-      });
-    });
   }
 
   @override

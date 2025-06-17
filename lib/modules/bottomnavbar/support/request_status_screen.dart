@@ -54,6 +54,9 @@ class RequestStatusScreen extends StatelessWidget {
                 ],
               ),
             ),
+            SizedBox(
+              height: 4.h,
+            ),
             RichText(
               text: TextSpan(
                 text: 'Yêu cầu : ',
@@ -67,6 +70,9 @@ class RequestStatusScreen extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
+            SizedBox(
+              height: 4.h,
             ),
             RichText(
               text: TextSpan(
@@ -82,6 +88,9 @@ class RequestStatusScreen extends StatelessWidget {
                 ],
               ),
             ),
+            SizedBox(
+              height: 4.h,
+            ),
             RichText(
               text: TextSpan(
                 text: 'Note : ',
@@ -95,6 +104,9 @@ class RequestStatusScreen extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
+            SizedBox(
+              height: 4.h,
             ),
             _buildImageContent(technicalSupportModel.img),
             Padding(

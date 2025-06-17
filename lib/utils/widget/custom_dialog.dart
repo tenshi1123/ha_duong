@@ -793,6 +793,7 @@ void showPostDialog(
                           MaterialPageRoute(
                             builder: (context) => TechnicalRequestScreen(
                               model: model,
+                              title: post.name,
                             ),
                           ),
                         );
