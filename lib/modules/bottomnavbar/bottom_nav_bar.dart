@@ -161,26 +161,109 @@ class _BottomNavBarState extends State<BottomNavBar> {
     return PersistentTabView(
       controller: _controller,
       tabs: _tabs(),
-      navBarBuilder: (navBarConfig) => SizedBox(
-        // width: 375.w,
-        // height: 80.h,
-        child: Style13BottomNavBar(
-          navBarConfig: navBarConfig,
-          navBarDecoration: const NavBarDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey,
-                blurRadius: 4,
-                offset: Offset(3, 4), // Shadow position
-              ),
-            ],
-          ),
-        ),
+      navBarBuilder: (navBarConfig) => Builder(
+        builder: (context) =>
+            customNavBarWithCenterCircle(context, navBarConfig),
       ),
-      margin: EdgeInsets.only(bottom: 2.h),
-      backgroundColor: Colors.white,
-      //navBarHeight: 55.h,
     );
   }
+}
+
+Widget customNavBarWithCenterCircle(BuildContext context, NavBarConfig config) {
+  return Container(
+    height: 80.h,
+    decoration: const BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(20),
+        topRight: Radius.circular(20),
+      ),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black12,
+          blurRadius: 6,
+          offset: Offset(0, -2),
+        )
+      ],
+    ),
+    child: Stack(
+      clipBehavior: Clip.none,
+      alignment: Alignment.center,
+      children: [
+        // Icon giữa (nổi)
+        Positioned(
+          top: -28.h,
+          child: GestureDetector(
+            onTap: () => config.onItemSelected(2),
+            child: Column(
+              children: [
+                Container(
+                  height: 64.h,
+                  width: 64.w,
+                  decoration: const BoxDecoration(
+                    color: Color(0xff005DA4),
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 8,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Center(
+                    child: config.items[2].icon,
+                  ),
+                ),
+                SizedBox(height: 8.h),
+                Text(
+                  config.items[2].title ?? '',
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    color: config.selectedIndex == 2
+                        ? const Color(0xff005DA4)
+                        : const Color(0xff8A8A8A),
+                    fontWeight: FontWeight.w500,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+
+        // Các icon hai bên
+        Positioned.fill(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: List.generate(config.items.length, (index) {
+              if (index == 2)
+                return SizedBox(width: 64.w); // chừa chỗ icon giữa
+              final item = config.items[index];
+              final isSelected = config.selectedIndex == index;
+              return GestureDetector(
+                onTap: () => config.onItemSelected(index),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    isSelected ? item.icon : item.inactiveIcon,
+                    SizedBox(height: 8.h),
+                    Text(
+                      item.title ?? '',
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: isSelected
+                            ? (item.activeForegroundColor)
+                            : (const Color(0xff8A8A8A)),
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }),
+          ),
+        ),
+      ],
+    ),
+  );
 }

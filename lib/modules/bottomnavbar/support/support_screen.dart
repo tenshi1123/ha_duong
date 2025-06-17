@@ -71,7 +71,7 @@ class _SupportScreenState extends State<SupportScreen> with RouteAware {
         body: RefreshIndicator(
           onRefresh: () async {
             _loadSupportData();
-            setState(() {}); // Gọi lại FutureBuilder
+            setState(() {});
           },
           child: FutureBuilder<List<TechnicalSupportModel>>(
             future: _supportData,
@@ -84,36 +84,163 @@ class _SupportScreenState extends State<SupportScreen> with RouteAware {
                 return const Center(child: Text('Không có dữ liệu'));
               }
 
-              return ListView.builder(
+              final data = snapshot.data!;
+
+              return SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.all(16.w),
-                itemCount: snapshot.data!.length,
-                itemBuilder: (context, index) {
-                  final item = snapshot.data![index];
-                  return InkWell(
-                    onTap: () async {
-                      List<RequestStatusModel> requestStatus =
-                          await SupportRepo().getRequestStatus(item.id);
-                      await pushWithoutNavBar(
-                        context,
-                        MaterialPageRoute(
-                          builder: ((context) => RequestStatusScreen(
-                                requestStatus: requestStatus,
-                                createAt: item.createAt,
-                                technicalSupportModel: item,
-                              )),
+                child: Padding(
+                  padding: EdgeInsets.all(16.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          pushWithoutNavBar(
+                            context,
+                            MaterialPageRoute(
+                              builder: ((context) => RequestScreen(
+                                    id: widget.id,
+                                  )),
+                            ),
+                          );
+                        },
+                        child: Row(
+                          children: [
+                            Text(
+                              'Danh sách hỗ trợ',
+                              style: defaultText16B.copyWith(
+                                color: const Color(0xff383838),
+                              ),
+                            ),
+                            //arrow icon
+                            Container(
+                              margin: EdgeInsets.only(left: 10.w),
+                              // width: 20.w,
+                              // height: 20.h,
+                              padding: const EdgeInsets.all(5),
+                              decoration: const BoxDecoration(
+                                  shape: BoxShape.circle, color: Colors.white),
+                              child: Icon(
+                                Icons.arrow_forward_ios,
+                                color: const Color(0xff383838),
+                                size: 16.w,
+                              ),
+                            )
+                          ],
                         ),
-                      );
-                      // ✅ Sau khi quay lại, reload lại luôn
-                      _loadSupportData();
-                      setState(() {});
-                    },
-                    child: SupportItem(
-                      model: item,
-                      isdivider: index != snapshot.data!.length - 1,
-                    ),
-                  );
-                },
+                      ),
+                      SizedBox(
+                        height: 16.h,
+                      ),
+                      // Danh sách support items
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                        child: ListView.builder(
+                          physics:
+                              const NeverScrollableScrollPhysics(), // Không scroll riêng
+                          shrinkWrap: true, // Cho phép nằm trong Column
+                          itemCount: data.length,
+                          itemBuilder: (context, index) {
+                            final item = data[index];
+                            return InkWell(
+                              onTap: () async {
+                                List<RequestStatusModel> requestStatus =
+                                    await SupportRepo()
+                                        .getRequestStatus(item.id);
+                                await pushWithoutNavBar(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: ((context) => RequestStatusScreen(
+                                          requestStatus: requestStatus,
+                                          createAt: item.createAt,
+                                          technicalSupportModel: item,
+                                        )),
+                                  ),
+                                );
+                                _loadSupportData();
+                                setState(() {});
+                              },
+                              child: SupportItem(
+                                model: item,
+                                isdivider: index != data.length - 1,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+
+                      SizedBox(height: 24.h), // khoảng cách với row phía dưới
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          GestureDetector(
+                            onTap: () async {
+                              ChatModel model =
+                                  await ChatRepo().getHomeChat(widget.id);
+                              pushWithoutNavBar(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ChatScreen(
+                                    avatar: 'assets/images/avatar2.png',
+                                    chatModel: model,
+                                    apartmentId: widget.id,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              width: 150.w,
+                              height: 86.h,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12.r),
+                              ),
+                              child: const Image(
+                                image: AssetImage('assets/images/chat.png'),
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              List<PostModel> department =
+                                  await SupportRepo().getDepartment(widget.id);
+                              if (!context.mounted) return;
+                              showPostDialog(context, department, widget.id);
+                              // pushWithoutNavBar(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: ((context) => RequestScreen(
+                              //           id: id,
+                              //         )),
+                              //   ),
+                              // );
+                            },
+                            child: Container(
+                              width: 150.w,
+                              height: 86.h,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12.r),
+                              ),
+                              child: const Image(
+                                image: AssetImage('assets/images/feedback.png'),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+
+                      // padding cuối
+                    ],
+                  ),
+                ),
               );
             },
           ),

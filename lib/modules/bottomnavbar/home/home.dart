@@ -284,16 +284,20 @@ class _HomeScreenState extends State<HomeScreen> {
                       onSelected: (_) => fetchPostsByCategory(cat.id),
                       selectedColor: Colors.blue.shade50,
                       labelStyle: TextStyle(
-                        color: isSelected ? Colors.blue : Colors.grey[700],
+                        color: isSelected
+                            ? const Color(0xff004071)
+                            : const Color(0xff8A8A8A),
+                        fontSize: 14.sp,
                         fontWeight:
-                            isSelected ? FontWeight.bold : FontWeight.normal,
+                            isSelected ? FontWeight.bold : FontWeight.w600,
                       ),
                       shape: RoundedRectangleBorder(
                         side: BorderSide(
-                          color:
-                              isSelected ? Colors.blue : Colors.grey.shade300,
+                          color: isSelected
+                              ? const Color(0xff004071)
+                              : Colors.grey.shade300,
                         ),
-                        borderRadius: BorderRadius.circular(24),
+                        borderRadius: BorderRadius.circular(10.r),
                       ),
                       backgroundColor: Colors.white,
                     ),
@@ -418,49 +422,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
-//Vội vl không tách widgetwidget
-class NotificationItem extends StatelessWidget {
-  const NotificationItem({super.key, required this.index});
-  final int index;
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () async {
-        if (!await launchUrl(Uri.parse('https://ha_duong.edu.vn/'))) {
-          throw Exception('Could not launch ');
-        }
-      },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 240.w,
-            height: 160.h,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(16.r)),
-              color: Colors.white,
-              image: DecorationImage(
-                image: AssetImage(list[index]),
-                fit: BoxFit.fill,
-              ),
-            ),
-          ),
-          Text(
-            'Đáp án Sách ngữ pháp sơ đồ tư duy Casalinnk',
-            style: defaultText14B,
-          )
-        ],
-      ),
-    );
-  }
-}
-
-List<String> list = [
-  'assets/images/banner.png',
-  'assets/images/banner1.png',
-  'assets/images/banner2.png',
-  'assets/images/banner3.png',
-  'assets/images/banner4.png',
-  'assets/images/banner5.png',
-];
