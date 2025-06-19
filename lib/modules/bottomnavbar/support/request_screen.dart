@@ -62,6 +62,11 @@ class _RequestScreenState extends State<RequestScreen>
         ),
         bottom: TabBar(
           controller: _tabController,
+          labelColor: const Color(0xff0F2645), // Màu chữ tab khi được chọn
+          unselectedLabelColor: Colors.grey, // Màu chữ tab không được chọn
+          indicatorColor:
+              const Color(0xff0F2645), // Màu gạch dưới khi được chọn
+          indicatorWeight: 2.0,
           tabs: const [
             Tab(text: 'Đang xử lý'),
             Tab(text: 'Hoàn tất'),
@@ -82,10 +87,10 @@ class _RequestScreenState extends State<RequestScreen>
                 data.listHoanTat.isEmpty
                     ? const Center(child: Text('Không có yêu cầu đã hoàn tất'))
                     : ListView.builder(
-                        itemCount: data.listDangXuly.length,
+                        itemCount: data.listHoanTat.length,
                         itemBuilder: (context, index) {
                           return _buildRequestCard(
-                              model: data.listDangXuly[index]);
+                              model: data.listHoanTat[index]);
                         },
                       ),
               ],
@@ -96,84 +101,118 @@ class _RequestScreenState extends State<RequestScreen>
   Widget _buildRequestCard({
     required TechnicalSupportModel model,
   }) {
-    return Container(
-      width: 343.w,
-      height: 198.h,
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-      margin: EdgeInsets.only(top: 16.h, right: 16.w, left: 16.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      //height: index == 0 ? 76.h : 60.h,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Row(
-            children: [
-              Text('Yêu cầu ${model.settingSupportName}',
-                  style: defaultText14M),
-              const Spacer(),
-              Text(model.createAt,
-                  style: defaultText14Re.copyWith(
-                    color: const Color(0xff8A8A8A),
-                  )),
-            ],
+    return GestureDetector(
+      onTap: () async {
+        List<RequestStatusModel> requestStatus =
+            await SupportRepo().getRequestStatus(model.id);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: ((context) => RequestStatusScreen(
+                  requestStatus: requestStatus,
+                  createAt: model.createAt,
+                  technicalSupportModel: model,
+                )),
           ),
-          const Divider(
-            color: Color(0xffD9D9D9),
-            thickness: 1,
-          ),
-          Text('Tình trạng',
-              style: defaultText14M.copyWith(color: const Color(0xff8A8A8A))),
-          Text(
-            model.settingSupportStateName,
-            style: defaultText14M,
-          ),
-          const Divider(
-            color: Color(0xffD9D9D9),
-            thickness: 1,
-          ),
-          InkWell(
-            onTap: () async {
-              List<RequestStatusModel> requestStatus =
-                  await SupportRepo().getRequestStatus(model.id);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: ((context) => RequestStatusScreen(
-                        requestStatus: requestStatus,
-                        createAt: model.createAt,
-                        technicalSupportModel: model,
-                      )),
-                ),
-              );
-            },
-            child: Row(
+        );
+      },
+      child: Container(
+        width: 343.w,
+        height: 198.h,
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+        margin: EdgeInsets.only(top: 16.h, right: 16.w, left: 16.w),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12.r),
+        ),
+        //height: index == 0 ? 76.h : 60.h,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Row(
+              children: [
+                Text('Yêu cầu ${model.settingSupportName}',
+                    style: defaultText14M),
+                const Spacer(),
+                Text(model.createAt,
+                    style: defaultText14Re.copyWith(
+                      color: const Color(0xff8A8A8A),
+                    )),
+              ],
+            ),
+            const Divider(
+              color: Color(0xffD9D9D9),
+              thickness: 1,
+            ),
+            Text('Tình trạng',
+                style: defaultText14M.copyWith(color: const Color(0xff8A8A8A))),
+            Text(
+              model.settingSupportStateName,
+              style: defaultText14M,
+            ),
+            const Divider(
+              color: Color(0xffD9D9D9),
+              thickness: 1,
+            ),
+            Row(
               children: [
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Trạng thái',
+                    Text(' Trạng thái',
                         style: defaultText14M.copyWith(
                             color: const Color(0xff8A8A8A))),
+                    SizedBox(
+                      height: 4.h,
+                    ),
                     Container(
-                      // width: 20.w,
-                      // height: 20.h,
-                      padding: const EdgeInsets.all(5),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                       decoration: BoxDecoration(
                         // common color
-                        color: const Color(0xff005DA4),
+                        color: model.latestStatusType == null
+                            ? const Color(0xff8A8A8A).withValues(alpha: 0.08)
+                            : model.latestStatusType == '0'
+                                ? const Color(0xff004071)
+                                    .withValues(alpha: 0.08)
+                                : model.latestStatusType == '1'
+                                    ? const Color(0xff129F20)
+                                        .withValues(alpha: 0.08)
+                                    : const Color(0xffE80707)
+                                        .withValues(alpha: 0.08),
 
                         borderRadius: BorderRadius.circular(6.r),
                       ),
-                      child: Text(
-                          model.latestStatusName ??
-                              model.settingSupportStateName,
+                      child: Text(model.latestStatusName ?? 'chưa xử lý',
                           style: defaultText14M.copyWith(
-                            color: Colors.white,
+                            color: model.latestStatusType == null
+                                ? const Color(0xff8A8A8A)
+                                : model.latestStatusType == '0'
+                                    ? const Color(0xff004071)
+                                    : model.latestStatusType == '1'
+                                        ? const Color(0xff129F20)
+                                        : const Color(0xffE80707),
                           )),
                     ),
+                    // Container(
+                    //   // width: 20.w,
+                    //   // height: 20.h,
+                    //   padding:
+                    //       EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                    //   decoration: BoxDecoration(
+                    //     // common color
+                    //     color: const Color(0xff005DA4),
+
+                    //     borderRadius: BorderRadius.circular(6.r),
+                    //   ),
+                    //   child: Text(
+                    //       model.latestStatusName ??
+                    //           model.settingSupportStateName,
+                    //       style: defaultText14M.copyWith(
+                    //         color: Colors.white,
+                    //       )),
+                    // ),
                   ],
                 ),
                 const Spacer(),
@@ -184,8 +223,8 @@ class _RequestScreenState extends State<RequestScreen>
                 ),
               ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

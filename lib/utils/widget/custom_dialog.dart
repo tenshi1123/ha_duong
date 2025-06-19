@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ha_duong/models/apartment_model.dart';
 import 'package:ha_duong/models/info_model.dart';
 import 'package:ha_duong/models/suport_model.dart';
@@ -41,16 +42,16 @@ class CustomerInfoForm extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Row(
+              Row(
                 children: [
-                  Icon(Icons.person_outline, color: Colors.blue),
-                  SizedBox(width: 8),
-                  Text(
+                  SvgPicture.asset('assets/icons/person_icon.svg'),
+                  const SizedBox(width: 8),
+                  const Text(
                     'Thông tin khách hàng',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
-                  Spacer(),
-                  CloseButton(
+                  const Spacer(),
+                  const CloseButton(
                     color: Colors.black,
                   ),
                 ],
@@ -426,8 +427,21 @@ Widget buildUploadOption({
         borderRadius: BorderRadius.circular(50),
         child: CircleAvatar(
           radius: 26.r,
-          backgroundColor: Colors.blue,
-          child: Icon(icon, size: 20, color: Colors.white),
+          backgroundColor: Colors.transparent,
+          child: Container(
+            height: 52.h,
+            width: 52.r,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xff25AAE1),
+                  Color(0xff004071),
+                ],
+              ),
+            ),
+            child: Icon(icon, size: 26.r, color: Colors.white),
+          ),
         ),
       ),
       const SizedBox(height: 8),
@@ -851,7 +865,9 @@ void showPostDialog(
                             ),
                           ),
                           const SizedBox(height: 6),
-                          Text(post.name, style: defaultText16M),
+                          Text(post.name,
+                              style: defaultText16M.copyWith(
+                                  color: const Color(0xff004071))),
                         ],
                       ),
                     ),

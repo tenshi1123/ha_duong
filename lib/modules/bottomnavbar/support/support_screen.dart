@@ -85,6 +85,12 @@ class _SupportScreenState extends State<SupportScreen> with RouteAware {
               }
 
               final data = snapshot.data!;
+              // .where(
+              //   (item) =>
+              //       item.latestStatusType == '0' ||
+              //       item.latestStatusType == null,
+              // )
+              // .toList();
 
               return SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
@@ -138,37 +144,68 @@ class _SupportScreenState extends State<SupportScreen> with RouteAware {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(12.r),
                         ),
-                        child: ListView.builder(
-                          physics:
-                              const NeverScrollableScrollPhysics(), // Không scroll riêng
-                          shrinkWrap: true, // Cho phép nằm trong Column
-                          itemCount: data.length,
-                          itemBuilder: (context, index) {
-                            final item = data[index];
-                            return InkWell(
-                              onTap: () async {
-                                List<RequestStatusModel> requestStatus =
-                                    await SupportRepo()
-                                        .getRequestStatus(item.id);
-                                await pushWithoutNavBar(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: ((context) => RequestStatusScreen(
-                                          requestStatus: requestStatus,
-                                          createAt: item.createAt,
-                                          technicalSupportModel: item,
-                                        )),
+                        child: Column(
+                          children: [
+                            ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: data.length > 3 ? 3 : data.length,
+                              itemBuilder: (context, index) {
+                                final item = data[index];
+                                return InkWell(
+                                  onTap: () async {
+                                    List<RequestStatusModel> requestStatus =
+                                        await SupportRepo()
+                                            .getRequestStatus(item.id);
+                                    await pushWithoutNavBar(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: ((context) =>
+                                            RequestStatusScreen(
+                                              requestStatus: requestStatus,
+                                              createAt: item.createAt,
+                                              technicalSupportModel: item,
+                                            )),
+                                      ),
+                                    );
+                                    _loadSupportData();
+                                    setState(() {});
+                                  },
+                                  child: SupportItem(
+                                    model: item,
+                                    isdivider: data.length > 3
+                                        ? index != 2
+                                        : index != data.length - 1,
                                   ),
                                 );
-                                _loadSupportData();
-                                setState(() {});
                               },
-                              child: SupportItem(
-                                model: item,
-                                isdivider: index != data.length - 1,
-                              ),
-                            );
-                          },
+                            ),
+                            data.length > 3
+                                ? Padding(
+                                    padding: EdgeInsets.only(
+                                        bottom: 16.h, top: 10.h),
+                                    child: InkWell(
+                                      onTap: () {
+                                        pushWithoutNavBar(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: ((context) =>
+                                                RequestScreen(
+                                                  id: widget.id,
+                                                )),
+                                          ),
+                                        );
+                                      },
+                                      child: Text(
+                                        'Xem thêm ...',
+                                        style: defaultText14M.copyWith(
+                                          color: const Color(0xff004071),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : const SizedBox()
+                          ],
                         ),
                       ),
 
@@ -283,7 +320,8 @@ class SupportItem extends StatelessWidget {
                         margin: EdgeInsets.only(left: 10.w),
                         // width: 20.w,
                         // height: 20.h,
-                        padding: const EdgeInsets.all(5),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 8.w, vertical: 4.h),
                         decoration: BoxDecoration(
                           // common color
                           color: model.latestStatusType == null
@@ -299,7 +337,7 @@ class SupportItem extends StatelessWidget {
 
                           borderRadius: BorderRadius.circular(6.r),
                         ),
-                        child: Text(model.latestStatusName ?? 'chưa xử lý',
+                        child: Text(model.latestStatusName ?? 'Chưa xử lý',
                             style: defaultText14M.copyWith(
                               color: model.latestStatusType == null
                                   ? const Color(0xff8A8A8A)
@@ -339,7 +377,7 @@ class SupportItem extends StatelessWidget {
                   endIndent: 16.w,
                 )
               : SizedBox(
-                  height: 10.h,
+                  height: 12.h,
                 ),
         ],
       ),

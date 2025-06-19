@@ -62,7 +62,7 @@ class ListTechnicalSupportModel {
 
 class RequestStatusModel {
   final String name;
-  final String createAt;
+  final DateTime createAt;
   final String type;
   RequestStatusModel({
     required this.name,
@@ -72,7 +72,7 @@ class RequestStatusModel {
   factory RequestStatusModel.fromJson(Map<String, dynamic> json) {
     return RequestStatusModel(
       name: json['name'] ?? '',
-      createAt: json['created_at'] ?? '',
+      createAt: DateTime.parse(json['created_at'] ?? '2832000'),
       type: json['type'] ?? '',
     );
   }

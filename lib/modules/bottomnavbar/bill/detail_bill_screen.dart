@@ -452,6 +452,9 @@ class DetailBillScreen extends StatelessWidget {
                           ],
                         )
                       : const SizedBox(),
+                  SizedBox(
+                    height: 6.h,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -463,6 +466,9 @@ class DetailBillScreen extends StatelessWidget {
                         ),
                       )
                     ],
+                  ),
+                  SizedBox(
+                    height: 6.h,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -476,6 +482,9 @@ class DetailBillScreen extends StatelessWidget {
                       )
                     ],
                   ),
+                  SizedBox(
+                    height: 6.h,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -487,6 +496,9 @@ class DetailBillScreen extends StatelessWidget {
                         ),
                       )
                     ],
+                  ),
+                  SizedBox(
+                    height: 6.h,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -500,11 +512,14 @@ class DetailBillScreen extends StatelessWidget {
                       )
                     ],
                   ),
+                  SizedBox(
+                    height: 6.h,
+                  ),
                   (receiptsDetailModel.receiptsDetailModel.code != null)
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Mã giảm giá', style: defaultText14M),
+                            Text('Mã giảm giá \n', style: defaultText14M),
                             Text(
                               '${formatCurrency(receiptsDetailModel.receiptsDetailModel.amountMoney ?? '0')} đ',
                               style: defaultText14B.copyWith(
@@ -516,6 +531,7 @@ class DetailBillScreen extends StatelessWidget {
                           ],
                         )
                       : const SizedBox(),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

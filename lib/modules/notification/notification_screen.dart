@@ -31,6 +31,8 @@ class _NotificationScreenState extends State<NotificationScreen>
     late List<NotiValueModel> filtered = widget.notiModel.listNoti
         .where((item) => item.type == selectedType.toString())
         .toList();
+    final grouped = _groupNotificationsByDate(filtered);
+    final groupKeys = grouped.keys.toList();
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 238, 238, 238),
       appBar: AppBar(
@@ -63,21 +65,52 @@ class _NotificationScreenState extends State<NotificationScreen>
                   )
                 : Expanded(
                     child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12.r),
-                      ),
-                      child: ListView.separated(
-                        itemCount: filtered.length,
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 16.w, vertical: 1.h),
-                        separatorBuilder: (_, __) => const Divider(),
-                        itemBuilder: (_, index) {
-                          final item = filtered[index];
-                          return _buildNotificationItem(item);
-                        },
-                      ),
-                    ),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                        child: ListView.builder(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 16.w, vertical: 8.h),
+                          itemCount: groupKeys.length,
+                          itemBuilder: (context, groupIndex) {
+                            final groupTitle = groupKeys[groupIndex];
+                            final notis = grouped[groupTitle]!;
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 8.h),
+                                  child: Text(
+                                    groupTitle,
+                                    style: defaultText16B,
+                                  ),
+                                ),
+                                ...List.generate(
+                                  notis.length,
+                                  (index) => Column(
+                                    children: [
+                                      _buildNotificationItem(notis[index]),
+                                      if (index != notis.length - 1)
+                                        const Divider(height: 1),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            );
+                          },
+                        )
+                        // ListView.separated(
+                        //   itemCount: filtered.length,
+                        //   padding: EdgeInsets.symmetric(
+                        //       horizontal: 16.w, vertical: 1.h),
+                        //   separatorBuilder: (_, __) => const Divider(),
+                        //   itemBuilder: (_, index) {
+                        //     final item = filtered[index];
+                        //     return _buildNotificationItem(item);
+                        //   },
+                        // ),
+                        ),
                   ),
           ],
         ),
@@ -121,7 +154,7 @@ class _NotificationScreenState extends State<NotificationScreen>
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  if ((int.tryParse(type.total) ?? 0) > 0)
+                  if (type.total > 0)
                     Container(
                       margin: const EdgeInsets.only(left: 6),
                       padding: const EdgeInsets.symmetric(
@@ -132,9 +165,8 @@ class _NotificationScreenState extends State<NotificationScreen>
                       ),
                       child: Text(
                         type.total.toString(),
-                        style: const TextStyle(
+                        style: defaultText12M.copyWith(
                           color: Colors.white,
-                          fontSize: 12,
                         ),
                       ),
                     ),
@@ -170,6 +202,15 @@ class _NotificationScreenState extends State<NotificationScreen>
                 : keyBlack.withValues(alpha: 0.5)),
       ),
       onTap: () {
+        //đã đọc fake
+        setState(() {
+          if (item.isActive != '1') {
+            item.isActive = '1';
+            //type.total = type.total - 1;
+            _notiModel.listNotiType[selectedType - 1].total =
+                _notiModel.listNotiType[selectedType - 1].total - 1;
+          }
+        });
         ChatRepo().getDetailNoti(item.id);
         Navigator.push(
           context,
@@ -181,5 +222,46 @@ class _NotificationScreenState extends State<NotificationScreen>
         );
       },
     );
+  }
+
+  // Tách danh sách theo ngày
+  Map<String, List<NotiValueModel>> _groupNotificationsByDate(
+      List<NotiValueModel> notis) {
+    Map<String, List<NotiValueModel>> grouped = {};
+
+    for (var noti in notis) {
+      final label = _getDateLabel(noti.createdAt);
+
+      if (!grouped.containsKey(label)) {
+        grouped[label] = [];
+      }
+      grouped[label]!.add(noti);
+    }
+
+    return grouped;
+  }
+
+  String _getDateLabel(DateTime date) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final created = DateTime(date.year, date.month, date.day);
+
+    if (created == today) return 'Hôm nay';
+    if (created == today.subtract(const Duration(days: 1))) return 'Hôm qua';
+
+    final weekday = [
+      'Chủ nhật',
+      'Thứ hai',
+      'Thứ ba',
+      'Thứ tư',
+      'Thứ năm',
+      'Thứ sáu',
+      'Thứ bảy'
+    ][created.weekday % 7];
+
+    final formattedDate =
+        "${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}";
+
+    return '$weekday - $formattedDate';
   }
 }

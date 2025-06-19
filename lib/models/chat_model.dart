@@ -74,7 +74,7 @@ class NotiValueModel {
   final String content;
   final String type;
   final DateTime createdAt;
-  final String isActive;
+  String isActive;
   NotiValueModel({
     required this.id,
     required this.title,
@@ -98,7 +98,7 @@ class NotiValueModel {
 class NotiTypeModel {
   final int value;
   final String name;
-  final String total;
+  int total;
   NotiTypeModel({
     required this.value,
     required this.name,
@@ -106,8 +106,9 @@ class NotiTypeModel {
   });
   factory NotiTypeModel.fromJson(Map<String, dynamic> json) {
     return NotiTypeModel(
-        value: json['value'] ?? 0,
-        name: json['name'] ?? '',
-        total: json['total'] ?? '');
+      value: json['value'] ?? 0,
+      name: json['name'] ?? '',
+      total: int.tryParse(json['total'] ?? '0') ?? 0,
+    );
   }
 }

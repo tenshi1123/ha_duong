@@ -135,6 +135,13 @@ class _ChatScreenState extends State<ChatScreen> {
               color: Colors.white,
             ),
           ),
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(1),
+            child: Container(
+              color: Colors.grey.shade300,
+              height: 1,
+            ),
+          ),
         ),
         body: Stack(
           children: [
@@ -157,9 +164,9 @@ class _ChatScreenState extends State<ChatScreen> {
                       child: Container(
                         constraints: BoxConstraints(maxWidth: 300.w),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(20.r),
                           color: (_chatModel.messages[index].senderType == "1")
-                              ? pri500
+                              ? const Color(0xffEFF3FF)
                               : const Color(0xffF5F5F5),
                         ),
                         padding: const EdgeInsets.all(16),
@@ -170,12 +177,13 @@ class _ChatScreenState extends State<ChatScreen> {
                                   color:
                                       (_chatModel.messages[index].senderType ==
                                               "1")
-                                          ? Colors.white
+                                          ? Colors.black
                                           : Colors.black,
                                 ),
                               )
                             : _buildImageContent(
-                                _chatModel.messages[index].content),
+                                _chatModel.messages[index].content,
+                              ),
                       ),
                     ),
                   );
@@ -185,20 +193,20 @@ class _ChatScreenState extends State<ChatScreen> {
             Align(
               alignment: Alignment.bottomLeft,
               child: Container(
-                padding: EdgeInsets.only(left: 16.w, bottom: 16.h, top: 16.w),
+                padding: EdgeInsets.only(left: 16.w, bottom: 6.h, top: 4.w),
                 margin: EdgeInsets.only(bottom: 16.h),
-                height: 80.h,
+                height: 60.h,
                 width: double.infinity,
                 color: Colors.white,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     GestureDetector(
-                        onTap: () {
-                          openCamera();
-                        },
-                        child:
-                            SvgPicture.asset('assets/icons/camera_icon.svg')),
+                      onTap: () {
+                        openCamera();
+                      },
+                      child: SvgPicture.asset('assets/icons/camera_icon.svg'),
+                    ),
                     const SizedBox(
                       width: 15,
                     ),

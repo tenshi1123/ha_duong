@@ -215,7 +215,7 @@ Widget customNavBarWithCenterCircle(BuildContext context, NavBarConfig config) {
                     child: config.items[2].icon,
                   ),
                 ),
-                SizedBox(height: 8.h),
+                SizedBox(height: 12.h),
                 Text(
                   config.items[2].title ?? '',
                   style: TextStyle(
@@ -237,28 +237,52 @@ Widget customNavBarWithCenterCircle(BuildContext context, NavBarConfig config) {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: List.generate(config.items.length, (index) {
               if (index == 2) {
-                return SizedBox(width: 64.w); // chừa chỗ icon giữa
+                return SizedBox(width: 64.w);
               }
               final item = config.items[index];
               final isSelected = config.selectedIndex == index;
               return GestureDetector(
                 onTap: () => config.onItemSelected(index),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    isSelected ? item.icon : item.inactiveIcon,
-                    SizedBox(height: 8.h),
-                    Text(
-                      item.title ?? '',
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: isSelected
-                            ? (item.activeForegroundColor)
-                            : (const Color(0xff8A8A8A)),
-                        fontWeight: FontWeight.w500,
+                child: SizedBox(
+                  width: 64.w,
+                  child: Stack(
+                    alignment: Alignment.topCenter,
+                    children: [
+                      if (isSelected)
+                        Positioned(
+                          top: 0,
+                          child: Container(
+                            width: 60.w,
+                            height: 4.h,
+                            decoration: BoxDecoration(
+                              color: const Color(0xff005DA4),
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(4.r),
+                                bottomRight: Radius.circular(4.r),
+                              ),
+                            ),
+                          ),
+                        ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(height: 6.h),
+                          isSelected ? item.icon : item.inactiveIcon,
+                          SizedBox(height: 8.h),
+                          Text(
+                            item.title ?? '',
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              color: isSelected
+                                  ? item.activeForegroundColor
+                                  : const Color(0xff8A8A8A),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             }),

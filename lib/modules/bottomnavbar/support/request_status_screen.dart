@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ha_duong/models/suport_model.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
+import 'package:intl/intl.dart';
 
 class RequestStatusScreen extends StatelessWidget {
   final List<RequestStatusModel> requestStatus;
@@ -55,7 +56,7 @@ class RequestStatusScreen extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 4.h,
+              height: 6.h,
             ),
             RichText(
               text: TextSpan(
@@ -72,7 +73,7 @@ class RequestStatusScreen extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 4.h,
+              height: 6.h,
             ),
             RichText(
               text: TextSpan(
@@ -89,7 +90,7 @@ class RequestStatusScreen extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 4.h,
+              height: 6.h,
             ),
             RichText(
               text: TextSpan(
@@ -106,7 +107,7 @@ class RequestStatusScreen extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 4.h,
+              height: 6.h,
             ),
             _buildImageContent(technicalSupportModel.img),
             Padding(
@@ -126,8 +127,8 @@ class RequestStatusScreen extends StatelessWidget {
                     _buildStepItem(
                       RequestStatusModel(
                         name: 'Tạo yêu cầu',
-                        createAt: createAt,
-                        type: '1',
+                        createAt: DateTime.parse(createAt),
+                        type: '0',
                       ),
                       isLast: true,
                     ),
@@ -151,22 +152,49 @@ class RequestStatusScreen extends StatelessWidget {
       children: [
         const SizedBox(width: 12),
         Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              DateFormat('dd/MM/yyyy').format(step.createAt),
+              style: defaultText12.copyWith(
+                color: const Color(0xff8A8A8A),
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              DateFormat('HH:mm').format(step.createAt),
+              style: defaultText12.copyWith(
+                color: const Color(0xff8A8A8A),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(width: 12),
+        Column(
           children: [
             Container(
               margin: const EdgeInsets.only(top: 4),
               width: 16,
               height: 16,
-              decoration: const BoxDecoration(
-                color: Colors.blue,
+              decoration: BoxDecoration(
+                color: step.type == '0'
+                    ? const Color(0xff004071)
+                    : step.type == '1'
+                        ? const Color(0xff129F20)
+                        : const Color(0xffE80707),
                 shape: BoxShape.circle,
               ),
               child: const Icon(Icons.done, size: 12, color: Colors.white),
             ),
             if (!isLast)
               Container(
-                width: 2,
+                width: 1,
                 height: 40,
-                color: Colors.grey.shade300,
+                color: step.type == '0'
+                    ? const Color(0xff004071)
+                    : step.type == '1'
+                        ? const Color(0xff129F20)
+                        : const Color(0xffE80707),
               ),
           ],
         ),
@@ -177,17 +205,18 @@ class RequestStatusScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  step.createAt,
-                  style: const TextStyle(color: Colors.grey, fontSize: 12),
-                ),
                 const SizedBox(height: 4),
                 Text(
                   step.name,
                   style: TextStyle(
-                    color: step.type == '0' ? (Colors.black) : Colors.grey,
+                    fontSize: 14.sp,
+                    color: step.type == '0'
+                        ? const Color(0xff004071)
+                        : step.type == '1'
+                            ? const Color(0xff129F20)
+                            : const Color(0xffE80707),
                     fontWeight:
-                        step.type == '0' ? FontWeight.bold : FontWeight.normal,
+                        step.type == '0' ? FontWeight.w500 : FontWeight.bold,
                   ),
                 ),
               ],

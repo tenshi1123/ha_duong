@@ -99,16 +99,29 @@ class VehicleItem extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(
-          height: 20.h,
-        ),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          margin: EdgeInsets.symmetric(
+            horizontal: 16.w,
+            vertical: 20.h,
+          ),
+          padding: EdgeInsets.symmetric(
+            horizontal: 12.w,
+            vertical: 12.h,
+          ),
+          decoration: BoxDecoration(
+            color: const Color(0xffF1F4F5),
+            borderRadius: BorderRadius.circular(10.r),
+          ),
           child: Row(
             children: [
+              Image.asset(
+                'assets/images/location.png',
+                height: 20.5.h,
+              ),
+              SizedBox(width: 8.w),
               Text(
-                vehicleModel.apartmentName,
-                style: defaultText14Re.copyWith(color: Colors.black),
+                'Căn ${vehicleModel.apartmentName}',
+                style: defaultText14M,
               ),
             ],
           ),
