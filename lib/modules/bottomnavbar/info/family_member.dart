@@ -38,6 +38,8 @@ class FamilyMemberScreen extends StatelessWidget {
             ),
             if (model.isNotEmpty)
               ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: model.length,
                 itemBuilder: (context, index) {
                   return FamilyMember(
