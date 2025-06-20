@@ -7,12 +7,15 @@ import 'app.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((_) {
-    initializeDateFormatting().then((_) => runApp(const App()));
-  });
+  // Xử lý sync lại route và device orientation
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
+
+  // KHÔNG cần .then lồng nhau
+  await initializeDateFormatting();
+
+  runApp(const App()); // Gọi ngay tại đây
 }
