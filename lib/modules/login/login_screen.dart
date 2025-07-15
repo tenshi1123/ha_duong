@@ -1,13 +1,12 @@
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ha_duong/models/info_model.dart';
-import 'package:ha_duong/repo/home_repo.dart';
-import 'package:ha_duong/repo/login_repo.dart';
+import 'package:ha_duong/modules/login/otp_screen.dart';
 import 'package:ha_duong/utils/constants/color.dart';
 import '../../utils/constants/styles.dart';
-import '../bottomnavbar/bottom_nav_bar.dart';
-import 'forgot_password_screen.dart';
 import 'take_info_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -17,7 +16,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  bool _isObscure = true;
+  final bool _isObscure = true;
   final _focusNode = FocusNode();
   final _focusNode1 = FocusNode();
   bool isPhoneNoValid(String? phoneNo) {
@@ -28,7 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool _isLoading = false;
   TextEditingController? passController = TextEditingController();
-  TextEditingController? studenIdController = TextEditingController();
+  TextEditingController? phoneController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Center(
                     child: TextField(
                       keyboardType: const TextInputType.numberWithOptions(),
-                      controller: studenIdController,
+                      controller: phoneController,
                       focusNode: _focusNode1,
                       style: defaultText16,
                       scrollPadding: EdgeInsets.symmetric(
@@ -130,138 +129,222 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   height: 10.h,
                 ),
-                Row(
-                  children: [
-                    Text(
-                      'Mật khẩu',
-                      style: TextStyle(
-                        color: key1Color,
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const Spacer()
-                  ],
-                ),
-                SizedBox(
-                  height: 5.h,
-                ),
-                Container(
-                  width: 350.w,
-                  height: 58.h,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(8.r)),
-                    color: const Color(0xffF4F1F3),
-                  ),
-                  child: Center(
-                    child: TextField(
-                      obscureText: _isObscure,
-                      obscuringCharacter: "*",
-                      style: defaultText16,
-                      controller: passController,
-                      focusNode: _focusNode,
-                      scrollPadding: EdgeInsets.symmetric(
-                          vertical: MediaQuery.of(context).viewInsets.bottom),
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.lock_outline,
-                          color: subBlack,
-                        ),
-                        hintText: 'Mật khẩu',
-                        border: const OutlineInputBorder(
-                            borderSide: BorderSide.none),
-                        hintStyle: TextStyle(
-                          fontSize: 16.sp,
-                          color: subBlack,
-                        ),
-                        suffixIcon: IconButton(
-                          padding: const EdgeInsets.all(0),
-                          iconSize: 20.0,
-                          icon: _isObscure
-                              ? const Icon(
-                                  Icons.visibility_off,
-                                  color: Colors.grey,
-                                )
-                              : const Icon(
-                                  Icons.visibility,
-                                  color: Colors.black,
-                                ),
-                          onPressed: () {
-                            setState(() {
-                              _isObscure = !_isObscure;
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 25.h,
-                ),
-                Row(
-                  children: [
-                    const Spacer(),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: ((context) => const ForgotPassScreen()),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        'Quên mật khẩu?',
-                        style: TextStyle(
-                          color: const Color(0xff004071),
-                          fontSize: 16.sp,
-                          //decoration: TextDecoration.underline,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                //mật khẩu, và quên mật khẩu
+                // Row(
+                //   children: [
+                //     Text(
+                //       'Mật khẩu',
+                //       style: TextStyle(
+                //         color: key1Color,
+                //         fontSize: 14.sp,
+                //         fontWeight: FontWeight.w500,
+                //       ),
+                //     ),
+                //     const Spacer()
+                //   ],
+                // ),
+                // SizedBox(
+                //   height: 5.h,
+                // ),
+                // Container(
+                //   width: 350.w,
+                //   height: 58.h,
+                //   decoration: BoxDecoration(
+                //     borderRadius: BorderRadius.all(Radius.circular(8.r)),
+                //     color: const Color(0xffF4F1F3),
+                //   ),
+                //   child: Center(
+                //     child: TextField(
+                //       obscureText: _isObscure,
+                //       obscuringCharacter: "*",
+                //       style: defaultText16,
+                //       controller: passController,
+                //       focusNode: _focusNode,
+                //       scrollPadding: EdgeInsets.symmetric(
+                //           vertical: MediaQuery.of(context).viewInsets.bottom),
+                //       decoration: InputDecoration(
+                //         prefixIcon: Icon(
+                //           Icons.lock_outline,
+                //           color: subBlack,
+                //         ),
+                //         hintText: 'Mật khẩu',
+                //         border: const OutlineInputBorder(
+                //             borderSide: BorderSide.none),
+                //         hintStyle: TextStyle(
+                //           fontSize: 16.sp,
+                //           color: subBlack,
+                //         ),
+                //         suffixIcon: IconButton(
+                //           padding: const EdgeInsets.all(0),
+                //           iconSize: 20.0,
+                //           icon: _isObscure
+                //               ? const Icon(
+                //                   Icons.visibility_off,
+                //                   color: Colors.grey,
+                //                 )
+                //               : const Icon(
+                //                   Icons.visibility,
+                //                   color: Colors.black,
+                //                 ),
+                //           onPressed: () {
+                //             setState(() {
+                //               _isObscure = !_isObscure;
+                //             });
+                //           },
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                // SizedBox(
+                //   height: 25.h,
+                // ),
+                // Row(
+                //   children: [
+                //     const Spacer(),
+                //     GestureDetector(
+                //       onTap: () {
+                //         Navigator.push(
+                //           context,
+                //           MaterialPageRoute(
+                //             builder: ((context) => const ForgotPassScreen()),
+                //           ),
+                //         );
+                //       },
+                //       child: Text(
+                //         'Quên mật khẩu?',
+                //         style: TextStyle(
+                //           color: const Color(0xff004071),
+                //           fontSize: 16.sp,
+                //           //decoration: TextDecoration.underline,
+                //           fontWeight: FontWeight.w500,
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
                 SizedBox(
                   height: 140.h,
                 ),
                 InkWell(
+                  // onTap: () async {
+                  //   setState(() {
+                  //     _isLoading = true;
+                  //   });
+                  //   if (isPhoneNoValid(phoneController?.text) == false) {
+                  //     setState(() {
+                  //       _isLoading = false;
+                  //     });
+                  //     showDialog(
+                  //       context: context,
+                  //       builder: (BuildContext context) {
+                  //         return AlertDialog(
+                  //           title: Text(
+                  //             'Số điện thoại không đúng định dạng',
+                  //             style: defaultText16.copyWith(
+                  //               color: const Color.fromARGB(255, 29, 29, 29),
+                  //               fontWeight: FontWeight.w700,
+                  //             ),
+                  //           ),
+                  //           content: Text(
+                  //             'Vui lòng kiểm tra lại số điện thoại đã nhập',
+                  //             style: defaultText16.copyWith(
+                  //                 color: const Color(0xff3C3C3C)),
+                  //           ),
+                  //           actionsPadding:
+                  //               const EdgeInsets.symmetric(horizontal: 10.0),
+                  //           actions: <Widget>[
+                  //             TextButton(
+                  //               child: Text(
+                  //                 'ok',
+                  //                 style: defaultText16.copyWith(
+                  //                     color: const Color(0xff3C3C3C)),
+                  //               ),
+                  //               onPressed: () {
+                  //                 Navigator.of(context).pop();
+                  //               },
+                  //             ),
+                  //           ],
+                  //         );
+                  //       },
+                  //     );
+                  //   } else {
+                  // Đăng nhập tài khoản học sinh
+                  // bool loged = await LoginRepo().login(
+                  //   phoneController?.text ?? '',
+                  // );
+                  // if (loged == true) {
+                  //   InfoModel? infoHomeModel =
+                  //       await HomeRepo().getInfoCudan();
+                  //   if (infoHomeModel != null) {
+                  //     Navigator.pushReplacement(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //         builder: (context) => BottomNavBar(
+                  //           infoHomeModel: infoHomeModel,
+                  //         ),
+                  //       ),
+                  //     );
+                  //   }
+                  // } else {
+                  //   showDialog(
+                  //     context: context,
+                  //     builder: (BuildContext context) {
+                  //       return CupertinoAlertDialog(
+                  //         title: const Text('Vui lòng thử lại'),
+                  //         content: const Text(
+                  //             'Vui lòng kiểm tra lại SDT và mật khẩu của bạn'),
+                  //         actions: <Widget>[
+                  //           CupertinoDialogAction(
+                  //             isDefaultAction: true,
+                  //             child: Text(
+                  //               'Đồng ý',
+                  //               style: TextStyle(
+                  //                   fontSize: 20, color: key1Color),
+                  //             ),
+                  //             onPressed: () {
+                  //               Navigator.of(context, rootNavigator: true)
+                  //                   .pop(
+                  //                 (_) => false,
+                  //               );
+                  //             },
+                  //           )
+                  //         ],
+                  //       );
+                  //     },
+                  //   );
+                  // }
+                  //  }
+                  // },
                   onTap: () async {
                     setState(() {
                       _isLoading = true;
                     });
-                    if (isPhoneNoValid(studenIdController?.text) == false) {
-                      setState(() {
-                        _isLoading = false;
-                      });
+                    if (isPhoneNoValid(phoneController?.text) == false) {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
                             title: Text(
                               'Số điện thoại không đúng định dạng',
-                              style: defaultText16.copyWith(
-                                color: const Color.fromARGB(255, 29, 29, 29),
-                                fontWeight: FontWeight.w700,
-                              ),
+                              style: defaultText14M,
                             ),
                             content: Text(
                               'Vui lòng kiểm tra lại số điện thoại đã nhập',
-                              style: defaultText16.copyWith(
-                                  color: const Color(0xff3C3C3C)),
+                              style: defaultText14M,
                             ),
                             actionsPadding:
                                 const EdgeInsets.symmetric(horizontal: 10.0),
                             actions: <Widget>[
                               TextButton(
-                                child: Text(
-                                  'ok',
-                                  style: defaultText16.copyWith(
-                                      color: const Color(0xff3C3C3C)),
+                                child: const Text(
+                                  'OK',
                                 ),
                                 onPressed: () {
                                   Navigator.of(context).pop();
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
                                 },
                               ),
                             ],
@@ -269,51 +352,33 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       );
                     } else {
-                      // Đăng nhập tài khoản học sinh
-                      bool loged = await LoginRepo().login(
-                        studenIdController?.text ?? '',
-                      );
-                      if (loged == true) {
-                        InfoModel? infoHomeModel =
-                            await HomeRepo().getInfoCudan();
-                        if (infoHomeModel != null) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => BottomNavBar(
-                                infoHomeModel: infoHomeModel,
-                              ),
-                            ),
-                          );
-                        }
-                      } else {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return CupertinoAlertDialog(
-                              title: const Text('Vui lòng thử lại'),
-                              content: const Text(
-                                  'Vui lòng kiểm tra lại SDT và mật khẩu của bạn'),
-                              actions: <Widget>[
-                                CupertinoDialogAction(
-                                  isDefaultAction: true,
-                                  child: Text(
-                                    'Đồng ý',
-                                    style: TextStyle(
-                                        fontSize: 20, color: key1Color),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.of(context, rootNavigator: true)
-                                        .pop(
-                                      (_) => false,
-                                    );
-                                  },
-                                )
-                              ],
-                            );
+                      //Lưu ý nhớ copy verificationId
+                      FirebaseAuth.instance.verifyPhoneNumber(
+                          // phoneNumber: '+84974225054',
+                          phoneNumber:
+                              '+84${phoneController?.text.replaceFirst(RegExp(r'0'), '')}',
+                          verificationCompleted: (PhoneAuthCredential) {},
+                          verificationFailed: (error) {
+                            log(error.toString());
                           },
-                        );
-                      }
+                          codeSent: (verificationId, forceResendingToken) {
+                            //Lưu ý nhớ copy verificationId
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: ((context) => OtpScreen(
+                                      contact: phoneController?.text ?? '',
+                                      verificationId: verificationId,
+                                    )),
+                              ),
+                            );
+                            setState(() {
+                              _isLoading = false;
+                            });
+                          },
+                          codeAutoRetrievalTimeout: (verificationId) {
+                            log("Auto Retiveral timeout");
+                          });
                     }
                   },
                   child: _isLoading

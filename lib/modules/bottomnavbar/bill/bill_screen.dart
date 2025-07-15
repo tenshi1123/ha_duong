@@ -15,8 +15,7 @@ class BillScreen extends StatefulWidget {
 
 class _BillScreenState extends State<BillScreen> {
   bool isLoading = true;
-  late ListReceiptsModel data; // thay bằng model cụ thể của bạn
-
+  late ListReceiptsModel data;
   @override
   void initState() {
     super.initState();
@@ -25,10 +24,7 @@ class _BillScreenState extends State<BillScreen> {
 
   Future<void> fetchData() async {
     try {
-      // Gọi API ở đây - thay thế bằng logic thật của bạn
       final response = await HomeRepo().getListReceipts();
-
-      // Cập nhật state sau khi có dữ liệu
       setState(() {
         data = response;
         isLoading = false;

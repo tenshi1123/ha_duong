@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,8 +11,6 @@ import 'package:camera_camera/camera_camera.dart';
 import '../../utils/constants/color.dart';
 import '../../utils/constants/styles.dart';
 import 'package:image_picker/image_picker.dart';
-
-//import '../model/chat_model.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({

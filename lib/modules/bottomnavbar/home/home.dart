@@ -305,57 +305,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             const SizedBox(height: 12),
-            // ConstrainedBox(
-            //   constraints: const BoxConstraints(
-            //     maxHeight: 100,
-            //   ),
-            //   child: GridView.builder(
-            //     padding: const EdgeInsets.symmetric(horizontal: 16),
-            //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            //       crossAxisCount: 2,
-            //       mainAxisSpacing: 12,
-            //       crossAxisSpacing: 12,
-            //       childAspectRatio: 0.9,
-            //     ),
-            //     itemCount: posts.length,
-            //     itemBuilder: (_, index) {
-            //       final post = posts[index];
-            //       return Column(
-            //         crossAxisAlignment: CrossAxisAlignment.start,
-            //         children: [
-            //           ClipRRect(
-            //             borderRadius: BorderRadius.only(
-            //               topLeft: Radius.circular(16.r),
-            //               bottomLeft: Radius.circular(16.r),
-            //             ),
-            //             child: SizedBox(
-            //               height: 206.h,
-            //               width: 375.w,
-            //               child: PageView.builder(
-            //                 padEnds: false,
-            //                 controller: controller3,
-            //                 itemCount: infoHomeModel.listPost.length,
-            //                 itemBuilder: (_, index) {
-            //                   return PostItem(
-            //                     postModel: infoHomeModel.listPost[index],
-            //                   );
-            //                 },
-            //               ),
-            //             ),
-            //           ),
-            //           const SizedBox(height: 6),
-            //           Text(
-            //             post.name,
-            //             maxLines: 2,
-            //             overflow: TextOverflow.ellipsis,
-            //             style: const TextStyle(
-            //                 fontSize: 14, fontWeight: FontWeight.w500),
-            //           ),
-            //         ],
-            //       );
-            //     },
-            //   ),
-            // ),
             Padding(
               padding: EdgeInsets.only(left: 20.w, right: 20.w),
               child: SizedBox(

@@ -27,6 +27,7 @@ class LoginRepo {
     }
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('token', response.data["refresh_token"]);
+    await prefs.setString('refresh_token', response.data["refresh_token"]);
     return response.data["refresh_token"] != null;
   }
 

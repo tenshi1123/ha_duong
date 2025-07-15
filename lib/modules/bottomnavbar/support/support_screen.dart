@@ -68,6 +68,7 @@ class _SupportScreenState extends State<SupportScreen> with RouteAware {
             ),
           ),
         ),
+        // refresh indicator để kéo xuống làm mới dữ liệu
         body: RefreshIndicator(
           onRefresh: () async {
             _loadSupportData();

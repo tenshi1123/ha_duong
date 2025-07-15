@@ -26,10 +26,7 @@ class _RequestScreenState extends State<RequestScreen>
 
   Future<void> fetchData(String id) async {
     try {
-      // Gọi API ở đây - thay thế bằng logic thật của bạn
       final response = await SupportRepo().getListSupport(id);
-
-      // Cập nhật state sau khi có dữ liệu
       setState(() {
         data = response;
         isLoading = false;
