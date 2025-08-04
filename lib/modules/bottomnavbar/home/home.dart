@@ -76,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Positioned(
                   top: 64.h,
-                  left: 16.w,
+                  left: 20.w,
                   child: SizedBox(
                     width: 340.w,
                     child: Column(
@@ -170,100 +170,108 @@ class _HomeScreenState extends State<HomeScreen> {
               ]),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 16.w, bottom: 10.h),
+              padding: EdgeInsets.only(left: 20.w, bottom: 10.h),
               child: Text(
                 'Yêu cầu thanh toán',
                 style: defaultText16B,
               ),
             ),
-            Column(
-              children:
-                  List.generate(infoHomeModel.listReceipts.length, (index) {
-                return Container(
-                  height: 72.h,
-                  width: 343.w,
-                  margin: EdgeInsets.only(
-                    left: 16.w,
-                    bottom: 16.h,
-                    right: 16.w,
-                  ),
-                  decoration: BoxDecoration(
-                      color: const Color(0xff1B91C4),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(12.r),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.16),
-                          spreadRadius: 0,
-                          blurRadius: 16,
-                          offset: const Offset(0, 4),
-                        ),
-                      ]),
-                  child: Container(
-                    height: 72.h,
-                    width: 339.w,
-                    margin: EdgeInsets.only(left: 4.w),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.horizontal(
-                        left: Radius.circular(8.r),
-                        right: Radius.circular(12.r),
-                      ),
+            infoHomeModel.listReceipts.isEmpty
+                ? Padding(
+                    padding: EdgeInsets.only(left: 20.w, bottom: 10.h),
+                    child: Text(
+                      'Không có yêu cầu thanh toán nào',
+                      style: defaultText14,
                     ),
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: 16.w,
+                  )
+                : Column(
+                    children: List.generate(infoHomeModel.listReceipts.length,
+                        (index) {
+                      return Container(
+                        height: 72.h,
+                        width: 343.w,
+                        margin: EdgeInsets.only(
+                          left: 20.w,
+                          bottom: 16.h,
+                          right: 20.w,
                         ),
-                        Image.asset(
-                          'assets/images/bill.png',
-                          height: 40.h,
-                        ),
-                        SizedBox(
-                          width: 12.w,
-                        ),
-                        Text(
-                          infoHomeModel.listReceipts[index].name,
-                          style: defaultText16,
-                        ),
-                        const Spacer(),
-                        InkWell(
-                            onTap: () async {
-                              //call api
-                              AllReceiptDetailModel receiptsDetailModel =
-                                  await HomeRepo().getDetailReceipts(
-                                      infoHomeModel.listReceipts[index].id
-                                          .toString());
+                        decoration: BoxDecoration(
+                            color: const Color(0xff1B91C4),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(12.r),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.16),
+                                spreadRadius: 0,
+                                blurRadius: 16,
+                                offset: const Offset(0, 4),
+                              ),
+                            ]),
+                        child: Container(
+                          height: 72.h,
+                          width: 339.w,
+                          margin: EdgeInsets.only(left: 4.w),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.horizontal(
+                              left: Radius.circular(8.r),
+                              right: Radius.circular(12.r),
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 20.w,
+                              ),
+                              Image.asset(
+                                'assets/images/bill.png',
+                                height: 40.h,
+                              ),
+                              SizedBox(
+                                width: 12.w,
+                              ),
+                              Text(
+                                infoHomeModel.listReceipts[index].name,
+                                style: defaultText16,
+                              ),
+                              const Spacer(),
+                              InkWell(
+                                  onTap: () async {
+                                    //call api
+                                    AllReceiptDetailModel receiptsDetailModel =
+                                        await HomeRepo().getDetailReceipts(
+                                            infoHomeModel.listReceipts[index].id
+                                                .toString());
 
-                              pushWithoutNavBar(
-                                context,
-                                MaterialPageRoute(
-                                  builder: ((context) => DetailBillScreen(
-                                        type: 1,
-                                        receiptsDetailModel:
-                                            receiptsDetailModel,
-                                      )),
-                                ),
-                              );
-                            },
-                            child:
-                                Image.asset('assets/images/arrow_right.png')),
-                        SizedBox(
-                          width: 16.w,
+                                    pushWithoutNavBar(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: ((context) => DetailBillScreen(
+                                              type: 1,
+                                              receiptsDetailModel:
+                                                  receiptsDetailModel,
+                                            )),
+                                      ),
+                                    );
+                                  },
+                                  child: Image.asset(
+                                      'assets/images/arrow_right.png')),
+                              SizedBox(
+                                width: 20.w,
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
+                      );
+                    }),
                   ),
-                );
-              }),
-            ),
             Divider(
               thickness: 8.h,
               color: const Color(0xffF0F0F0),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 16.w, bottom: 10.h, top: 12.h),
+              padding: EdgeInsets.only(left: 20.w, bottom: 10.h, top: 12.h),
               child: Text(
                 'Bảng tin toà nhà',
                 style: defaultText16B,
@@ -271,7 +279,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 12),
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Row(
                 children: infoHomeModel.listCategory.map((cat) {
                   final bool isSelected = cat.id == selectedCategoryId;

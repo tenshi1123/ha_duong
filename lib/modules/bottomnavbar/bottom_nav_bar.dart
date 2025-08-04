@@ -37,8 +37,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
     await initOneSignal();
     var onesignalId = await OneSignal.User.getOnesignalId();
     await LoginRepo().pushOnesignalId(
-        apatmentId: widget.infoHomeModel.listApartment[0].id,
-        onesignalId: onesignalId ?? '');
+      apatmentId: widget.infoHomeModel.listApartment[0].id,
+      onesignalId: onesignalId ?? '',
+    );
     if (Platform.isAndroid) {
       OneSignal.Notifications.addClickListener((event) {});
     } else {

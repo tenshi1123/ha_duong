@@ -28,7 +28,7 @@ class _OtpScreenState extends State<OtpScreen> {
   String errorMessage = '';
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final _otpPinFieldKey = GlobalKey<OtpPinFieldState>();
-
+  bool isloading = false;
   //this is method is used to initialize data
   @override
   void didChangeDependencies() {
@@ -120,26 +120,36 @@ class _OtpScreenState extends State<OtpScreen> {
                   height: screenHeight * 0.04,
                 ),
                 GestureDetector(
-                  onTap: () {
-                    verifyOtp();
+                  onTap: () async {
+                    setState(() {
+                      isloading = true;
+                    });
+                    await verifyOtp();
+                    setState(() {
+                      isloading = false;
+                    });
                   },
-                  child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20.w),
-                    height: 45,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: main1Color,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Xác minh',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
+                  child: isloading
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : Container(
+                          margin: EdgeInsets.symmetric(horizontal: 20.w),
+                          height: 45,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: main1Color,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Xác minh',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20.sp,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
                 ),
               ],
             )

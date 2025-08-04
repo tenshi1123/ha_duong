@@ -47,10 +47,6 @@ class LoginRepo {
 
   Future pushOnesignalId(
       {required String apatmentId, required String onesignalId}) async {
-    // var formData = FormData.fromMap({
-    //   'apartment_id': apatmentId,
-    //   'onesignal_id': onesignalId,
-    // });
     dio.interceptors.add(LogInterceptor(
       responseBody: true,
       requestBody: true,

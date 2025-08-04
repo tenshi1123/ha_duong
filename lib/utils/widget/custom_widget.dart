@@ -305,6 +305,7 @@ class ApartmentDropdown extends StatelessWidget {
         child: DropdownButton<ApartmentModel>(
           isExpanded: true,
           value: selectedApartment,
+          padding: EdgeInsets.zero,
           icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
           dropdownColor: Colors.white,
           style: TextStyle(

@@ -214,6 +214,8 @@ class PersonalScreen extends StatelessWidget {
                 // delete token
                 final SharedPreferences prefs =
                     await SharedPreferences.getInstance();
+                prefs.remove('token');
+                prefs.remove('refresh_token');
                 prefs.clear;
                 pushWithoutNavBar(
                   context,
