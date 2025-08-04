@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.6
-  intl: ^0.19.0
+  intl: 0.20.2
   flutter_screenutil: ^5.9.3
   url_launcher: ^6.3.0
   otp_pin_field: ^1.4.0
