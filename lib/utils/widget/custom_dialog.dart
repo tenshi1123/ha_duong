@@ -69,7 +69,7 @@ class CustomerInfoForm extends StatelessWidget {
                   if (_formKey.currentState!.validate()) {
                     // Gửi thông tin
                     HomeRepo().sendDangKy(
-                      '',
+                      dangKyModel.id,
                       nameController.text,
                       phoneController.text,
                       apartmentController.text,
