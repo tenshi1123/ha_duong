@@ -104,6 +104,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
           item: ItemConfig(
             icon: SvgPicture.asset(
               'assets/icons/support.svg',
+              width: 32.w,
+              height: 32.h,
             ),
             title: "Hỗ trợ",
             inactiveIcon: SvgPicture.asset(
@@ -201,8 +203,9 @@ Widget customNavBarWithCenterCircle(BuildContext context, NavBarConfig config) {
                 Container(
                   height: 64.h,
                   width: 64.w,
+                  padding: EdgeInsets.all(8.r),
                   decoration: const BoxDecoration(
-                    color: Color(0xff005DA4),
+                    color: Colors.white,
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
@@ -212,8 +215,19 @@ Widget customNavBarWithCenterCircle(BuildContext context, NavBarConfig config) {
                       ),
                     ],
                   ),
-                  child: Center(
-                    child: config.items[2].icon,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      //color: Color(0xff005DA4),
+                      gradient: LinearGradient(
+                        colors: [Color(0xff007AD7), Color(0xff004071)],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: config.items[2].icon,
+                    ),
                   ),
                 ),
                 SizedBox(height: 12.h),

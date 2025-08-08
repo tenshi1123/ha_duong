@@ -155,13 +155,13 @@ class PostItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        PostModel detailModel =
-            await HomeRepo().getDetailPostModel(postModel.id);
+        // PostModel detailModel =
+        //     await HomeRepo().getDetailPostModel(postModel.id);
         pushWithoutNavBar(
           context,
           MaterialPageRoute(
             builder: ((context) => DetailPostScreen(
-                  postModel: detailModel,
+                  postId: postModel.id,
                 )),
           ),
         );

@@ -44,7 +44,7 @@ class _BillScreenState extends State<BillScreen> {
       return const Center(child: CircularProgressIndicator());
     }
     return DefaultTabController(
-      initialIndex: 1,
+      initialIndex: 0,
       length: 2,
       child: Scaffold(
         backgroundColor: Colors.white,

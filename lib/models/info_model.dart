@@ -131,13 +131,14 @@ class PostModel {
   final String name;
   final String content;
   final String updatedAt;
-  PostModel({
-    required this.id,
-    required this.img,
-    required this.name,
-    required this.content,
-    required this.updatedAt,
-  });
+  final String createAt;
+  PostModel(
+      {required this.id,
+      required this.img,
+      required this.name,
+      required this.content,
+      required this.updatedAt,
+      required this.createAt});
   factory PostModel.fromJson(Map<String, dynamic> json) {
     return PostModel(
       id: json['id'] ?? '',
@@ -145,6 +146,7 @@ class PostModel {
       name: json['name'] ?? '',
       content: json['content'] ?? '',
       updatedAt: json['update_at'] ?? '',
+      createAt: json['created_at'] ?? '',
     );
   }
 }

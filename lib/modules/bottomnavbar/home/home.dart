@@ -60,14 +60,14 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             SizedBox(
               width: 375.w,
-              height: 212.h,
+              height: 230.h,
               child: Stack(children: [
                 Positioned(
                   top: 0,
                   left: 0,
                   child: Image(
                     width: MediaQuery.of(context).size.width,
-                    height: 255.h,
+                    height: 210.h,
                     image: const AssetImage(
                       'assets/images/home_background.png',
                     ),
@@ -136,15 +136,76 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(
                           height: 16.h,
                         ),
-                        ApartmentDropdown(
-                          selectedApartment: infoHomeModel.listApartment[0],
-                          apartmentList: infoHomeModel.listApartment,
-                          onChanged: (value) {
+                        PopupMenuButton<ApartmentModel>(
+                          onSelected: (value) {
                             setState(() {
-                              selectedApartment = value!;
+                              selectedApartment = value;
                             });
                           },
+                          constraints:
+                              BoxConstraints(minWidth: 280.w, maxWidth: 320.w),
+                          itemBuilder: (context) =>
+                              widget.infoHomeModel.listApartment.map((address) {
+                            return PopupMenuItem(
+                              value: address,
+                              child: Row(
+                                children: [
+                                  Image.asset(
+                                    'assets/images/location.png',
+                                    height: 20.5.h,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    address.name,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }).toList(),
+                          offset: Offset(0, 42.h),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16)),
+                          color: Colors.white,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 12),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Image.asset(
+                                  'assets/images/location.png',
+                                  height: 20.5.h,
+                                ),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    selectedApartment.name,
+                                    style: const TextStyle(color: Colors.white),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                const Icon(Icons.arrow_drop_down,
+                                    color: Colors.white),
+                              ],
+                            ),
+                          ),
                         ),
+                        // ApartmentDropdown(
+                        //   selectedApartment: infoHomeModel.listApartment[0],
+                        //   apartmentList: infoHomeModel.listApartment,
+                        //   onChanged: (value) {
+                        //     setState(() {
+                        //       selectedApartment = value!;
+                        //     });
+                        //   },
+                        // ),
                         SizedBox(
                           height: 4.h,
                         ),
@@ -154,27 +215,27 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Positioned(
                   bottom: 0,
-                  left: 0,
+                  width: MediaQuery.of(context).size.width,
                   child: Container(
-                    height: 16.h,
-                    width: 375.w,
+                    padding: EdgeInsets.only(
+                      left: 20.w,
+                      bottom: 10.h,
+                      top: 16.h,
+                    ),
                     decoration: BoxDecoration(
+                      color: Colors.white,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(16.r),
                         topRight: Radius.circular(16.r),
                       ),
-                      color: Colors.white,
+                    ),
+                    child: Text(
+                      'Yêu cầu thanh toán',
+                      style: defaultText16B,
                     ),
                   ),
-                )
+                ),
               ]),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 20.w, bottom: 10.h),
-              child: Text(
-                'Yêu cầu thanh toán',
-                style: defaultText16B,
-              ),
             ),
             infoHomeModel.listReceipts.isEmpty
                 ? Padding(
@@ -208,59 +269,58 @@ class _HomeScreenState extends State<HomeScreen> {
                                 offset: const Offset(0, 4),
                               ),
                             ]),
-                        child: Container(
-                          height: 72.h,
-                          width: 339.w,
-                          margin: EdgeInsets.only(left: 4.w),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.horizontal(
-                              left: Radius.circular(8.r),
-                              right: Radius.circular(12.r),
-                            ),
-                          ),
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 20.w,
-                              ),
-                              Image.asset(
-                                'assets/images/bill.png',
-                                height: 40.h,
-                              ),
-                              SizedBox(
-                                width: 12.w,
-                              ),
-                              Text(
-                                infoHomeModel.listReceipts[index].name,
-                                style: defaultText16,
-                              ),
-                              const Spacer(),
-                              InkWell(
-                                  onTap: () async {
-                                    //call api
-                                    AllReceiptDetailModel receiptsDetailModel =
-                                        await HomeRepo().getDetailReceipts(
-                                            infoHomeModel.listReceipts[index].id
-                                                .toString());
+                        child: InkWell(
+                          onTap: () async {
+                            //call api
+                            AllReceiptDetailModel receiptsDetailModel =
+                                await HomeRepo().getDetailReceipts(infoHomeModel
+                                    .listReceipts[index].id
+                                    .toString());
 
-                                    pushWithoutNavBar(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: ((context) => DetailBillScreen(
-                                              type: 1,
-                                              receiptsDetailModel:
-                                                  receiptsDetailModel,
-                                            )),
-                                      ),
-                                    );
-                                  },
-                                  child: Image.asset(
-                                      'assets/images/arrow_right.png')),
-                              SizedBox(
-                                width: 20.w,
+                            pushWithoutNavBar(
+                              context,
+                              MaterialPageRoute(
+                                builder: ((context) => DetailBillScreen(
+                                      type: 1,
+                                      receiptsDetailModel: receiptsDetailModel,
+                                    )),
                               ),
-                            ],
+                            );
+                          },
+                          child: Container(
+                            height: 72.h,
+                            width: 339.w,
+                            margin: EdgeInsets.only(left: 4.w),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.horizontal(
+                                left: Radius.circular(8.r),
+                                right: Radius.circular(12.r),
+                              ),
+                            ),
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width: 20.w,
+                                ),
+                                Image.asset(
+                                  'assets/images/bill.png',
+                                  height: 40.h,
+                                ),
+                                SizedBox(
+                                  width: 12.w,
+                                ),
+                                Text(
+                                  infoHomeModel.listReceipts[index].name,
+                                  style: defaultText16,
+                                ),
+                                const Spacer(),
+                                Image.asset('assets/images/arrow_right.png'),
+                                SizedBox(
+                                  width: 20.w,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       );

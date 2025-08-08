@@ -4,6 +4,7 @@ import 'package:ha_duong/models/apartment_model.dart';
 import 'package:ha_duong/models/info_model.dart';
 import 'package:ha_duong/repo/personal_repo.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
+import 'package:ha_duong/utils/widget/pick_image.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../login/login_screen.dart';
@@ -38,18 +39,84 @@ class PersonalScreen extends StatelessWidget {
             SizedBox(
               height: 34.h,
             ),
-            CircleAvatar(
-              radius: 60,
-              backgroundColor: Colors.white,
-              child: CircleAvatar(
-                radius: 55,
-                backgroundImage: NetworkImage(
-                  infoHomeModel.resident.img,
+            Stack(
+              children: [
+                CircleAvatar(
+                  radius: 60.r,
+                  backgroundColor: Colors.white,
+                  child: CircleAvatar(
+                    radius: 55,
+                    backgroundImage: NetworkImage(
+                      infoHomeModel.resident.img,
+                    ),
+                  ),
                 ),
-              ),
+                Positioned(
+                  bottom: 0,
+                  right: 5.w,
+                  child: GestureDetector(
+                    onTap: () {
+                      showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => Dialog(
+                                child: Container(
+                                  height: 166.h,
+                                  width: 343.w,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(20.r),
+                                    ),
+                                    color: Colors.white,
+                                  ),
+                                  child: Center(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        // Nút Tải ảnh lên
+                                        buildUploadOption(
+                                          icon: Icons.image_outlined,
+                                          text: "Tải ảnh lên",
+                                          onTap: () {
+                                            // Xử lý tải ảnh lên
+                                            pickImageFromGallery1(
+                                              context,
+                                              2,
+                                            );
+                                          },
+                                        ),
+                                        SizedBox(
+                                            width: 56
+                                                .w), // Khoảng cách giữa hai nút
+                                        // Nút Chụp ảnh
+                                        buildUploadOption(
+                                          icon: Icons.camera_alt_outlined,
+                                          text: "Chụp ảnh",
+                                          onTap: () {
+                                            // Xử lý chụp ảnh
+                                            pickImageFromCamera1(
+                                              context,
+                                              2,
+                                            );
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ));
+                    },
+                    child: Image.asset(
+                      'assets/images/camera.png',
+                      width: 28.w,
+                      height: 28.h,
+                    ),
+                  ),
+                ),
+              ],
             ),
             SizedBox(
-              height: 20.h,
+              height: 16.h,
             ),
             infoItem(
               title: 'Họ và tên',
@@ -248,6 +315,46 @@ class PersonalScreen extends StatelessWidget {
   }
 }
 
+Widget buildUploadOption({
+  required IconData icon,
+  required String text,
+  required VoidCallback onTap,
+}) {
+  return Column(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(50),
+        child: CircleAvatar(
+          radius: 26.r,
+          backgroundColor: Colors.transparent,
+          child: Container(
+            height: 52.h,
+            width: 52.r,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.lightBlue,
+              // gradient: LinearGradient(
+              //   colors: [
+              //     Color(0xff25AAE1),
+              //     Color(0xff004071),
+              //   ],
+              // ),
+            ),
+            child: Icon(icon, size: 26.r, color: Colors.white),
+          ),
+        ),
+      ),
+      const SizedBox(height: 8),
+      Text(
+        text,
+        style: const TextStyle(fontSize: 16, color: Colors.black87),
+      ),
+    ],
+  );
+}
+
 Widget infoItem({
   required String title,
   required String info,
@@ -255,7 +362,7 @@ Widget infoItem({
   return Row(
     children: [
       SizedBox(
-        width: 16.w,
+        width: 20.w,
       ),
       Text(
         title,
@@ -271,7 +378,7 @@ Widget infoItem({
         ),
       ),
       SizedBox(
-        width: 16.w,
+        width: 20.w,
       ),
     ],
   );

@@ -60,15 +60,15 @@ class ServiceScreen extends StatelessWidget {
                 SizedBox(
                   height: 16.h,
                 ),
-                Padding(
-                  padding: EdgeInsets.only(left: 16.w),
-                  child: Text(
-                    'Mô tả dịch vụ',
-                    style: defaultText14B.copyWith(
-                      color: const Color(0xff3C3C3C),
-                    ),
-                  ),
-                ),
+                // Padding(
+                //   padding: EdgeInsets.only(left: 16.w),
+                //   child: Text(
+                //     'Mô tả dịch vụ',
+                //     style: defaultText14B.copyWith(
+                //       color: const Color(0xff3C3C3C),
+                //     ),
+                //   ),
+                // ),
                 Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: 16.w,

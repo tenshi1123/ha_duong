@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ha_duong/models/info_model.dart';
+import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:typed_data'; // Để làm việc với dữ liệu byte
@@ -41,43 +43,71 @@ class _PaymentScreenState extends State<PaymentScreen> {
     ''';
 
     return Scaffold(
-      backgroundColor: const Color(0xffD0D0D0),
+      backgroundColor: const Color.fromARGB(255, 241, 241, 241),
       appBar: AppBar(
         title: const Text('Thanh toán'),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
+          onPressed: () {
+            Navigator.of(context).pop(false);
+          },
+        ),
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Screenshot(
-                  controller: screenshotController,
-                  child: Html(
-                    data: htmlContent,
-                    // Cấu hình thêm nếu cần
-                    // onImageTap: (src, _, __) {
-                    //   print('Đã click vào hình ảnh: $src');
-                    // },
-                    // style: {
-                    //   "img": Style(
-                    //     maxWidth: MediaQuery.of(context).size.width * 0.8,
-                    //     height: AutoCSS(), // Hoặc một giá trị cố định
-                    //   ),
-                    // },
-                  ),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            SizedBox(
+              height: 20.h,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+              child: const Text(
+                'Cư dân vui lòng thanh toán hóa đơn theo mã QR dưới đây:',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
                 ),
               ),
-              const SizedBox(height: 30),
-              ElevatedButton.icon(
-                onPressed: () {
-                  _captureAndSaveWidget();
-                },
-                icon: const Icon(Icons.download),
-                label: const Text('Chụp và lưu mã QR'),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+              child: Screenshot(
+                controller: screenshotController,
+                child: Html(
+                  data: htmlContent,
+                  // Cấu hình thêm nếu cần
+                  // onImageTap: (src, _, __) {
+                  //   print('Đã click vào hình ảnh: $src');
+                  // },
+                  // style: {
+                  //   "img": Style(
+                  //     maxWidth: MediaQuery.of(context).size.width * 0.8,
+                  //     height: AutoCSS(), // Hoặc một giá trị cố định
+                  //   ),
+                  // },
+                ),
               ),
-            ],
-          ),
+            ),
+            ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+              ),
+              onPressed: () {
+                _captureAndSaveWidget();
+              },
+              icon: const Icon(
+                Icons.download,
+                color: Color(0xff004071),
+              ),
+              label: Text('Chụp và lưu mã QR', style: defaultText14M),
+            ),
+          ],
         ),
       ),
     );

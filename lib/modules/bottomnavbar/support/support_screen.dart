@@ -12,6 +12,7 @@ import 'package:ha_duong/repo/support_repo.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:ha_duong/utils/widget/custom_dialog.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SupportScreen extends StatefulWidget {
   const SupportScreen({super.key, required this.id});
@@ -23,6 +24,13 @@ class SupportScreen extends StatefulWidget {
 
 class _SupportScreenState extends State<SupportScreen> with RouteAware {
   late Future<List<TechnicalSupportModel>> _supportData;
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    await launchUrl(launchUri);
+  }
 
   @override
   void initState() {
@@ -219,41 +227,15 @@ class _SupportScreenState extends State<SupportScreen> with RouteAware {
                             onTap: () async {
                               ChatModel model =
                                   await ChatRepo().getHomeChat(widget.id);
-                              pushWithoutNavBar(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ChatScreen(
-                                    avatar: 'assets/images/avatar2.png',
-                                    chatModel: model,
-                                    apartmentId: widget.id,
-                                  ),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              width: 150.w,
-                              height: 86.h,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12.r),
-                              ),
-                              child: const Image(
-                                image: AssetImage('assets/images/chat.png'),
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () async {
-                              List<PostModel> department =
-                                  await SupportRepo().getDepartment(widget.id);
-                              if (!context.mounted) return;
-                              showPostDialog(context, department, widget.id);
+                              _makePhoneCall(model.hotline);
                               // pushWithoutNavBar(
                               //   context,
                               //   MaterialPageRoute(
-                              //     builder: ((context) => RequestScreen(
-                              //           id: id,
-                              //         )),
+                              //     builder: (context) => ChatScreen(
+                              //       avatar: 'assets/images/avatar2.png',
+                              //       chatModel: model,
+                              //       apartmentId: widget.id,
+                              //     ),
                               //   ),
                               // );
                             },
@@ -263,6 +245,42 @@ class _SupportScreenState extends State<SupportScreen> with RouteAware {
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(12.r),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.2),
+                                    spreadRadius: 1,
+                                    blurRadius: 5,
+                                    offset: const Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: const Image(
+                                image: AssetImage(
+                                    'assets/images/call_hotline.png'),
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              List<PostModel> department =
+                                  await SupportRepo().getDepartment(widget.id);
+                              if (!context.mounted) return;
+                              showPostDialog(context, department, widget.id);
+                            },
+                            child: Container(
+                              width: 150.w,
+                              height: 86.h,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12.r),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.2),
+                                    spreadRadius: 1,
+                                    blurRadius: 5,
+                                    offset: const Offset(0, 3),
+                                  ),
+                                ],
                               ),
                               child: const Image(
                                 image: AssetImage('assets/images/feedback.png'),

@@ -19,13 +19,15 @@ class CustomerInfoForm extends StatelessWidget {
   final TextEditingController nameController;
   final TextEditingController phoneController;
   final TextEditingController apartmentController;
+  final TextEditingController noteController;
   CustomerInfoForm({
     super.key,
     required this.dangKyModel,
   })  : nameController = TextEditingController(text: dangKyModel.fullName),
         phoneController = TextEditingController(text: dangKyModel.phone),
         apartmentController =
-            TextEditingController(text: dangKyModel.apartmentName);
+            TextEditingController(text: dangKyModel.apartmentName),
+        noteController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -56,14 +58,20 @@ class CustomerInfoForm extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16.h),
               _buildLabelledField("Họ và tên", nameController),
-              const SizedBox(height: 16),
+              SizedBox(height: 16.h),
               _buildLabelledField("Số điện thoại", phoneController,
                   keyboardType: TextInputType.phone),
-              const SizedBox(height: 16),
+              SizedBox(height: 16.h),
               _buildLabelledField("Căn hộ", apartmentController),
-              const SizedBox(height: 24),
+              SizedBox(height: 16.h),
+              _buildLabelledField(
+                "Ghi chú",
+                noteController,
+                isRequied: false,
+              ),
+              SizedBox(height: 24.h),
               GestureDetector(
                 onTap: () {
                   if (_formKey.currentState!.validate()) {
@@ -101,8 +109,7 @@ class CustomerInfoForm extends StatelessWidget {
                 child: Container(
                   width: 303.w,
                   height: 50.h,
-                  margin: EdgeInsets.only(
-                      left: 16.w, bottom: 30.h, top: 16.w, right: 16.w),
+                  margin: EdgeInsets.only(left: 16.w, right: 16.w),
                   constraints: BoxConstraints(maxHeight: 120.h),
                   decoration: const BoxDecoration(
                     gradient: LinearGradient(
@@ -117,10 +124,11 @@ class CustomerInfoForm extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(15)),
                   ),
                   child: Center(
-                      child: Text(
-                    'Gửi thông tin',
-                    style: defaultText14B.copyWith(color: Colors.white),
-                  )),
+                    child: Text(
+                      'Gửi thông tin',
+                      style: defaultText14B.copyWith(color: Colors.white),
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -433,12 +441,13 @@ Widget buildUploadOption({
             width: 52.r,
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
-              gradient: LinearGradient(
-                colors: [
-                  Color(0xff25AAE1),
-                  Color(0xff004071),
-                ],
-              ),
+              color: Colors.lightBlue,
+              // gradient: LinearGradient(
+              //   colors: [
+              //     Color(0xff25AAE1),
+              //     Color(0xff004071),
+              //   ],
+              // ),
             ),
             child: Icon(icon, size: 26.r, color: Colors.white),
           ),
@@ -745,8 +754,12 @@ class _AddMemberState extends State<AddMember> {
   }
 }
 
-Widget _buildLabelledField(String label, TextEditingController controller,
-    {TextInputType keyboardType = TextInputType.text}) {
+Widget _buildLabelledField(
+  String label,
+  TextEditingController controller, {
+  TextInputType keyboardType = TextInputType.text,
+  bool isRequied = true,
+}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -755,10 +768,10 @@ Widget _buildLabelledField(String label, TextEditingController controller,
           text: label,
           style: const TextStyle(
               fontSize: 14, color: Colors.black87, fontWeight: FontWeight.w500),
-          children: const [
+          children: [
             TextSpan(
-              text: ' *',
-              style: TextStyle(color: Colors.red),
+              text: isRequied ? ' *' : '',
+              style: const TextStyle(color: Colors.red),
             ),
           ],
         ),
@@ -768,13 +781,16 @@ Widget _buildLabelledField(String label, TextEditingController controller,
         controller: controller,
         keyboardType: keyboardType,
         validator: (value) {
-          if (value == null || value.trim().isEmpty) {
+          if (isRequied && (value == null || value.trim().isEmpty)) {
             return 'Vui lòng nhập ${label.toLowerCase()}';
           }
+
           return null;
         },
+        maxLines: isRequied ? 1 : 4,
         decoration: InputDecoration(
           isDense: true,
+          hintText: 'Nhập $label',
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
