@@ -57,7 +57,6 @@ class PersonalRepo {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');
     dio.options.headers['Authorization'] = 'Bearer $token';
-
     try {
       // Chuyển đổi danh sách File -> List<MultipartFile>
       List<MultipartFile> photoFiles = await Future.wait(
@@ -65,7 +64,6 @@ class PersonalRepo {
           (file) => MultipartFile.fromFile(file.path),
         ),
       );
-
       final formData = FormData.fromMap({
         'full_name': fullName,
         'cccd_cmt': cccdCmt,
@@ -91,6 +89,24 @@ class PersonalRepo {
       } else {
         response = await dio.post(ApiPath.editChuho, data: formData);
       }
+      return response.data['status'] == true;
+    } on DioException {
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // cập nhật avatar
+  Future<bool> changeAvatar(File file) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+    dio.options.headers['Authorization'] = 'Bearer $token';
+    try {
+      final formData = FormData.fromMap({
+        'file': await MultipartFile.fromFile(file.path),
+      });
+      final response = await dio.post(ApiPath.changeAvatar, data: formData);
       return response.data['status'] == true;
     } on DioException {
       return false;

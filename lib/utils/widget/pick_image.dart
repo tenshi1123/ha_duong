@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ha_duong/main.dart';
 import 'package:ha_duong/repo/personal_repo.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:image_picker/image_picker.dart';
@@ -357,11 +358,7 @@ Future pickImageFromGallery(
 
 Future<void> pickImageFromCamera1(
   BuildContext context,
-  final int type, {
-  String? rela,
-  String? apartmentId,
-  String? residentId,
-}) async {
+) async {
   final ImagePicker picker = ImagePicker();
   List<File> photos = [];
 
@@ -398,7 +395,6 @@ Future<void> pickImageFromCamera1(
                       ),
                       const SizedBox(height: 16),
                       ...photos.asMap().entries.map((entry) {
-                        int index = entry.key;
                         File photo = entry.value;
 
                         return Padding(
@@ -425,11 +421,14 @@ Future<void> pickImageFromCamera1(
                           Navigator.pop(context);
                           Navigator.pop(context);
                           //gọi api
-
+                          mainAvatarNotifier.value = photos;
+                          PersonalRepo().changeAvatar(
+                            photos.first,
+                          );
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
+                            SnackBar(
                               content: Text(
-                                'Yêu cầu đã được gửi thành công!',
+                                'Đổi ảnh đại diện thành công!',
                               ),
                             ),
                           );
@@ -474,11 +473,7 @@ Future<void> pickImageFromCamera1(
 
 Future pickImageFromGallery1(
   BuildContext context,
-  final int type, {
-  String? rela,
-  String? apartmentId,
-  String? residentId,
-}) async {
+) async {
   final returnedImage = await ImagePicker().pickMultiImage();
 
   if (returnedImage.isNotEmpty) {
@@ -520,7 +515,6 @@ Future pickImageFromGallery1(
                       ),
                       ...photos.asMap().entries.map(
                         (entry) {
-                          int index = entry.key;
                           File photo = entry.value;
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 12),
@@ -567,11 +561,16 @@ Future pickImageFromGallery1(
                         onTap: () async {
                           // Xử lý gửi yêu cầu
                           Navigator.pop(context);
+                          Navigator.pop(context);
+                          mainAvatarNotifier.value = photos;
+                          PersonalRepo().changeAvatar(
+                            photos.first,
+                          );
 
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
+                            SnackBar(
                               content: Text(
-                                'Kỹ thuật đang triển khai tính năng này',
+                                'Đổi ảnh đại diện thành công!',
                               ),
                             ),
                           );

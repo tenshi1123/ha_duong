@@ -31,14 +31,13 @@ class ApiPath {
   static const String sendDangKy = '$baseUrl/cudan/utilities/dang_ky';
   // api tài khoản
   static const String profile = '$baseUrl/cudan/profile';
-
+  static const String changeAvatar = '$baseUrl/cudan/profile/change_avatar';
   // api căn hộ
   static const String apartment = '$baseUrl/cudan/apartment';
   static const String editChuho = '$baseUrl/cudan/apartment/edit_chu_ho';
   static const String apartmentResident = '$apartment/view_apartment_resident';
   static const String editThanhVien = '$apartment/edit_apartment_thanh_vien';
   static const String addThanhVien = '$apartment/add_apartment_thanh_vien';
-
   static const String listPhuongTien =
       '$baseUrl/cudan/apartment/list_phuong_tien';
   //chat

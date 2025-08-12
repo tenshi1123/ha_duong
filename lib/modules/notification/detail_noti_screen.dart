@@ -1,8 +1,10 @@
+import 'package:flutter_html/flutter_html.dart';
 import 'package:ha_duong/models/chat_model.dart';
 import 'package:ha_duong/utils/constants/color.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 class DetailNotiScreen extends StatefulWidget {
   const DetailNotiScreen({super.key, required this.notiModel});
@@ -59,38 +61,42 @@ class _DetailNotiScreenState extends State<DetailNotiScreen>
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Image(
-            //   image: const AssetImage('assets/images/notification.png'),
-            //   height: 180.h,
-            //   width: 343.w,
-            //   fit: BoxFit.fill,
-            // ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Image(
+              //   image: const AssetImage('assets/images/notification.png'),
+              //   height: 180.h,
+              //   width: 343.w,
+              //   fit: BoxFit.fill,
+              // ),
 
-            Text(
-              'Thông báo nhân viên kỹ thuật phục vụ yêu cầu hỗ trợ',
-              style: defaultText16B,
-            ),
-            SizedBox(
-              height: 8.h,
-            ),
-            Text(
-              '20:05 - 28/10/2022',
-              style: defaultText14Re.copyWith(
-                color: const Color(0xff292929).withValues(alpha: 0.8),
+              Text(
+                widget.notiModel.title,
+                style: defaultText16B,
               ),
-            ),
-            SizedBox(
-              height: 8.h,
-            ),
-            Text(
-              'Bộ phận kỹ thuật xin thông báo rằng yêu cầu hỗ trợ kỹ thuật của Bạn liên quan đến kỹ thuật đã được xử lý hoàn tất vào lúc 20h ngày 30/10/2022.',
-              style: defaultText14Re.copyWith(
-                  color: const Color(0xff292929).withValues(alpha: 0.8)),
-            ),
-          ],
+              SizedBox(
+                height: 8.h,
+              ),
+              Text(
+                DateFormat("HH:mm - yyyy-MM-dd")
+                    .format(widget.notiModel.createdAt),
+                style: defaultText14Re.copyWith(
+                  color: const Color(0xff292929).withValues(alpha: 0.8),
+                ),
+              ),
+              SizedBox(
+                height: 8.h,
+              ),
+              SelectionArea(child: Html(data: widget.notiModel.content)),
+              // Text(
+              //   widget.notiModel.content,
+              //   style: defaultText14Re.copyWith(
+              //       color: const Color(0xff292929).withValues(alpha: 0.8)),
+              // ),
+            ],
+          ),
         ),
       ),
     );

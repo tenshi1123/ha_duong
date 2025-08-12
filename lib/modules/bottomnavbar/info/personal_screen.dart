@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ha_duong/main.dart';
 import 'package:ha_duong/models/apartment_model.dart';
 import 'package:ha_duong/models/info_model.dart';
 import 'package:ha_duong/repo/personal_repo.dart';
@@ -25,290 +28,437 @@ class PersonalScreen extends StatelessWidget {
             fit: BoxFit.fill,
           ),
         ),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 86.h,
-            ),
-            Text(
-              'Thông tin tài khoản',
-              style: defaultText18B.copyWith(
-                color: Colors.white,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 86.h,
               ),
-            ),
-            SizedBox(
-              height: 34.h,
-            ),
-            Stack(
-              children: [
-                CircleAvatar(
-                  radius: 60.r,
-                  backgroundColor: Colors.white,
-                  child: CircleAvatar(
-                    radius: 55,
-                    backgroundImage: NetworkImage(
-                      infoHomeModel.resident.img,
+              Text(
+                'Thông tin tài khoản',
+                style: defaultText18B.copyWith(
+                  color: Colors.white,
+                ),
+              ),
+              SizedBox(
+                height: 34.h,
+              ),
+              Stack(
+                children: [
+                  ValueListenableBuilder<List<File>>(
+                    valueListenable: mainAvatarNotifier,
+                    builder: (context, value, _) {
+                      if (value.isNotEmpty) {
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(55.r),
+                          child: Image.file(
+                            value.first,
+                            width: 110.r,
+                            height: 110.r,
+                            fit: BoxFit.cover,
+                          ),
+                        );
+                      } else {
+                        return CircleAvatar(
+                          radius: 55.r,
+                          backgroundImage:
+                              NetworkImage(infoHomeModel.resident.img),
+                        );
+                      }
+                    },
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    right: 5.w,
+                    child: GestureDetector(
+                      onTap: () {
+                        showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => Dialog(
+                                  child: Container(
+                                    height: 166.h,
+                                    width: 343.w,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(20.r),
+                                      ),
+                                      color: Colors.white,
+                                    ),
+                                    child: Center(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          // Nút Tải ảnh lên
+                                          buildUploadOption(
+                                            icon: Icons.image_outlined,
+                                            text: "Tải ảnh lên",
+                                            onTap: () {
+                                              // Xử lý tải ảnh lên
+                                              pickImageFromGallery1(
+                                                context,
+                                              );
+                                            },
+                                          ),
+                                          SizedBox(width: 56.w),
+                                          // Nút Chụp ảnh
+                                          buildUploadOption(
+                                            icon: Icons.camera_alt_outlined,
+                                            text: "Chụp ảnh",
+                                            onTap: () {
+                                              // Xử lý chụp ảnh
+                                              pickImageFromCamera1(
+                                                context,
+                                              );
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ));
+                      },
+                      child: Image.asset(
+                        'assets/images/camera.png',
+                        width: 28.w,
+                        height: 28.h,
+                      ),
                     ),
                   ),
+                ],
+              ),
+              SizedBox(
+                height: 16.h,
+              ),
+              infoItem(
+                title: 'Họ và tên',
+                info: infoHomeModel.resident.fullName,
+              ),
+              Divider(
+                color: const Color(0xffF0F0F0),
+                thickness: 1,
+                endIndent: 16.w,
+                indent: 16.w,
+                height: 24.h,
+              ),
+              infoItem(
+                title: 'Số định danh',
+                info: infoHomeModel.resident.idCard,
+              ),
+              Divider(
+                color: const Color(0xffF0F0F0),
+                thickness: 1,
+                endIndent: 16.w,
+                indent: 16.w,
+                height: 24.h,
+              ),
+              infoItem(
+                title: 'Ngày sinh',
+                info: infoHomeModel.resident.dob,
+              ),
+              Divider(
+                color: const Color(0xffF0F0F0),
+                thickness: 1,
+                endIndent: 16.w,
+                indent: 16.w,
+                height: 24.h,
+              ),
+              infoItem(
+                title: 'Số điện thoại',
+                info: infoHomeModel.resident.phone,
+              ),
+              Divider(
+                color: const Color(0xffF0F0F0),
+                thickness: 1,
+                endIndent: 16.w,
+                indent: 16.w,
+                height: 24.h,
+              ),
+              infoItem(
+                title: 'Email',
+                info: infoHomeModel.resident.email,
+              ),
+              Divider(
+                color: const Color(0xffF0F0F0),
+                thickness: 6,
+                height: 30.h,
+              ),
+              InkWell(
+                onTap: () async {
+                  final result = await PersonalRepo().getApartmentProfile();
+                  pushWithoutNavBar(
+                    context,
+                    MaterialPageRoute(
+                      builder: ((context) => ApartmentProfile(
+                            residentModel: result['resident'],
+                            apartmentModel: result['apartment'],
+                          )),
+                    ),
+                  );
+                },
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 6.h,
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 16.w,
+                        ),
+                        Text(
+                          'Hồ sơ căn hộ',
+                          style: defaultText16M.copyWith(
+                            color: Colors.black,
+                          ),
+                        ),
+                        const Spacer(),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: const Color(0xff383838),
+                          size: 16.w,
+                        ),
+                        SizedBox(
+                          width: 16.w,
+                        ),
+                      ],
+                    ),
+                    Divider(
+                      color: const Color(0xffF0F0F0),
+                      thickness: 1,
+                      endIndent: 16.w,
+                      indent: 16.w,
+                      height: 24.h,
+                    ),
+                  ],
                 ),
-                Positioned(
-                  bottom: 0,
-                  right: 5.w,
-                  child: GestureDetector(
-                    onTap: () {
-                      showDialog<String>(
-                          context: context,
-                          builder: (BuildContext context) => Dialog(
+              ),
+              InkWell(
+                onTap: () async {
+                  // call api
+                  List<VehicleModel> listVehicle =
+                      await PersonalRepo().getListPhuongTien();
+                  pushWithoutNavBar(
+                    context,
+                    MaterialPageRoute(
+                      builder: ((context) => RegisteredVehicleScreen(
+                            listVehicle: listVehicle,
+                          )),
+                    ),
+                  );
+                },
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 6.h,
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 16.w,
+                        ),
+                        Text(
+                          'Phương tiện đăng ký',
+                          style: defaultText16M.copyWith(
+                            color: Colors.black,
+                          ),
+                        ),
+                        const Spacer(),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: const Color(0xff383838),
+                          size: 16.w,
+                        ),
+                        SizedBox(
+                          width: 16.w,
+                        ),
+                      ],
+                    ),
+                    Divider(
+                      color: const Color(0xffF0F0F0),
+                      thickness: 1,
+                      endIndent: 16.w,
+                      indent: 16.w,
+                      height: 24.h,
+                    ),
+                  ],
+                ),
+              ),
+              if (DateTime.now().isBefore(DateTime(2025, 8, 15)))
+                InkWell(
+                  onTap: () async {
+                    // show dialog confirm delete account
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Xác nhận'),
+                          content: const Text(
+                            'Bạn có chắc chắn muốn xóa tài khoản của mình?',
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop(); // Đóng dialog
+                              },
+                              child: const Text('Hủy'),
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                // Xử lý xóa tài khoản ở đây
+                                Navigator.of(context).pop(); // Đóng dialog
+                              },
+                              child: const Text('Xóa'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 6.h,
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 16.w,
+                          ),
+                          Text(
+                            'Xóa tài khoản',
+                            style: defaultText16M.copyWith(
+                              color: Colors.red,
+                            ),
+                          ),
+                          const Spacer(),
+                        ],
+                      ),
+                      Divider(
+                        color: const Color(0xffF0F0F0),
+                        thickness: 1,
+                        endIndent: 16.w,
+                        indent: 16.w,
+                        height: 24.h,
+                      ),
+                    ],
+                  ),
+                ),
+              SizedBox(
+                height: 40.h,
+              ),
+              GestureDetector(
+                onTap: () => showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => Dialog(
+                    insetPadding: const EdgeInsets.all(0),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.r)),
+                    child: Container(
+                      height: 170.h,
+                      width: 343.w,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20.r),
+                        color: Colors.white,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Text(
+                            'Đăng xuất',
+                            style: defaultText16M.copyWith(
+                              color: const Color(0xffED1C24),
+                            ),
+                          ),
+                          Text(
+                            'Bạn chắc chắn muốn đăng xuất?',
+                            style: defaultText16M.copyWith(
+                              color: const Color(0xff8A8A8A),
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              GestureDetector(
+                                onTap: () => Navigator.pop(context),
                                 child: Container(
-                                  height: 166.h,
-                                  width: 343.w,
+                                  height: 50.h,
+                                  width: 149.w,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(20.r),
+                                    border: Border.all(
+                                      color: const Color(0xff273D8C),
                                     ),
-                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(12.r),
                                   ),
                                   child: Center(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        // Nút Tải ảnh lên
-                                        buildUploadOption(
-                                          icon: Icons.image_outlined,
-                                          text: "Tải ảnh lên",
-                                          onTap: () {
-                                            // Xử lý tải ảnh lên
-                                            pickImageFromGallery1(
-                                              context,
-                                              2,
-                                            );
-                                          },
-                                        ),
-                                        SizedBox(
-                                            width: 56
-                                                .w), // Khoảng cách giữa hai nút
-                                        // Nút Chụp ảnh
-                                        buildUploadOption(
-                                          icon: Icons.camera_alt_outlined,
-                                          text: "Chụp ảnh",
-                                          onTap: () {
-                                            // Xử lý chụp ảnh
-                                            pickImageFromCamera1(
-                                              context,
-                                              2,
-                                            );
-                                          },
-                                        ),
-                                      ],
+                                    child: Text(
+                                      "Hủy",
+                                      style: defaultText14B.copyWith(
+                                        color: const Color(0xff273D8C),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ));
-                    },
-                    child: Image.asset(
-                      'assets/images/camera.png',
-                      width: 28.w,
-                      height: 28.h,
+                              ),
+                              MaterialButton(
+                                onPressed: () async {
+                                  // Đăng xuất
+                                  // delete token
+                                  final SharedPreferences prefs =
+                                      await SharedPreferences.getInstance();
+                                  prefs.remove('token');
+                                  prefs.remove('refresh_token');
+                                  prefs.clear;
+                                  pushWithoutNavBar(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: ((context) =>
+                                          const LoginScreen()),
+                                    ),
+                                  );
+                                },
+                                color: const Color(0xffED1C24),
+                                height: 50.h,
+                                minWidth: 149.w,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12.r)),
+                                child: Text(
+                                  "Đăng xuất",
+                                  style: defaultText14B.copyWith(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ],
-            ),
-            SizedBox(
-              height: 16.h,
-            ),
-            infoItem(
-              title: 'Họ và tên',
-              info: infoHomeModel.resident.fullName,
-            ),
-            Divider(
-              color: const Color(0xffF0F0F0),
-              thickness: 1,
-              endIndent: 16.w,
-              indent: 16.w,
-              height: 24.h,
-            ),
-            infoItem(
-              title: 'Số định danh',
-              info: infoHomeModel.resident.idCard,
-            ),
-            Divider(
-              color: const Color(0xffF0F0F0),
-              thickness: 1,
-              endIndent: 16.w,
-              indent: 16.w,
-              height: 24.h,
-            ),
-            infoItem(
-              title: 'Ngày sinh',
-              info: infoHomeModel.resident.dob,
-            ),
-            Divider(
-              color: const Color(0xffF0F0F0),
-              thickness: 1,
-              endIndent: 16.w,
-              indent: 16.w,
-              height: 24.h,
-            ),
-            infoItem(
-              title: 'Số điện thoại',
-              info: infoHomeModel.resident.phone,
-            ),
-            Divider(
-              color: const Color(0xffF0F0F0),
-              thickness: 1,
-              endIndent: 16.w,
-              indent: 16.w,
-              height: 24.h,
-            ),
-            infoItem(
-              title: 'Email',
-              info: infoHomeModel.resident.email,
-            ),
-            Divider(
-              color: const Color(0xffF0F0F0),
-              thickness: 6,
-              height: 30.h,
-            ),
-            InkWell(
-              onTap: () async {
-                final result = await PersonalRepo().getApartmentProfile();
-                pushWithoutNavBar(
-                  context,
-                  MaterialPageRoute(
-                    builder: ((context) => ApartmentProfile(
-                          residentModel: result['resident'],
-                          apartmentModel: result['apartment'],
-                        )),
+                child: Container(
+                  width: 343.w,
+                  height: 48.h,
+                  decoration: BoxDecoration(
+                    color: const Color(0xff8A8A8A).withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(8.r),
                   ),
-                );
-              },
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 6.h,
-                  ),
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: 16.w,
+                  child: Center(
+                    child: Text(
+                      'Đăng xuất',
+                      style: defaultText16M.copyWith(
+                        color: const Color(0xff004071),
                       ),
-                      Text(
-                        'Hồ sơ căn hộ',
-                        style: defaultText16M.copyWith(
-                          color: Colors.black,
-                        ),
-                      ),
-                      const Spacer(),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        color: const Color(0xff383838),
-                        size: 16.w,
-                      ),
-                      SizedBox(
-                        width: 16.w,
-                      ),
-                    ],
-                  ),
-                  Divider(
-                    color: const Color(0xffF0F0F0),
-                    thickness: 1,
-                    endIndent: 16.w,
-                    indent: 16.w,
-                    height: 24.h,
-                  ),
-                ],
-              ),
-            ),
-            InkWell(
-              onTap: () async {
-                // call api
-                List<VehicleModel> listVehicle =
-                    await PersonalRepo().getListPhuongTien();
-                pushWithoutNavBar(
-                  context,
-                  MaterialPageRoute(
-                    builder: ((context) => RegisteredVehicleScreen(
-                          listVehicle: listVehicle,
-                        )),
-                  ),
-                );
-              },
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 6.h,
-                  ),
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: 16.w,
-                      ),
-                      Text(
-                        'Phương tiện đăng ký',
-                        style: defaultText16M.copyWith(
-                          color: Colors.black,
-                        ),
-                      ),
-                      const Spacer(),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        color: const Color(0xff383838),
-                        size: 16.w,
-                      ),
-                      SizedBox(
-                        width: 16.w,
-                      ),
-                    ],
-                  ),
-                  Divider(
-                    color: const Color(0xffF0F0F0),
-                    thickness: 1,
-                    endIndent: 16.w,
-                    indent: 16.w,
-                    height: 24.h,
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 40.h,
-            ),
-            GestureDetector(
-              onTap: () async {
-                // Đăng xuất
-                // delete token
-                final SharedPreferences prefs =
-                    await SharedPreferences.getInstance();
-                prefs.remove('token');
-                prefs.remove('refresh_token');
-                prefs.clear;
-                pushWithoutNavBar(
-                  context,
-                  MaterialPageRoute(
-                    builder: ((context) => const LoginScreen()),
-                  ),
-                );
-              },
-              child: Container(
-                width: 343.w,
-                height: 48.h,
-                decoration: BoxDecoration(
-                  color: const Color(0xff8A8A8A).withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-                child: Center(
-                  child: Text(
-                    'Đăng xuất',
-                    style: defaultText16M.copyWith(
-                      color: const Color(0xff004071),
                     ),
                   ),
                 ),
               ),
-            )
-          ],
+              SizedBox(
+                height: 40.h,
+              ),
+            ],
+          ),
         ),
       ),
     );
