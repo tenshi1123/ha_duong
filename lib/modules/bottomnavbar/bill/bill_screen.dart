@@ -53,11 +53,10 @@ class _BillScreenState extends State<BillScreen> {
           title: const Center(child: Text('Hoá đơn')),
           centerTitle: true,
           bottom: TabBar(
-            labelColor: const Color(0xff0F2645), // Màu chữ tab khi được chọn
-            unselectedLabelColor: Colors.grey, // Màu chữ tab không được chọn
-            indicatorColor:
-                const Color(0xff0F2645), // Màu gạch dưới khi được chọn
-            indicatorWeight: 2.0, // Độ dày của gạch dưới
+            labelColor: const Color(0xff0F2645),
+            unselectedLabelColor: Colors.grey,
+            indicatorColor: const Color(0xff0F2645),
+            indicatorWeight: 2.0,
             tabs: <Widget>[
               Tab(
                   child: Text(
@@ -197,7 +196,11 @@ class PaymentHistory extends StatelessWidget {
                   ],
                 ),
                 const Spacer(),
-                Image.asset('assets/images/arrow_right.png'),
+                Image.asset(
+                  'assets/images/arrow_right.png',
+                  width: 24.w,
+                  fit: BoxFit.fitWidth,
+                ),
                 SizedBox(
                   width: 16.w,
                 ),
@@ -324,9 +327,9 @@ class WaitingPayment extends StatelessWidget {
               const Spacer(),
               Image.asset(
                 'assets/images/arrow_right.png',
-                height: 24.h,
+                //height: 24.h,
                 width: 24.w,
-                fit: BoxFit.fill,
+                fit: BoxFit.fitWidth,
               ),
               SizedBox(
                 width: 16.w,

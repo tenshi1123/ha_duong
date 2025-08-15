@@ -170,16 +170,16 @@ class PostItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
+            width: 240.w,
+            height: 160.h,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(16.r),
-                ),
-                border: Border.all(color: const Color(0xfff0f0f0))),
-            child: Image.network(
-              'https://bms.haduong.com.vn/images/${postModel.img}',
-              width: 240.w,
-              height: 160.h,
-              fit: BoxFit.fill,
+              borderRadius: BorderRadius.all(Radius.circular(16.r)),
+              border: Border.all(color: const Color(0xfff0f0f0)),
+              image: DecorationImage(
+                image: NetworkImage(
+                    'https://bms.haduong.com.vn/images/${postModel.img}'),
+                fit: BoxFit.fill,
+              ),
             ),
           ),
           SizedBox(
@@ -431,5 +431,42 @@ class _RelationshipDropdownState extends State<RelationshipDropdown> {
       default:
         return key;
     }
+  }
+}
+
+class FullWidthUnderlineTabIndicator extends Decoration {
+  final Color color;
+  final double thickness;
+
+  const FullWidthUnderlineTabIndicator({
+    required this.color,
+    this.thickness = 2.0,
+  });
+
+  @override
+  BoxPainter createBoxPainter([VoidCallback? onChanged]) {
+    return _FullWidthUnderlinePainter(color, thickness);
+  }
+}
+
+class _FullWidthUnderlinePainter extends BoxPainter {
+  final Color color;
+  final double thickness;
+
+  _FullWidthUnderlinePainter(this.color, this.thickness);
+
+  @override
+  void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = thickness
+      ..style = PaintingStyle.stroke;
+
+    final double y = configuration.size!.height - thickness / 2;
+    canvas.drawLine(
+      Offset(0, y),
+      Offset(configuration.size!.width, y), // full width
+      paint,
+    );
   }
 }

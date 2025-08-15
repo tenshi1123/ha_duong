@@ -2,6 +2,7 @@ class ApiPath {
   //baseurl
   static const String baseUrl = 'https://bms.haduong.com.vn/api';
   //api về đăng nhập
+  static const String checkPhone = '$baseUrl/cudan/check_phone';
   static const String login = '$baseUrl/cudan/login';
   static const String refreshToken = '$baseUrl/cudan/refresh_token';
   static const String putOnesignal = '$baseUrl/cudan/onesignal';

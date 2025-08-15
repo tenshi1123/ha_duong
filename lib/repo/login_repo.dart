@@ -31,6 +31,27 @@ class LoginRepo {
     return response.data["refresh_token"] != null;
   }
 
+  Future<bool> checkPhone(String phone) async {
+    dio.options.headers['Token'] = 'BMSHD123456789';
+    Response response;
+    try {
+      response = await dio.post(
+        ApiPath.checkPhone,
+        data: jsonEncode({
+          'phone': phone,
+        }),
+      );
+    } on DioException {
+      return false;
+    }
+
+    if (response.data['type'] == 'error') {
+      return false;
+    }
+
+    return response.data["type"] == 'success';
+  }
+
   Future<String> refreshToken() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');

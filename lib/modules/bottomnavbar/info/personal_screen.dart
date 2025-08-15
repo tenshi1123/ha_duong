@@ -20,6 +20,7 @@ class PersonalScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Container(
         width: double.infinity,
         decoration: const BoxDecoration(

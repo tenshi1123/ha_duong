@@ -301,11 +301,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Row(
                               children: [
                                 SizedBox(
-                                  width: 20.w,
+                                  width: 12.w,
                                 ),
                                 Image.asset(
                                   'assets/images/bill.png',
-                                  height: 40.h,
+                                  width: 40.w,
+                                  fit: BoxFit.fitWidth,
                                 ),
                                 SizedBox(
                                   width: 12.w,
@@ -315,7 +316,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                   style: defaultText16,
                                 ),
                                 const Spacer(),
-                                Image.asset('assets/images/arrow_right.png'),
+                                Image.asset(
+                                  'assets/images/arrow_right.png',
+                                  width: 24.w,
+                                  fit: BoxFit.fitWidth,
+                                ),
                                 SizedBox(
                                   width: 20.w,
                                 ),
@@ -382,10 +387,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     ClipRRect(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(16.r),
-                        bottomLeft: Radius.circular(16.r),
-                      ),
+                      // borderRadius: BorderRadius.only(
+                      //   topLeft: Radius.circular(16.r),
+                      //   topRight: Radius.circular(16.r),
+                      // ),
                       child: SizedBox(
                         height: 206.h,
                         width: 375.w,
@@ -401,11 +406,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     ),
-                    infoHomeModel.listPost.length < 3
+                    posts.length < 2
                         ? const SizedBox()
                         : SmoothPageIndicator(
                             controller: controller3,
-                            count: 3,
+                            count: posts.length,
                             effect: CustomizableEffect(
                               activeDotDecoration: DotDecoration(
                                 width: 20.w,

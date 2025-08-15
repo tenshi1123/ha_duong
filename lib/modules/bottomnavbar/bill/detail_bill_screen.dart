@@ -38,6 +38,14 @@ class DetailBillScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: const Text('Chi tiết hoá đơn'),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(1), // chiều cao của divider
+          child: Divider(
+            height: 1,
+            color: Colors.grey,
+          ),
+        ),
+        scrolledUnderElevation: 0,
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
@@ -54,10 +62,6 @@ class DetailBillScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Divider(
-                    height: 1,
-                    color: Colors.grey,
-                  ),
                   SizedBox(
                     height: 20.h,
                   ),
@@ -676,6 +680,9 @@ class _ItemBill extends StatelessWidget {
                         color: const Color(0xff8A8A8A).withValues(alpha: 0.8),
                       ),
                     ),
+                    SizedBox(
+                      height: 4.h,
+                    ),
                     RichText(
                       text: TextSpan(
                         text: 'Tổng phí: ',
@@ -693,11 +700,14 @@ class _ItemBill extends StatelessWidget {
                         ],
                       ),
                     ),
+                    SizedBox(
+                      height: 4.h,
+                    ),
                     RichText(
                       text: TextSpan(
                         text: 'Tháng: ',
                         style: defaultText14M.copyWith(
-                          color: const Color(0xff8A8A8A).withValues(alpha: 0.8),
+                          color: const Color(0xff004071),
                         ),
                         children: <TextSpan>[
                           TextSpan(

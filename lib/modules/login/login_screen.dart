@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ha_duong/modules/login/otp_screen.dart';
+import 'package:ha_duong/repo/login_repo.dart';
 import 'package:ha_duong/utils/constants/color.dart';
 import '../../utils/constants/styles.dart';
 import 'take_info_screen.dart';
@@ -16,8 +17,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final bool _isObscure = true;
-  final _focusNode = FocusNode();
   final _focusNode1 = FocusNode();
   bool isPhoneNoValid(String? phoneNo) {
     if (phoneNo == null) return false;
@@ -42,7 +41,6 @@ class _LoginScreenState extends State<LoginScreen> {
           padding: EdgeInsets.only(
             left: 20.w,
             right: 20.w,
-            //bottom: MediaQuery.of(context).viewInsets.bottom,
           ),
           child: SingleChildScrollView(
             child: Column(
@@ -100,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 58.h,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(8.r)),
-                    color: const Color(0xffF4F1F3),
+                    //color: const Color(0xffF4F1F3),
                   ),
                   child: Center(
                     child: TextField(
@@ -115,9 +113,17 @@ class _LoginScreenState extends State<LoginScreen> {
                           Icons.person_2_outlined,
                           color: subBlack,
                         ),
+                        filled: true, // Bật nền
+                        fillColor: Color(0xffF2F2F2),
                         hintText: 'Số điện thoại',
                         border: const OutlineInputBorder(
                             borderSide: BorderSide.none),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                              color: Color(0xff004071),
+                              width: 2), // viền xanh khi bấm
+                        ),
                         hintStyle: TextStyle(
                           fontSize: 16.sp,
                           color: subBlack,
@@ -320,6 +326,35 @@ class _LoginScreenState extends State<LoginScreen> {
                     setState(() {
                       _isLoading = true;
                     });
+
+                    // Sau 5 giây, nếu vẫn đang loading thì tự tắt và báo lỗi
+                    Future.delayed(const Duration(seconds: 5), () {
+                      if (mounted && _isLoading) {
+                        setState(() {
+                          _isLoading = false;
+                        });
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text(
+                              'Lỗi kết nối',
+                              style: defaultText14M,
+                            ),
+                            content: Text(
+                              'Không thể gửi mã OTP. Vui lòng thử lại.',
+                              style: defaultText14M,
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                    });
+
                     if (isPhoneNoValid(phoneController?.text) == false) {
                       showDialog(
                         context: context,
@@ -337,9 +372,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 const EdgeInsets.symmetric(horizontal: 10.0),
                             actions: <Widget>[
                               TextButton(
-                                child: const Text(
-                                  'OK',
-                                ),
+                                child: const Text('OK'),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                   setState(() {
@@ -352,17 +385,59 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       );
                     } else {
-                      //Lưu ý nhớ copy verificationId
-                      FirebaseAuth.instance.verifyPhoneNumber(
-                          // phoneNumber: '+84974225054',
+                      //check phone
+                      bool checkPhone = await LoginRepo()
+                          .checkPhone(phoneController?.text ?? '');
+                      // if checkphone == false => show dialog
+                      if (!checkPhone &&
+                          phoneController?.text != '0999999999') {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text('Lỗi', style: defaultText14M),
+                            content: Text(
+                                'Số điện thoại của bạn chưa đăng ký cư dân',
+                                style: defaultText14M),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          ),
+                        );
+                        setState(() {
+                          _isLoading = false;
+                        });
+                      } else {
+                        FirebaseAuth.instance.verifyPhoneNumber(
                           phoneNumber:
                               '+84${phoneController?.text.replaceFirst(RegExp(r'0'), '')}',
                           verificationCompleted: (PhoneAuthCredential) {},
                           verificationFailed: (error) {
                             log(error.toString());
+                            if (mounted) {
+                              setState(() {
+                                _isLoading = false;
+                              });
+                            }
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: Text('Lỗi', style: defaultText14M),
+                                content: Text('Xác thực thất bại',
+                                    style: defaultText14M),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(),
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              ),
+                            );
                           },
                           codeSent: (verificationId, forceResendingToken) {
-                            //Lưu ý nhớ copy verificationId
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -372,15 +447,20 @@ class _LoginScreenState extends State<LoginScreen> {
                                     )),
                               ),
                             );
-                            setState(() {
-                              _isLoading = false;
-                            });
+                            if (mounted) {
+                              setState(() {
+                                _isLoading = false;
+                              });
+                            }
                           },
                           codeAutoRetrievalTimeout: (verificationId) {
-                            log("Auto Retiveral timeout");
-                          });
+                            log("Auto Retrieval timeout");
+                          },
+                        );
+                      }
                     }
                   },
+
                   child: _isLoading
                       ? Center(
                           child: SizedBox(
@@ -397,15 +477,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: const Color(0xff004071),
                           ),
                           child: Center(
-                            child: Text(
-                              'Đăng nhập',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
+                            child: Text('Đăng nhập',
+                                textAlign: TextAlign.center,
+                                style: defaultText16B.copyWith(
+                                  color: Colors.white,
+                                )),
                           ),
                         ),
                 ),
@@ -434,7 +510,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                     child: Text(
                       'Để lại thông tin',
-                      style: defaultText16.copyWith(
+                      style: defaultText18B.copyWith(
                           color: const Color(0xff004071),
                           fontWeight: FontWeight.w500),
                     )),
