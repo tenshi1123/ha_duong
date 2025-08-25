@@ -1,10 +1,18 @@
 import "dart:io";
 
+import "package:ha_duong/models/chat_model.dart";
 import "package:ha_duong/models/info_model.dart";
+import "package:ha_duong/models/suport_model.dart";
 import "package:ha_duong/modules/bottomnavbar/home/home.dart";
 import "package:flutter/material.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
+import "package:ha_duong/modules/bottomnavbar/support/request_status_screen.dart";
+import "package:ha_duong/modules/notification/detail_noti_screen.dart";
+import "package:ha_duong/modules/notification/detail_post_screen.dart";
+import "package:ha_duong/modules/notification/notification_screen.dart";
+import "package:ha_duong/repo/chat_noti_repo.dart";
 import "package:ha_duong/repo/login_repo.dart";
+import "package:ha_duong/repo/support_repo.dart";
 import "package:ha_duong/utils/onesignal.dart";
 import "package:onesignal_flutter/onesignal_flutter.dart";
 import "package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart";
@@ -40,12 +48,47 @@ class _BottomNavBarState extends State<BottomNavBar> {
       apatmentId: widget.infoHomeModel.listApartment[0].id,
       onesignalId: onesignalId ?? '',
     );
-    if (Platform.isAndroid) {
-      OneSignal.Notifications.addClickListener((event) {});
-    } else {
-      //do nothing :v tự báo chính mình
-      OneSignal.Notifications.addClickListener((event) {});
-    }
+
+    OneSignal.Notifications.addClickListener((event) async {
+      final data = event.notification.additionalData;
+      if (data != null) {
+        String requestId = data['id'];
+        if (data['type'] == 'hotro') {
+          DetailTechnicalRequestModel detailRequest =
+              await SupportRepo().getRequestStatus(requestId);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: ((context) => RequestStatusScreen(
+                    requestStatus: detailRequest.listRequestStatus,
+                    createAt: detailRequest.technicalSupportModel.createAt,
+                    technicalSupportModel: detailRequest.technicalSupportModel,
+                  )),
+            ),
+          );
+        } else if (data['type'] == 'thongbao') {
+          NotiValueModel notiModel = await ChatRepo().getDetailNoti(requestId);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: ((context) => DetailNotiScreen(
+                    notiModel: notiModel,
+                  )),
+            ),
+          );
+        } else if (data['type'] == 'bangtin') {
+          pushWithoutNavBar(
+            context,
+            MaterialPageRoute(
+              builder: ((context) => DetailPostScreen(
+                    postId: requestId,
+                  )),
+            ),
+          );
+        }
+      }
+    });
+
     promptPolicyPrivacy();
   }
 

@@ -6,13 +6,14 @@ class InfoModel {
   final List<ReceiptsModel> listReceipts;
   final List<CategoryModel> listCategory;
   final List<PostModel> listPost;
-
+  final int notification;
   InfoModel({
     required this.resident,
     required this.listApartment,
     required this.listReceipts,
     required this.listCategory,
     required this.listPost,
+    this.notification = 0,
   });
   factory InfoModel.fromJson(Map<String, dynamic> json) {
     return InfoModel(
@@ -29,6 +30,7 @@ class InfoModel {
       listPost: (json['post'] as List<dynamic>? ?? [])
           .map((x) => PostModel.fromJson(x))
           .toList(),
+      notification: json['notification'] ?? 0,
     );
   }
 }

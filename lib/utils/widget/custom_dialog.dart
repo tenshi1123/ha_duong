@@ -40,98 +40,101 @@ class CustomerInfoForm extends StatelessWidget {
         ),
         child: Form(
           key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  SvgPicture.asset('assets/icons/person_icon.svg'),
-                  const SizedBox(width: 8),
-                  const Text(
-                    'Thông tin khách hàng',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
-                  const Spacer(),
-                  const CloseButton(
-                    color: Colors.black,
-                  ),
-                ],
-              ),
-              SizedBox(height: 16.h),
-              _buildLabelledField("Họ và tên", nameController),
-              SizedBox(height: 16.h),
-              _buildLabelledField("Số điện thoại", phoneController,
-                  keyboardType: TextInputType.phone),
-              SizedBox(height: 16.h),
-              _buildLabelledField("Căn hộ", apartmentController),
-              SizedBox(height: 16.h),
-              _buildLabelledField(
-                "Ghi chú",
-                noteController,
-                isRequied: false,
-              ),
-              SizedBox(height: 24.h),
-              GestureDetector(
-                onTap: () {
-                  if (_formKey.currentState!.validate()) {
-                    // Gửi thông tin
-                    HomeRepo().sendDangKy(
-                      dangKyModel.id,
-                      nameController.text,
-                      phoneController.text,
-                      apartmentController.text,
-                    );
-                    showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                        title: Text(
-                          'Gửi thông tin thành công',
-                          style: defaultText16B,
-                        ),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pop(
-                                context,
-                              );
-                              Navigator.pop(
-                                context,
-                              );
-                            },
-                            child: const Text('OK'),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-                },
-                child: Container(
-                  width: 303.w,
-                  height: 50.h,
-                  margin: EdgeInsets.only(left: 16.w, right: 16.w),
-                  constraints: BoxConstraints(maxHeight: 120.h),
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Color(0xFF25AAE1),
-                        Color(0xFF004071),
-                      ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      stops: [0.0, 1.0],
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    SvgPicture.asset('assets/icons/person_icon.svg'),
+                    const SizedBox(width: 8),
+                    const Text(
+                      'Thông tin khách hàng',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                     ),
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Gửi thông tin',
-                      style: defaultText14B.copyWith(color: Colors.white),
+                    const Spacer(),
+                    const CloseButton(
+                      color: Colors.black,
+                    ),
+                  ],
+                ),
+                SizedBox(height: 16.h),
+                _buildLabelledField("Họ và tên", nameController),
+                SizedBox(height: 16.h),
+                _buildLabelledField("Số điện thoại", phoneController,
+                    keyboardType: TextInputType.phone),
+                SizedBox(height: 16.h),
+                _buildLabelledField("Căn hộ", apartmentController),
+                SizedBox(height: 16.h),
+                _buildLabelledField(
+                  "Ghi chú",
+                  noteController,
+                  isRequied: false,
+                ),
+                SizedBox(height: 24.h),
+                GestureDetector(
+                  onTap: () {
+                    if (_formKey.currentState!.validate()) {
+                      // Gửi thông tin
+                      HomeRepo().sendDangKy(
+                          dangKyModel.id,
+                          dangKyModel.apartmentId,
+                          nameController.text,
+                          phoneController.text,
+                          noteController.text);
+                      showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: Text(
+                            'Gửi thông tin thành công',
+                            style: defaultText16B,
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(
+                                  context,
+                                );
+                                Navigator.pop(
+                                  context,
+                                );
+                              },
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                  },
+                  child: Container(
+                    width: 303.w,
+                    height: 50.h,
+                    margin: EdgeInsets.only(left: 16.w, right: 16.w),
+                    constraints: BoxConstraints(maxHeight: 120.h),
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Color(0xFF25AAE1),
+                          Color(0xFF004071),
+                        ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        stops: [0.0, 1.0],
+                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Gửi thông tin',
+                        style: defaultText14B.copyWith(color: Colors.white),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -40,7 +40,7 @@ class SupportRepo {
     return ListTechnicalSupportModel.fromJson(response.data['data']);
   }
 
-  Future<List<RequestStatusModel>> getRequestStatus(String id) async {
+  Future<DetailTechnicalRequestModel> getRequestStatus(String id) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');
     dio.options.headers['Authorization'] = 'Bearer $token';
@@ -51,9 +51,7 @@ class SupportRepo {
         'id': int.parse(id),
       },
     );
-    return (response.data['data']['technicalRequestsStatus'] as List)
-        .map((e) => RequestStatusModel.fromJson(e))
-        .toList();
+    return DetailTechnicalRequestModel.fromJson(response.data['data']);
   }
 
   Future<List<PostModel>> getDepartment(String id) async {

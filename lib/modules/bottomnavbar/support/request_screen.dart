@@ -100,13 +100,13 @@ class _RequestScreenState extends State<RequestScreen>
   }) {
     return GestureDetector(
       onTap: () async {
-        List<RequestStatusModel> requestStatus =
+        DetailTechnicalRequestModel detailRequest =
             await SupportRepo().getRequestStatus(model.id);
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: ((context) => RequestStatusScreen(
-                  requestStatus: requestStatus,
+                  requestStatus: detailRequest.listRequestStatus,
                   createAt: model.createAt,
                   technicalSupportModel: model,
                 )),

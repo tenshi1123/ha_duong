@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:ha_duong/models/apartment_model.dart';
 import 'package:ha_duong/models/info_model.dart';
 import 'package:ha_duong/repo/login_repo.dart';
@@ -123,11 +124,21 @@ class HomeRepo {
 
   //send dang ky
   Future sendDangKy(
-      String id, String apartmentId, String name, String phone) async {
+    String id,
+    String apartmentId,
+    String name,
+    String phone,
+    String note,
+  ) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');
     dio.options.headers['Authorization'] = 'Bearer $token';
-
+    // in ra log lỗi
+    dio.interceptors.add(LogInterceptor(
+      responseBody: true,
+      requestBody: true,
+      logPrint: (obj) => debugPrint('📦 $obj'),
+    ));
     try {
       await dio.post(
         ApiPath.sendDangKy,
@@ -136,6 +147,7 @@ class HomeRepo {
           'apartment_id': int.parse(apartmentId),
           'full_name': name,
           'phone': phone,
+          'note': note,
         },
       );
     } on DioException {

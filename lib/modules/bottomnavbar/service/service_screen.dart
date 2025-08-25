@@ -9,11 +9,7 @@ import 'package:flutter_html/flutter_html.dart';
 
 class ServiceScreen extends StatelessWidget {
   const ServiceScreen(
-      {super.key,
-      required this.title,
-      required this.apartmentId,
-      required this.utilitiesModel});
-  final String title;
+      {super.key, required this.apartmentId, required this.utilitiesModel});
   final String apartmentId;
   final UtilitiesModel utilitiesModel;
   @override
@@ -29,7 +25,7 @@ class ServiceScreen extends StatelessWidget {
             },
           ),
           title: Text(
-            title,
+            utilitiesModel.name,
             style: defaultText18B.copyWith(
               color: const Color(0xff3C3C3C),
             ),
@@ -74,8 +70,10 @@ class ServiceScreen extends StatelessWidget {
                     horizontal: 16.w,
                     vertical: 12.h,
                   ),
-                  child: Html(
-                    data: utilitiesModel.content,
+                  child: SelectionArea(
+                    child: Html(
+                      data: utilitiesModel.content,
+                    ),
                   ),
                 ),
               ],

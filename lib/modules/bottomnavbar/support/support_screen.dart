@@ -163,7 +163,7 @@ class _SupportScreenState extends State<SupportScreen> with RouteAware {
                                 final item = data[index];
                                 return InkWell(
                                   onTap: () async {
-                                    List<RequestStatusModel> requestStatus =
+                                    DetailTechnicalRequestModel detailRequest =
                                         await SupportRepo()
                                             .getRequestStatus(item.id);
                                     await pushWithoutNavBar(
@@ -171,7 +171,8 @@ class _SupportScreenState extends State<SupportScreen> with RouteAware {
                                       MaterialPageRoute(
                                         builder: ((context) =>
                                             RequestStatusScreen(
-                                              requestStatus: requestStatus,
+                                              requestStatus: detailRequest
+                                                  .listRequestStatus,
                                               createAt: item.createAt,
                                               technicalSupportModel: item,
                                             )),

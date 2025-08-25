@@ -86,7 +86,6 @@ class _ExtensionScreenState extends State<ExtensionScreen> {
                           context,
                           MaterialPageRoute(
                             builder: ((context) => ServiceScreen(
-                                  title: 'Dịch vụ thang máy',
                                   apartmentId: widget.id,
                                   utilitiesModel: receiptsDetailModel,
                                 )),

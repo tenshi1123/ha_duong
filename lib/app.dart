@@ -10,6 +10,7 @@ class App extends StatefulWidget {
   State<App> createState() => _AppState();
 }
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 final RouteObserver<ModalRoute<void>> routeObserver =
     RouteObserver<ModalRoute<void>>();
 
@@ -23,6 +24,7 @@ class _AppState extends State<App> {
       // Use builder only if you need to use library outside ScreenUtilInit context
       builder: (_, child) {
         return MaterialApp(
+          navigatorKey: navigatorKey,
           navigatorObservers: [routeObserver],
           locale: const Locale('vi'),
           supportedLocales: const [

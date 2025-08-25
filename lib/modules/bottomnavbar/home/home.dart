@@ -1,3 +1,4 @@
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ha_duong/models/chat_model.dart';
 import 'package:ha_duong/models/info_model.dart';
 import 'package:ha_duong/modules/bottomnavbar/bill/detail_bill_screen.dart';
@@ -123,13 +124,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 );
                               },
-                              child: Image(
-                                image:
-                                    const AssetImage('assets/images/bell.png'),
-                                //height: 24.h,
+                              child: SvgPicture.asset(
+                                infoHomeModel.notification == 0
+                                    ? 'assets/icons/noti.svg'
+                                    : 'assets/icons/noti2.svg',
                                 width: 24.w,
-                                fit: BoxFit.fitWidth,
+                                height: 24.h,
                               ),
+                              // Image(
+                              //   image:
+                              //       const AssetImage('assets/images/bell.png'),
+                              //   //height: 24.h,
+                              //   width: 24.w,
+                              //   fit: BoxFit.fitWidth,
+                              // ),
                             ),
                           ],
                         ),
@@ -381,10 +389,11 @@ class _HomeScreenState extends State<HomeScreen> {
             Padding(
               padding: EdgeInsets.only(left: 20.w, right: 20.w),
               child: SizedBox(
-                width: 375.w,
-                height: 218.h,
+                //width: 375.w,
+                height: 230.h,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     ClipRRect(
                       // borderRadius: BorderRadius.only(
@@ -399,8 +408,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           controller: controller3,
                           itemCount: posts.length,
                           itemBuilder: (_, index) {
+                            final reversedIndex = posts.length - 1 - index;
                             return PostItem(
-                              postModel: posts[index],
+                              postModel: posts[reversedIndex],
                             );
                           },
                         ),

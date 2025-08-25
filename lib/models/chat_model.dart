@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:intl/intl.dart';
 
 class ChatModel {
@@ -74,6 +76,7 @@ class NotiValueModel {
   final String content;
   final String type;
   final DateTime createdAt;
+  List<String>? img;
   String isActive;
   NotiValueModel({
     required this.id,
@@ -82,8 +85,21 @@ class NotiValueModel {
     required this.type,
     required this.createdAt,
     required this.isActive,
+    this.img,
   });
   factory NotiValueModel.fromJson(Map<String, dynamic> json) {
+    final rawImg = json['img'];
+    List<String> images = [];
+    if (rawImg != null && rawImg.toString().trim().isNotEmpty) {
+      try {
+        final decoded = jsonDecode(rawImg.toString());
+        if (decoded is List) {
+          images = decoded.map((e) => e.toString()).toList();
+        }
+      } catch (e) {
+        images = [];
+      }
+    }
     return NotiValueModel(
       id: json['id'] ?? '',
       title: json['title'] ?? '',
@@ -91,6 +107,7 @@ class NotiValueModel {
       type: json['type'] ?? '',
       createdAt: DateTime.parse(json['created_at'] ?? ''),
       isActive: json['is_active'] ?? '',
+      img: images,
     );
   }
 }

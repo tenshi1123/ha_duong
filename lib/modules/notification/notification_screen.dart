@@ -201,7 +201,7 @@ class _NotificationScreenState extends State<NotificationScreen>
                 ? keyBlack
                 : keyBlack.withValues(alpha: 0.5)),
       ),
-      onTap: () {
+      onTap: () async {
         //đã đọc fake
         setState(() {
           if (item.isActive != '1') {
@@ -211,12 +211,12 @@ class _NotificationScreenState extends State<NotificationScreen>
                 _notiModel.listNotiType[selectedType - 1].total - 1;
           }
         });
-        ChatRepo().getDetailNoti(item.id);
+        NotiValueModel notiModel = await ChatRepo().getDetailNoti(item.id);
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: ((context) => DetailNotiScreen(
-                  notiModel: item,
+                  notiModel: notiModel,
                 )),
           ),
         );

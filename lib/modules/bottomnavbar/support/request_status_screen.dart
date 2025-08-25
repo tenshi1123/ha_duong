@@ -147,83 +147,89 @@ class RequestStatusScreen extends StatelessWidget {
   }
 
   Widget _buildStepItem(RequestStatusModel step, {bool isLast = false}) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(width: 12),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(
-              DateFormat('dd/MM/yyyy').format(step.createAt),
-              style: defaultText12.copyWith(
-                color: const Color(0xff8A8A8A),
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(width: 12),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                DateFormat('dd/MM/yyyy').format(step.createAt),
+                style: defaultText12.copyWith(
+                  color: const Color(0xff8A8A8A),
+                ),
               ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              DateFormat('HH:mm').format(step.createAt),
-              style: defaultText12.copyWith(
-                color: const Color(0xff8A8A8A),
+              const SizedBox(height: 4),
+              Text(
+                DateFormat('HH:mm').format(step.createAt),
+                style: defaultText12.copyWith(
+                  color: const Color(0xff8A8A8A),
+                ),
               ),
-            ),
-          ],
-        ),
-        const SizedBox(width: 12),
-        Column(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(top: 4),
-              width: 16,
-              height: 16,
-              decoration: BoxDecoration(
-                color: step.type == '0'
-                    ? const Color(0xff004071)
-                    : step.type == '1'
-                        ? const Color(0xff129F20)
-                        : const Color(0xffE80707),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(Icons.done, size: 12, color: Colors.white),
-            ),
-            if (!isLast)
+            ],
+          ),
+          const SizedBox(width: 12),
+          Column(
+            children: [
               Container(
-                width: 1,
-                height: 40,
-                color: step.type == '0'
-                    ? const Color(0xff004071)
-                    : step.type == '1'
-                        ? const Color(0xff129F20)
-                        : const Color(0xffE80707),
+                margin: EdgeInsets.only(top: 4.h, bottom: 2.h),
+                width: 16,
+                height: 16,
+                decoration: BoxDecoration(
+                  color: step.type == '0'
+                      ? const Color(0xff004071)
+                      : step.type == '1'
+                          ? const Color(0xff129F20)
+                          : const Color(0xffE80707),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(Icons.done, size: 12, color: Colors.white),
               ),
-          ],
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 4),
-                Text(
-                  step.name,
-                  style: TextStyle(
-                    fontSize: 14.sp,
+              if (!isLast)
+                Expanded(
+                  child: Container(
+                    width: 1,
                     color: step.type == '0'
                         ? const Color(0xff004071)
                         : step.type == '1'
                             ? const Color(0xff129F20)
                             : const Color(0xffE80707),
-                    fontWeight:
-                        step.type == '0' ? FontWeight.w500 : FontWeight.bold,
                   ),
                 ),
-              ],
+            ],
+          ),
+          SizedBox(width: 8.w),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 4),
+                  Text(
+                    step.name,
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: step.type == '0'
+                          ? const Color(0xff004071)
+                          : step.type == '1'
+                              ? const Color(0xff129F20)
+                              : const Color(0xffE80707),
+                      fontWeight:
+                          step.type == '0' ? FontWeight.w500 : FontWeight.bold,
+                    ),
+                  ),
+                  if (step.img != null && step.img!.isNotEmpty) ...[
+                    _buildImageContent(step.img!),
+                  ],
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class TechnicalSupportModel {
   final String id;
   final String fullName;
@@ -60,20 +62,54 @@ class ListTechnicalSupportModel {
   }
 }
 
+class DetailTechnicalRequestModel {
+  final List<RequestStatusModel> listRequestStatus;
+  final TechnicalSupportModel technicalSupportModel;
+  DetailTechnicalRequestModel({
+    required this.listRequestStatus,
+    required this.technicalSupportModel,
+  });
+  factory DetailTechnicalRequestModel.fromJson(Map<String, dynamic> json) {
+    var requestStatusList = json['technicalRequestsStatus'] as List? ?? [];
+    return DetailTechnicalRequestModel(
+      listRequestStatus: requestStatusList
+          .map((item) => RequestStatusModel.fromJson(item))
+          .toList(),
+      technicalSupportModel:
+          TechnicalSupportModel.fromJson(json['technicalRequests']),
+    );
+  }
+}
+
 class RequestStatusModel {
   final String name;
   final DateTime createAt;
   final String type;
+  String? img;
   RequestStatusModel({
     required this.name,
     required this.createAt,
     required this.type,
+    this.img,
   });
   factory RequestStatusModel.fromJson(Map<String, dynamic> json) {
+    final rawImg = json['note_img'];
+    List<String> images = [];
+    if (rawImg != null && rawImg.toString().trim().isNotEmpty) {
+      try {
+        final decoded = jsonDecode(rawImg.toString());
+        if (decoded is List) {
+          images = decoded.map((e) => e.toString()).toList();
+        }
+      } catch (e) {
+        images = [];
+      }
+    }
     return RequestStatusModel(
       name: json['name'] ?? '',
       createAt: DateTime.parse(json['created_at'] ?? '2832000'),
       type: json['type'] ?? '',
+      img: json['note_img'] ?? "[]",
     );
   }
 }
