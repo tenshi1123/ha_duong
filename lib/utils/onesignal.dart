@@ -8,9 +8,6 @@ import 'package:ha_duong/modules/notification/detail_post_screen.dart';
 import 'package:ha_duong/repo/chat_noti_repo.dart';
 import 'package:ha_duong/repo/support_repo.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
-
-const oneSignalAppId = "";
 
 // Future<void> initOneSignal() async {
 //   OneSignal.initialize('de0e64c9-755d-49f3-a46c-c37b494cbfe2');

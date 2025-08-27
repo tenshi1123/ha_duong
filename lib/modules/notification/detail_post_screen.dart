@@ -1,4 +1,5 @@
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_html_table/flutter_html_table.dart';
 import 'package:ha_duong/models/info_model.dart';
 import 'package:ha_duong/repo/home_repo.dart';
 import 'package:ha_duong/utils/constants/color.dart';
@@ -121,22 +122,54 @@ class _DetailPostScreenState extends State<DetailPostScreen>
                     SizedBox(
                       height: 10.h,
                     ),
-                    SelectionArea(
-                      child: Html(
-                        data: data.content,
-                        style: {
-                          ".title": Style(
-                            fontSize: FontSize(20.0),
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue,
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxWidth: MediaQuery.of(context)
+                              .size
+                              .width, // giới hạn chiều rộng
+                        ),
+                        child: SelectionArea(
+                          child: Html(
+                            data: """
+                            <style>
+                              table {
+                                border-collapse: collapse;
+                                table-layout: auto;   /* bắt buộc auto layout */
+                                width: auto;          /* không ép full width */
+                              }
+                              th, td {
+                                border: 1px solid #999;
+                                padding: 6px 10px;
+                                white-space: nowrap;  /* không xuống dòng lung tung */
+                              }
+                            </style>
+                            ${data.content}
+                            """,
+                            extensions: const [
+                              TableHtmlExtension(),
+                            ],
+                            style: {
+                              "table": Style(
+                                padding: HtmlPaddings.all(4),
+                              ),
+                              "td": Style(
+                                padding: HtmlPaddings.all(6),
+                                whiteSpace:
+                                    WhiteSpace.normal, // giữ chữ trên 1 dòng
+                              ),
+                              "th": Style(
+                                padding: HtmlPaddings.all(6),
+                                fontWeight: FontWeight.bold,
+                                backgroundColor: Colors.black12,
+                                whiteSpace: WhiteSpace.normal,
+                              ),
+                            },
                           ),
-                          ".body": Style(
-                            fontSize: FontSize(16.0),
-                            color: Colors.black87,
-                          ),
-                        },
+                        ),
                       ),
-                    ),
+                    )
                   ],
                 ),
               ),

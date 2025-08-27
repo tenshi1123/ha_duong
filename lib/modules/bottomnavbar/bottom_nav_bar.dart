@@ -88,7 +88,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
         }
       }
     });
-
     promptPolicyPrivacy();
   }
 
