@@ -75,20 +75,41 @@ class _RequestScreenState extends State<RequestScreen>
           : TabBarView(
               controller: _tabController,
               children: [
-                ListView.builder(
-                  itemCount: data.listDangXuly.length,
-                  itemBuilder: (context, index) {
-                    return _buildRequestCard(model: data.listDangXuly[index]);
-                  },
+                Center(
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      setState(() {
+                        isLoading = true;
+                      });
+                      await fetchData(widget.id);
+                    },
+                    child: ListView.builder(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      itemCount: data.listDangXuly.length,
+                      itemBuilder: (context, index) {
+                        return _buildRequestCard(
+                            model: data.listDangXuly[index]);
+                      },
+                    ),
+                  ),
                 ),
                 data.listHoanTat.isEmpty
                     ? const Center(child: Text('Không có yêu cầu đã hoàn tất'))
-                    : ListView.builder(
-                        itemCount: data.listHoanTat.length,
-                        itemBuilder: (context, index) {
-                          return _buildRequestCard(
-                              model: data.listHoanTat[index]);
+                    : RefreshIndicator(
+                        onRefresh: () async {
+                          setState(() {
+                            isLoading = true;
+                          });
+                          await fetchData(widget.id);
                         },
+                        child: ListView.builder(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          itemCount: data.listHoanTat.length,
+                          itemBuilder: (context, index) {
+                            return _buildRequestCard(
+                                model: data.listHoanTat[index]);
+                          },
+                        ),
                       ),
               ],
             ),

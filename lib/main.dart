@@ -19,5 +19,5 @@ Future<void> main() async {
   // KHÔNG cần .then lồng nhau
   await initializeDateFormatting();
   await initOneSignal();
-  runApp(const App()); // Gọi ngay tại đây
+  runApp(const App());
 }

@@ -55,6 +55,7 @@ class FamilyMemberScreen extends StatelessWidget {
                     builder: (BuildContext context) => AddMember(
                           type: 0,
                           apartmentId: apartmentId,
+                          residentId: '',
                         ));
               },
             )
@@ -171,6 +172,7 @@ class FamilyMember extends StatelessWidget {
                 builder: (BuildContext context) => AddMember(
                       type: 1,
                       apartmentId: apartmentId,
+                      residentId: model.id,
                     ));
           },
           child: Container(

@@ -466,8 +466,14 @@ Widget buildUploadOption({
 }
 
 class AddMember extends StatefulWidget {
-  const AddMember({super.key, required this.type, required this.apartmentId});
+  const AddMember({
+    super.key,
+    required this.type,
+    required this.apartmentId,
+    required this.residentId,
+  });
   final String apartmentId;
+  final String residentId;
   final int type; // 0: Thêm thành viên, 1: Chỉnh sửa thông tin thành viên
   @override
   State<AddMember> createState() => _AddMemberState();
@@ -685,6 +691,8 @@ class _AddMemberState extends State<AddMember> {
                                               phone: _phoneController.text,
                                               email: _emailController.text,
                                               rela: _rela,
+                                              apartmentId: widget.apartmentId,
+                                              residentId: widget.residentId,
                                             );
                                           },
                                         ),
@@ -707,6 +715,7 @@ class _AddMemberState extends State<AddMember> {
                                               email: _emailController.text,
                                               rela: _rela,
                                               apartmentId: widget.apartmentId,
+                                              residentId: widget.residentId,
                                             );
                                           },
                                         ),

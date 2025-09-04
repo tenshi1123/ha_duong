@@ -67,41 +67,51 @@ class _BillScreenState extends State<BillScreen> {
             ],
           ),
         ),
-        body: TabBarView(
-          children: <Widget>[
-            data.listReceiptsunpaid.isEmpty
-                ? Center(
-                    child: Text(
-                      'Không có hoá đơn chờ thanh toán',
-                      style: defaultText14B.copyWith(color: Colors.black54),
+        body: RefreshIndicator(
+          onRefresh: () async {
+            setState(() {
+              isLoading = true;
+            });
+            await fetchData();
+          },
+          child: TabBarView(
+            children: <Widget>[
+              data.listReceiptsunpaid.isEmpty
+                  ? Center(
+                      child: Text(
+                        'Không có hoá đơn chờ thanh toán',
+                        style: defaultText14B.copyWith(color: Colors.black54),
+                      ),
+                    )
+                  : ListView.builder(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      itemCount: data.listReceiptsunpaid.length,
+                      itemBuilder: (context, index) {
+                        return WaitingPayment(
+                          index: index,
+                          model: data.listReceiptsunpaid[index],
+                        );
+                      },
                     ),
-                  )
-                : ListView.builder(
-                    itemCount: data.listReceiptsunpaid.length,
-                    itemBuilder: (context, index) {
-                      return WaitingPayment(
-                        index: index,
-                        model: data.listReceiptsunpaid[index],
-                      );
-                    },
-                  ),
-            data.listReceiptspaid.isEmpty
-                ? Center(
-                    child: Text(
-                      'Không có lịch sử thanh toán',
-                      style: defaultText14B.copyWith(color: Colors.black54),
+              data.listReceiptspaid.isEmpty
+                  ? Center(
+                      child: Text(
+                        'Không có lịch sử thanh toán',
+                        style: defaultText14B.copyWith(color: Colors.black54),
+                      ),
+                    )
+                  : ListView.builder(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      itemCount: data.listReceiptspaid.length,
+                      itemBuilder: (context, index) {
+                        return PaymentHistory(
+                          index: index,
+                          model: data.listReceiptspaid[index],
+                        );
+                      },
                     ),
-                  )
-                : ListView.builder(
-                    itemCount: data.listReceiptspaid.length,
-                    itemBuilder: (context, index) {
-                      return PaymentHistory(
-                        index: index,
-                        model: data.listReceiptspaid[index],
-                      );
-                    },
-                  ),
-          ],
+            ],
+          ),
         ),
       ),
     );

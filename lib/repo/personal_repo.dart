@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:ha_duong/models/apartment_model.dart';
 import 'package:ha_duong/models/info_model.dart';
 import 'package:ha_duong/utils/constants/api_path.dart';
@@ -72,6 +73,11 @@ class PersonalRepo {
         'dob': dob,
         'files[]': photoFiles,
       });
+      dio.interceptors.add(LogInterceptor(
+        responseBody: true,
+        requestBody: true,
+        logPrint: (obj) => debugPrint('📦 $obj'),
+      ));
       // type, 0: Thêm thành viên, 1: Chỉnh sửa thông tin thành viên, 2: Sửa thông tin chủ hộ
       // mỗi type một api khác nhau
       //khai báo response
@@ -85,6 +91,7 @@ class PersonalRepo {
         formData.fields
             .add(MapEntry('relationship_type', relationshipType ?? 'other'));
         formData.fields.add(MapEntry('apartment_id', apartmentId ?? ''));
+        formData.fields.add(MapEntry('resident_id', residentId ?? 'other'));
         response = await dio.post(ApiPath.editThanhVien, data: formData);
       } else {
         response = await dio.post(ApiPath.editChuho, data: formData);
