@@ -6,6 +6,8 @@ import 'package:ha_duong/utils/constants/color.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ha_duong/utils/widget/webview_screen.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class DetailPostScreen extends StatefulWidget {
   const DetailPostScreen({
@@ -96,9 +98,12 @@ class _DetailPostScreenState extends State<DetailPostScreen>
                       padding: EdgeInsets.symmetric(
                         horizontal: 6.w,
                       ),
-                      child: Text(data.createAt,
-                          style: defaultText14M.copyWith(
-                              color: const Color(0xff8A8A8A))),
+                      child: Text(
+                        data.createAt,
+                        style: defaultText14M.copyWith(
+                          color: const Color(0xff8A8A8A),
+                        ),
+                      ),
                     ),
                     SizedBox(
                       height: 8.h,
@@ -122,6 +127,32 @@ class _DetailPostScreenState extends State<DetailPostScreen>
                     SizedBox(
                       height: 10.h,
                     ),
+                    if (data.urlFile != null)
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.black87,
+                          backgroundColor: Colors.grey[300],
+                          minimumSize: Size(88, 36),
+                          padding: EdgeInsets.symmetric(horizontal: 16.w),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(2)),
+                          ),
+                        ),
+                        onPressed: () {
+                          // open WebViewScreen
+                          // ignore: use_build_context_synchronously
+                          pushWithoutNavBar(
+                            context,
+                            MaterialPageRoute(
+                              builder: ((context) => WebViewScreen(
+                                    link: data.urlFile!,
+                                    title: 'File đính kèm',
+                                  )),
+                            ),
+                          );
+                        },
+                        child: Text('file đính kèm'),
+                      ),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: ConstrainedBox(

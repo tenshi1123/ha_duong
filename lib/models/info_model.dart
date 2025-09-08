@@ -135,6 +135,7 @@ class PostModel {
   final String updatedAt;
   final String createAt;
   String type;
+  String? urlFile;
   PostModel({
     required this.id,
     required this.img,
@@ -143,6 +144,7 @@ class PostModel {
     required this.updatedAt,
     required this.createAt,
     this.type = '0',
+    this.urlFile,
   });
   factory PostModel.fromJson(Map<String, dynamic> json) {
     return PostModel(
@@ -153,6 +155,7 @@ class PostModel {
       updatedAt: json['update_at'] ?? '',
       createAt: json['created_at'] ?? '',
       type: json['type'] ?? '0',
+      urlFile: json['url_file'],
     );
   }
 }

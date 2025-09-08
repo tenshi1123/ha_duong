@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewScreen extends StatelessWidget {
@@ -27,8 +28,9 @@ class WebViewScreen extends StatelessWidget {
           },
         ),
       )
-      ..loadRequest(Uri.parse(link));
+      ..loadRequest(Uri.parse(buildPreviewUrl(link)));
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: const Color(0xff273D8C),
         leading: IconButton(
@@ -43,8 +45,35 @@ class WebViewScreen extends StatelessWidget {
             color: Colors.white,
           ),
         ),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.download, color: Colors.white),
+            onPressed: () {
+              launchUrl(Uri.parse(link));
+            },
+          ),
+        ],
       ),
       body: WebViewWidget(controller: controller),
     );
+  }
+}
+
+String buildPreviewUrl(String url) {
+  final officeExts = ['xlsx', 'xlsm', 'xls', 'docx', 'docm', 'pptx', 'pptm'];
+  final pdfExts = ['pdf'];
+
+  // Lấy phần mở rộng file
+  final uri = Uri.parse(url);
+  final path = uri.path.toLowerCase();
+  final ext = path.split('.').last;
+
+  if (officeExts.contains(ext)) {
+    return 'https://view.officeapps.live.com/op/embed.aspx?src=$url';
+  } else if (pdfExts.contains(ext)) {
+    return 'https://drive.google.com/viewerng/viewer?embedded=true&url=$url';
+  } else {
+    return url;
   }
 }
