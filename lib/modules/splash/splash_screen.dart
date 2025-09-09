@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ha_duong/models/info_model.dart';
 import 'package:ha_duong/modules/bottomnavbar/bottom_nav_bar.dart';
+import 'package:ha_duong/modules/splash/onboarding.dart';
 import 'package:ha_duong/repo/home_repo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
