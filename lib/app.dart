@@ -47,6 +47,7 @@ class _AppState extends State<App> {
               bodyColor: Colors.black,
               decorationColor: Colors.black,
             ),
+            dialogTheme: DialogThemeData(backgroundColor: Colors.white),
           ),
           home: const Splshscreen(),
           routes: const <String, WidgetBuilder>{},

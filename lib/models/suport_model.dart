@@ -86,11 +86,13 @@ class RequestStatusModel {
   final DateTime createAt;
   final String type;
   String? img;
+  String? noteText;
   RequestStatusModel({
     required this.name,
     required this.createAt,
     required this.type,
     this.img,
+    this.noteText,
   });
   factory RequestStatusModel.fromJson(Map<String, dynamic> json) {
     final rawImg = json['note_img'];
@@ -106,11 +108,11 @@ class RequestStatusModel {
       }
     }
     return RequestStatusModel(
-      name: json['name'] ?? '',
-      createAt: DateTime.parse(json['created_at'] ?? '2832000'),
-      type: json['type'] ?? '',
-      img: json['note_img'] ?? "[]",
-    );
+        name: json['name'] ?? '',
+        createAt: DateTime.parse(json['created_at'] ?? '2832000'),
+        type: json['type'] ?? '',
+        img: json['note_img'] ?? "[]",
+        noteText: json['note_text']);
   }
 }
 

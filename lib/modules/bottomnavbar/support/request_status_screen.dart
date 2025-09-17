@@ -139,10 +139,22 @@ class RequestStatusScreen extends StatelessWidget {
   }
 
   Widget _buildStepItem(RequestStatusModel step, {bool isLast = false}) {
+    double calculateHeight() {
+      final hasImg =
+          step.img != null && step.img!.isNotEmpty && step.img != '[]';
+      final hasNote = step.noteText != null && step.noteText!.isNotEmpty;
+
+      if (hasImg && hasNote) return 200.h; // cả note + ảnh
+      if (hasImg) return 160.h; // chỉ ảnh
+      if (hasNote) return 75.h; // chỉ note
+      return 45.h; // chỉ text
+    }
+
     return SizedBox(
-      height: (step.img != null && step.img!.isNotEmpty && step.img != '[]')
-          ? 160.h
-          : 45.h,
+      height: calculateHeight(),
+      //  (step.img != null && step.img!.isNotEmpty && step.img != '[]')
+      //     ? 160.h
+      //     : 45.h,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -212,6 +224,28 @@ class RequestStatusScreen extends StatelessWidget {
                           step.type == '0' ? FontWeight.w500 : FontWeight.bold,
                     ),
                   ),
+                  if (step.noteText != null)
+                    Container(
+                      height: 30.h,
+                      width: 200.w,
+                      padding: EdgeInsets.symmetric(horizontal: 8.w),
+                      decoration: BoxDecoration(
+                        color: Colors.blue.shade50,
+                        borderRadius: BorderRadius.circular(12.r),
+                        border: Border.all(color: Colors.blue.shade100),
+                      ),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            step.noteText ?? '',
+                            style: const TextStyle(color: Colors.black87),
+                            overflow: TextOverflow.visible, // để không cắt text
+                          ),
+                        ),
+                      ),
+                    ),
                   (step.img != null && step.img!.isNotEmpty && step.img != '[]')
                       ? SizedBox(
                           height: 125.h, child: _buildImageContent(step.img!))

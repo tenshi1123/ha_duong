@@ -155,7 +155,7 @@ class _RequestScreenState extends State<RequestScreen>
                 const Spacer(),
                 Text(model.createAt,
                     style: defaultText14Re.copyWith(
-                      color: const Color(0xff8A8A8A),
+                      color: const Color.fromARGB(255, 58, 58, 58),
                     )),
               ],
             ),

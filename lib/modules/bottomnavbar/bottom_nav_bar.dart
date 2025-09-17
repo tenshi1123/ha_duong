@@ -43,7 +43,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   }
 
   Future<void> setupOneSignal() async {
-    await initOneSignal();
+    //await initOneSignal();
     var onesignalId = await OneSignal.User.getOnesignalId();
     await LoginRepo().pushOnesignalId(
       apatmentId: widget.infoHomeModel.listApartment[0].id,
