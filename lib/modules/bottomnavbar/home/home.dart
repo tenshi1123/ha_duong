@@ -2,6 +2,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ha_duong/models/chat_model.dart';
 import 'package:ha_duong/models/info_model.dart';
 import 'package:ha_duong/modules/bottomnavbar/bill/detail_bill_screen.dart';
+import 'package:ha_duong/modules/bottomnavbar/bottom_nav_bar.dart';
 import 'package:ha_duong/repo/chat_noti_repo.dart';
 import 'package:ha_duong/repo/home_repo.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
@@ -25,7 +26,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final controller2 = PageController(viewportFraction: 0.75, keepPage: true);
   final controller3 = PageController(viewportFraction: 0.75, keepPage: true);
   late InfoModel infoHomeModel;
-  late ApartmentModel selectedApartment;
   String selectedCategoryId = "1";
   List<PostModel> posts = [];
   @override
@@ -119,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               InkWell(
                                 onTap: () async {
                                   NotificationModel notimodel = await ChatRepo()
-                                      .getHomeNoti(selectedApartment.id);
+                                      .getHomeNoti(selectedApartment?.id ?? '');
                                   pushWithoutNavBar(
                                     context,
                                     MaterialPageRoute(
@@ -193,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   const SizedBox(width: 8),
                                   Expanded(
                                     child: Text(
-                                      selectedApartment.name,
+                                      selectedApartment?.name ?? '',
                                       style:
                                           const TextStyle(color: Colors.white),
                                       overflow: TextOverflow.ellipsis,
@@ -382,14 +382,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: EdgeInsets.only(left: 20.w, right: 20.w),
                 child: SizedBox(
                   //width: 375.w,
-                  height: 230.h,
+                  height: 235.h,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       ClipRRect(
                         child: SizedBox(
-                          height: 206.h,
+                          height: 220.h,
                           width: 375.w,
                           child: PageView.builder(
                             padEnds: false,

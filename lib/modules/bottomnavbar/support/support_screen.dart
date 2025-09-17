@@ -370,10 +370,15 @@ class SupportItem extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Text(
-                    model.note,
-                    style: defaultText14Re.copyWith(
-                      color: const Color(0xff383838),
+                  SizedBox(
+                    width: 290.w,
+                    child: Text(
+                      model.note,
+                      style: defaultText14Re.copyWith(
+                        color: const Color(0xff383838),
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ],

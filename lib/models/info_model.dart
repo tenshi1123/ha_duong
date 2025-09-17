@@ -133,7 +133,7 @@ class PostModel {
   final String name;
   final String content;
   final String updatedAt;
-  final String createAt;
+  final DateTime createAt;
   String type;
   String? urlFile;
   PostModel({
@@ -153,7 +153,7 @@ class PostModel {
       name: json['name'] ?? '',
       content: json['content'] ?? '',
       updatedAt: json['update_at'] ?? '',
-      createAt: json['created_at'] ?? '',
+      createAt: DateTime.parse(json['created_at'] ?? ''),
       type: json['type'] ?? '0',
       urlFile: json['url_file'],
     );

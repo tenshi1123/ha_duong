@@ -1,5 +1,6 @@
 import "dart:io";
 
+import "package:ha_duong/models/apartment_model.dart";
 import "package:ha_duong/models/chat_model.dart";
 import "package:ha_duong/models/info_model.dart";
 import "package:ha_duong/models/suport_model.dart";
@@ -9,7 +10,6 @@ import "package:flutter_screenutil/flutter_screenutil.dart";
 import "package:ha_duong/modules/bottomnavbar/support/request_status_screen.dart";
 import "package:ha_duong/modules/notification/detail_noti_screen.dart";
 import "package:ha_duong/modules/notification/detail_post_screen.dart";
-import "package:ha_duong/modules/notification/notification_screen.dart";
 import "package:ha_duong/repo/chat_noti_repo.dart";
 import "package:ha_duong/repo/login_repo.dart";
 import "package:ha_duong/repo/support_repo.dart";
@@ -17,11 +17,12 @@ import "package:ha_duong/utils/onesignal.dart";
 import "package:onesignal_flutter/onesignal_flutter.dart";
 import "package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart";
 import 'package:flutter_svg/flutter_svg.dart';
-
 import "bill/bill_screen.dart";
 import "info/personal_screen.dart";
 import "service/extension_screen.dart";
 import "support/support_screen.dart";
+
+ApartmentModel? selectedApartment;
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({
@@ -49,45 +50,45 @@ class _BottomNavBarState extends State<BottomNavBar> {
       onesignalId: onesignalId ?? '',
     );
 
-    OneSignal.Notifications.addClickListener((event) async {
-      final data = event.notification.additionalData;
-      if (data != null) {
-        String requestId = data['id'];
-        if (data['type'] == 'hotro') {
-          DetailTechnicalRequestModel detailRequest =
-              await SupportRepo().getRequestStatus(requestId);
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: ((context) => RequestStatusScreen(
-                    requestStatus: detailRequest.listRequestStatus,
-                    createAt: detailRequest.technicalSupportModel.createAt,
-                    technicalSupportModel: detailRequest.technicalSupportModel,
-                  )),
-            ),
-          );
-        } else if (data['type'] == 'thongbao') {
-          NotiValueModel notiModel = await ChatRepo().getDetailNoti(requestId);
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: ((context) => DetailNotiScreen(
-                    notiModel: notiModel,
-                  )),
-            ),
-          );
-        } else if (data['type'] == 'bangtin') {
-          pushWithoutNavBar(
-            context,
-            MaterialPageRoute(
-              builder: ((context) => DetailPostScreen(
-                    postId: requestId,
-                  )),
-            ),
-          );
-        }
-      }
-    });
+    // OneSignal.Notifications.addClickListener((event) async {
+    //   final data = event.notification.additionalData;
+    //   if (data != null) {
+    //     String requestId = data['id'].toString();
+    //     if (data['type'] == 'hotro') {
+    //       DetailTechnicalRequestModel detailRequest =
+    //           await SupportRepo().getRequestStatus(requestId);
+    //       Navigator.push(
+    //         context,
+    //         MaterialPageRoute(
+    //           builder: ((context) => RequestStatusScreen(
+    //                 requestStatus: detailRequest.listRequestStatus,
+    //                 createAt: detailRequest.technicalSupportModel.createAt,
+    //                 technicalSupportModel: detailRequest.technicalSupportModel,
+    //               )),
+    //         ),
+    //       );
+    //     } else if (data['type'] == 'thongbao') {
+    //       NotiValueModel notiModel = await ChatRepo().getDetailNoti(requestId);
+    //       Navigator.push(
+    //         context,
+    //         MaterialPageRoute(
+    //           builder: ((context) => DetailNotiScreen(
+    //                 notiModel: notiModel,
+    //               )),
+    //         ),
+    //       );
+    //     } else if (data['type'] == 'bangtin') {
+    //       pushWithoutNavBar(
+    //         context,
+    //         MaterialPageRoute(
+    //           builder: ((context) => DetailPostScreen(
+    //                 postId: requestId,
+    //               )),
+    //         ),
+    //       );
+    //     }
+    //   }
+    // });
     promptPolicyPrivacy();
   }
 

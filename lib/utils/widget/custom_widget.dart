@@ -6,6 +6,7 @@ import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import '../constants/color.dart';
 
@@ -195,6 +196,14 @@ class PostItem extends StatelessWidget {
               ),
             ),
           ),
+          Padding(
+            padding: EdgeInsetsGeometry.symmetric(horizontal: 6.w),
+            child: Text(
+              DateFormat('yyyy-MM-dd HH:mm').format(postModel.createAt),
+              style: defaultText12Re,
+              maxLines: 1,
+            ),
+          )
         ],
       ),
     );

@@ -22,7 +22,7 @@ Future<void> initOneSignal() async {
   OneSignal.Notifications.addClickListener((event) async {
     final data = event.notification.additionalData;
     if (data != null) {
-      String requestId = data['id'];
+      String requestId = data['id'].toString();
 
       if (data['type'] == 'hotro') {
         DetailTechnicalRequestModel detailRequest =

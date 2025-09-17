@@ -212,8 +212,10 @@ class RequestStatusScreen extends StatelessWidget {
                           step.type == '0' ? FontWeight.w500 : FontWeight.bold,
                     ),
                   ),
-                  if (step.img != null && step.img!.isNotEmpty)
-                    _buildImageContent(step.img!),
+                  (step.img != null && step.img!.isNotEmpty && step.img != '[]')
+                      ? SizedBox(
+                          height: 125.h, child: _buildImageContent(step.img!))
+                      : SizedBox(),
                 ],
               ),
             ),

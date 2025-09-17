@@ -7,6 +7,7 @@ import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ha_duong/utils/widget/webview_screen.dart';
+import 'package:intl/intl.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class DetailPostScreen extends StatefulWidget {
@@ -99,7 +100,7 @@ class _DetailPostScreenState extends State<DetailPostScreen>
                         horizontal: 6.w,
                       ),
                       child: Text(
-                        data.createAt,
+                        DateFormat('yyyy-MM-dd HH:mm').format(data.createAt),
                         style: defaultText14M.copyWith(
                           color: const Color(0xff8A8A8A),
                         ),
