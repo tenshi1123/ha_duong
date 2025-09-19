@@ -14,7 +14,7 @@ class ExtensionScreen extends StatefulWidget {
 
 class _ExtensionScreenState extends State<ExtensionScreen> {
   bool isLoading = true;
-  late List<PostModel> listUtilities;
+  List<PostModel> listUtilities = [];
   @override
   void initState() {
     super.initState();
@@ -24,7 +24,6 @@ class _ExtensionScreenState extends State<ExtensionScreen> {
   Future<void> fetchData() async {
     try {
       final response = await HomeRepo().getUtilities(widget.id);
-
       // Cập nhật state sau khi có dữ liệu
       setState(() {
         listUtilities = response;

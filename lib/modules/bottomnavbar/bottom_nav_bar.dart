@@ -160,7 +160,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         ),
         PersistentTabConfig(
           screen: ExtensionScreen(
-            id: widget.infoHomeModel.listApartment[0].id,
+            id: widget.infoHomeModel.listApartment.first.id,
           ),
           item: ItemConfig(
             icon: SvgPicture.asset(

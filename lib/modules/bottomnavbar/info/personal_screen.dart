@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ha_duong/main.dart';
@@ -107,7 +106,6 @@ class PersonalScreen extends StatelessWidget {
                                             icon: Icons.camera_alt_outlined,
                                             text: "Chụp ảnh",
                                             onTap: () {
-                                              // Xử lý chụp ảnh
                                               pickImageFromCamera1(
                                                 context,
                                               );
@@ -186,17 +184,46 @@ class PersonalScreen extends StatelessWidget {
               ),
               InkWell(
                 onTap: () async {
-                  final result = await PersonalRepo().getApartmentProfile();
-                  pushWithoutNavBar(
-                    context,
-                    MaterialPageRoute(
-                      builder: ((context) => ApartmentProfile(
+                  showLoadingDialog(context);
+                  try {
+                    final result = await PersonalRepo()
+                        .getApartmentProfile()
+                        .timeout(const Duration(
+                            seconds: 10)); // auto timeout sau 10s
+
+                    if (context.mounted) {
+                      hideLoadingDialog(context); // tắt loading
+                      pushWithoutNavBar(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ApartmentProfile(
                             residentModel: result['resident'],
                             apartmentModel: result['apartment'],
-                          )),
-                    ),
-                  );
+                          ),
+                        ),
+                      );
+                    }
+                  } catch (e) {
+                    if (context.mounted) {
+                      hideLoadingDialog(context);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text('Có lỗi xảy ra, thử lại sau')),
+                      );
+                    }
+                  }
                 },
+                //   final result = await PersonalRepo().getApartmentProfile();
+                //   pushWithoutNavBar(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: ((context) => ApartmentProfile(
+                //             residentModel: result['resident'],
+                //             apartmentModel: result['apartment'],
+                //           )),
+                //     ),
+                //   );
+                // },
                 child: Column(
                   children: [
                     SizedBox(
@@ -533,4 +560,25 @@ Widget infoItem({
       ),
     ],
   );
+}
+
+void showLoadingDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: false, // không cho tắt khi bấm ngoài
+    barrierColor: Colors.black.withOpacity(0.3), // lớp mờ
+    builder: (BuildContext context) {
+      return const Center(
+        child: CircularProgressIndicator(
+          color: Colors.deepPurple, // đổi màu nếu muốn
+        ),
+      );
+    },
+  );
+}
+
+void hideLoadingDialog(BuildContext context) {
+  if (Navigator.of(context, rootNavigator: true).canPop()) {
+    Navigator.of(context, rootNavigator: true).pop();
+  }
 }

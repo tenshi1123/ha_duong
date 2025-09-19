@@ -153,7 +153,7 @@ class PostModel {
       name: json['name'] ?? '',
       content: json['content'] ?? '',
       updatedAt: json['update_at'] ?? '',
-      createAt: DateTime.parse(json['created_at'] ?? ''),
+      createAt: DateTime.parse(json['created_at'] ?? '20120227'),
       type: json['type'] ?? '0',
       urlFile: json['url_file'],
     );
