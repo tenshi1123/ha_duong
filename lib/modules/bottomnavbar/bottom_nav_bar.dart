@@ -42,45 +42,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
       onesignalId: onesignalId ?? '',
     );
 
-    // OneSignal.Notifications.addClickListener((event) async {
-    //   final data = event.notification.additionalData;
-    //   if (data != null) {
-    //     String requestId = data['id'].toString();
-    //     if (data['type'] == 'hotro') {
-    //       DetailTechnicalRequestModel detailRequest =
-    //           await SupportRepo().getRequestStatus(requestId);
-    //       Navigator.push(
-    //         context,
-    //         MaterialPageRoute(
-    //           builder: ((context) => RequestStatusScreen(
-    //                 requestStatus: detailRequest.listRequestStatus,
-    //                 createAt: detailRequest.technicalSupportModel.createAt,
-    //                 technicalSupportModel: detailRequest.technicalSupportModel,
-    //               )),
-    //         ),
-    //       );
-    //     } else if (data['type'] == 'thongbao') {
-    //       NotiValueModel notiModel = await ChatRepo().getDetailNoti(requestId);
-    //       Navigator.push(
-    //         context,
-    //         MaterialPageRoute(
-    //           builder: ((context) => DetailNotiScreen(
-    //                 notiModel: notiModel,
-    //               )),
-    //         ),
-    //       );
-    //     } else if (data['type'] == 'bangtin') {
-    //       pushWithoutNavBar(
-    //         context,
-    //         MaterialPageRoute(
-    //           builder: ((context) => DetailPostScreen(
-    //                 postId: requestId,
-    //               )),
-    //         ),
-    //       );
-    //     }
-    //   }
-    // });
     promptPolicyPrivacy();
   }
 
@@ -138,7 +99,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           ),
           item: ItemConfig(
             icon: SvgPicture.asset(
-              'assets/icons/support.svg',
+              'assets/icons/support2.svg',
               width: 32.w,
               height: 32.h,
             ),

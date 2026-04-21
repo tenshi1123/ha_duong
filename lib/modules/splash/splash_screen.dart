@@ -29,6 +29,7 @@ class _SplshscreenState extends State<Splshscreen> {
     Timer(const Duration(seconds: 0), () async {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final String? token = prefs.getString('token');
+      print("Token: $token");
       checked = (token != null && token != '');
       if (checked) {
         InfoModel? infoHomeModel = await HomeRepo().getInfoCudan();

@@ -33,7 +33,7 @@ class PersonalScreen extends StatelessWidget {
                   width: 375.w,
                   height: 200.h,
                   image: const AssetImage(
-                    'assets/images/person_background.png',
+                    'assets/images/personal_background.png',
                   ),
                   fit: BoxFit.fill,
                 ),
