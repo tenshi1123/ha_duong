@@ -1,19 +1,11 @@
 import "dart:io";
 
 import "package:ha_duong/models/apartment_model.dart";
-import "package:ha_duong/models/chat_model.dart";
 import "package:ha_duong/models/info_model.dart";
-import "package:ha_duong/models/suport_model.dart";
 import "package:ha_duong/modules/bottomnavbar/home/home.dart";
 import "package:flutter/material.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
-import "package:ha_duong/modules/bottomnavbar/support/request_status_screen.dart";
-import "package:ha_duong/modules/notification/detail_noti_screen.dart";
-import "package:ha_duong/modules/notification/detail_post_screen.dart";
-import "package:ha_duong/repo/chat_noti_repo.dart";
 import "package:ha_duong/repo/login_repo.dart";
-import "package:ha_duong/repo/support_repo.dart";
-import "package:ha_duong/utils/onesignal.dart";
 import "package:onesignal_flutter/onesignal_flutter.dart";
 import "package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart";
 import 'package:flutter_svg/flutter_svg.dart';

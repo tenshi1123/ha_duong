@@ -2,14 +2,17 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ha_duong/bql_model/home_model.dart';
+import 'package:ha_duong/bql_model/info_model_bql.dart';
+import 'package:ha_duong/bql_repo/info_repo_bql.dart';
 import 'package:ha_duong/models/info_model.dart';
 import 'package:ha_duong/modules/bottomnavbar/bottom_nav_bar.dart';
-import 'package:ha_duong/modules/splash/onboarding.dart';
+import 'package:ha_duong/modules/bottomnavbar/bql_bottom_nav_bar.dart';
+import 'package:ha_duong/modules/splash/wellcom_screen.dart';
 import 'package:ha_duong/repo/home_repo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 //import '../bottomnavbar/bottom_nav_bar.dart';
-import '../login/login_screen.dart';
 
 class Splshscreen extends StatefulWidget {
   const Splshscreen({super.key});
@@ -39,13 +42,38 @@ class _SplshscreenState extends State<Splshscreen> {
               ),
             ),
           );
+        } else {
+          InfoModelBql? infoHomeModel = await InfoRepo().getInfo();
+          HomeModel? homeModel = await HomeRepo().getHomeModel();
+
+          if (!mounted) return;
+
+          if (infoHomeModel != null && homeModel != null) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BottomNavBarBql(
+                  infoModel: infoHomeModel,
+                  homeModel: homeModel,
+                ),
+              ),
+            );
+          } else {
+            if (!mounted) return;
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const WellcomeScreen(),
+              ),
+            );
+          }
         }
       } else {
         if (!mounted) return;
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => const LoginScreen(),
+            builder: (context) => const WellcomeScreen(),
           ),
         );
       }

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ha_duong/main.dart';
 import 'package:ha_duong/models/apartment_model.dart';
 import 'package:ha_duong/models/info_model.dart';
+import 'package:ha_duong/modules/splash/wellcom_screen.dart';
 import 'package:ha_duong/repo/personal_repo.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:ha_duong/utils/widget/pick_image.dart';
@@ -442,7 +443,7 @@ class PersonalScreen extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                       builder: ((context) =>
-                                          const LoginScreen()),
+                                          const WellcomeScreen()),
                                     ),
                                   );
                                 },

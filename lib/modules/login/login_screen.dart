@@ -48,32 +48,44 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(height: 60.h),
                 Row(
                   children: [
-                    Text(
-                      'Xin chào!',
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.clip,
-                      style: TextStyle(
-                        fontSize: 24.sp,
-                        color: const Color(0xff004071),
-                        fontWeight: FontWeight.bold,
+                    //back button
+                    InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Icon(
+                        Icons.arrow_back_ios,
+                        color: Color(0xff004071),
                       ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Xin chào!',
+                          textAlign: TextAlign.left,
+                          overflow: TextOverflow.clip,
+                          style: TextStyle(
+                            fontSize: 24.sp,
+                            color: const Color(0xff004071),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          'Chào mừng đã trở lại, hãy đăng nhập',
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            color: subBlack,
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.normal,
+                          ),
+                          overflow: TextOverflow.clip,
+                        ),
+                      ],
                     ),
                   ],
                 ),
-                Row(
-                  children: [
-                    Text(
-                      'Chào mừng đã trở lại, hãy đăng nhập',
-                      textAlign: TextAlign.right,
-                      style: TextStyle(
-                        color: subBlack,
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.normal,
-                      ),
-                      overflow: TextOverflow.clip,
-                    ),
-                  ],
-                ),
+
                 SizedBox(
                   height: 30.h,
                 ),

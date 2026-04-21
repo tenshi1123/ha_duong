@@ -6,7 +6,6 @@ import 'package:ha_duong/models/info_model.dart';
 import 'package:ha_duong/models/suport_model.dart';
 import 'package:ha_duong/modules/bottomnavbar/support/request_screen.dart';
 import 'package:ha_duong/modules/bottomnavbar/support/request_status_screen.dart';
-import 'package:ha_duong/modules/chat/chat_screen.dart';
 import 'package:ha_duong/repo/chat_noti_repo.dart';
 import 'package:ha_duong/repo/support_repo.dart';
 import 'package:ha_duong/utils/constants/styles.dart';

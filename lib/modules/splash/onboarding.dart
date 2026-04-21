@@ -18,7 +18,6 @@ class Onbonding extends StatefulWidget {
 class _OnbondingState extends State<Onbonding> {
   final int _numPages = 3;
 
-  final PageController _pageController = PageController(initialPage: 0);
   final int _currentPage = 0;
 
   List<Widget> _buildPageIndicator() {

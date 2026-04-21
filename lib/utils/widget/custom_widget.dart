@@ -1,7 +1,7 @@
+import 'package:ha_duong/bql_model/technical_requests_model.dart';
 import 'package:ha_duong/models/apartment_model.dart';
 import 'package:ha_duong/models/info_model.dart';
 import 'package:ha_duong/modules/notification/detail_post_screen.dart';
-import 'package:ha_duong/repo/home_repo.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -66,6 +66,61 @@ Widget homeTab(
       ),
     ),
   );
+}
+
+class RequestItem extends StatelessWidget {
+  final TechnicalSupportModel model;
+  final VoidCallback? onTap;
+
+  const RequestItem({
+    super.key,
+    required this.model,
+    this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(top: 4.h),
+                  child: Icon(Icons.circle, color: Colors.red, size: 10.dm),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Yêu cầu ${model.settingSupportName}',
+                          style: defaultText14M),
+                      const SizedBox(height: 4),
+                      Text(
+                        '${model.buildingName} ${model.apartmentName}',
+                        style: defaultText14Re,
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(Icons.chevron_right, size: 24.dm),
+              ],
+            ),
+          ),
+        ),
+        const Divider(
+          height: 1,
+          endIndent: 10,
+          indent: 10,
+        ),
+      ],
+    );
+  }
 }
 
 class ConversationItem extends StatelessWidget {

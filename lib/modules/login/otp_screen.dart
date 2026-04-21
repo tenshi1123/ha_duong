@@ -159,88 +159,88 @@ class _OtpScreenState extends State<OtpScreen> {
     );
   }
 
-  //Method for generate otp from firebase
-  // Future<void> generateOtp(String contact) async {
-  //   // smsOTPSent(verId, forceResendingToken) {
-  //   //   verificationId = verId;
-  //   // }
-
-  //   try {
-  //     final cred = PhoneAuthProvider.credential(
-  //         verificationId: verificationId, smsCode: smsOTP);
-  //   } catch (e) {
-  //     handleError(e as PlatformException);
-  //   }
-  // }
-
-  //Method for verify otp entered by user
   Future<void> verifyOtp() async {
-    // try {
-    //   final cred = PhoneAuthProvider.credential(
-    //       verificationId: verificationId, smsCode: smsOTP,);
-    // } catch (e) {
-    //   handleError(e as PlatformException);
-    // }
     if (smsOTP == null || smsOTP == '') {
       showAlertDialog(context, 'xin mời nhập mã otp');
       return;
     }
     try {
-      final AuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: widget.verificationId,
-        smsCode: smsOTP ?? '',
-      );
-      final UserCredential user = await _auth.signInWithCredential(credential);
-      final User? currentUser = _auth.currentUser;
-      assert(user.user?.uid == currentUser?.uid);
+      try {
+        final AuthCredential credential = PhoneAuthProvider.credential(
+          verificationId: widget.verificationId,
+          smsCode: smsOTP ?? '',
+        );
 
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: ((context) => ForgotPass2(
-      //           contact: widget.contact,
-      //         )),
-      //   ),
-      // );
-      bool loged = await LoginRepo().login(
-        widget.contact == '0999999999' ? '0912444036' : widget.contact,
-        //'0949471290',
-      );
-      if (loged == true) {
-        InfoModel? infoHomeModel = await HomeRepo().getInfoCudan();
-        if (infoHomeModel != null) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => BottomNavBar(
-                infoHomeModel: infoHomeModel,
+        final UserCredential user =
+            await _auth.signInWithCredential(credential);
+
+        final User? currentUser = _auth.currentUser;
+        assert(user.user?.uid == currentUser?.uid);
+
+        // ✅ Thành công: xử lý login tiếp
+        bool loged = await LoginRepo().login(
+          widget.contact == '0999999999' ? '0912444036' : widget.contact,
+          //'0949471290',
+        );
+        if (loged == true) {
+          InfoModel? infoHomeModel = await HomeRepo().getInfoCudan();
+          if (infoHomeModel != null) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BottomNavBar(
+                  infoHomeModel: infoHomeModel,
+                ),
               ),
-            ),
+            );
+          }
+        } else {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return CupertinoAlertDialog(
+                title: const Text('Vui lòng thử lại'),
+                content: const Text('Vui lòng kiểm tra lại SDT'),
+                actions: <Widget>[
+                  CupertinoDialogAction(
+                    isDefaultAction: true,
+                    child: Text(
+                      'Đồng ý',
+                      style: TextStyle(fontSize: 20, color: key1Color),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context, rootNavigator: true).pop(
+                        (_) => false,
+                      );
+                    },
+                  )
+                ],
+              );
+            },
           );
         }
-      } else {
+      } on FirebaseAuthException catch (e) {
+        String message = "Đã có lỗi xảy ra, vui lòng thử lại.";
+
+        if (e.code == 'invalid-verification-code') {
+          message = "Mã OTP không chính xác.";
+        } else if (e.code == 'session-expired') {
+          message = "Mã OTP đã hết hạn, vui lòng yêu cầu mã mới.";
+        }
+
+        // Hiển thị dialog cảnh báo
         showDialog(
           context: context,
-          builder: (BuildContext context) {
-            return CupertinoAlertDialog(
-              title: const Text('Vui lòng thử lại'),
-              content: const Text('Vui lòng kiểm tra lại SDT'),
-              actions: <Widget>[
-                CupertinoDialogAction(
-                  isDefaultAction: true,
-                  child: Text(
-                    'Đồng ý',
-                    style: TextStyle(fontSize: 20, color: key1Color),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context, rootNavigator: true).pop(
-                      (_) => false,
-                    );
-                  },
-                )
-              ],
-            );
-          },
+          builder: (context) => AlertDialog(
+            title: const Text("Lỗi xác thực"),
+            content: Text(message),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text("OK"),
+              )
+            ],
+          ),
         );
       }
     } on PlatformException catch (e) {

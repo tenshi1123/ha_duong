@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 Color blackText800 = const Color(0xff191919);
+Color blackText = const Color(0xff282828);
 Color main1Color = const Color(0xff00AEEF);
 Color main2Color = const Color(0xffA0E5FF);
 

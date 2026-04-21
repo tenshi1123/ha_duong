@@ -1,9 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:ha_duong/bql_model/home_model.dart' as bql;
+import 'package:ha_duong/bql_repo/login_repo_bql.dart';
 import 'package:ha_duong/models/apartment_model.dart';
 import 'package:ha_duong/models/info_model.dart';
 import 'package:ha_duong/repo/login_repo.dart';
 import 'package:ha_duong/utils/constants/api_path.dart';
+import 'package:ha_duong/utils/constants/api_path_bql.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeRepo {
@@ -31,6 +34,35 @@ class HomeRepo {
         ApiPath.home,
       );
       return InfoModel.fromJson(response.data['data']);
+    } catch (e) {
+      await prefs.remove('token');
+    }
+    return null;
+  }
+
+  Future<bql.HomeModel?> getHomeModel() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+    dio.options.headers['Authorization'] = 'Bearer $token';
+    Response response;
+
+    try {
+      response = await dio.post(
+        ApiPathBql.home,
+      );
+      return bql.HomeModel.fromJson(response.data['data']);
+      //break;
+    } on DioException {
+      String newToken = await LoginRepoBql().refreshToken();
+      if (newToken == '') {
+        return null;
+      }
+      await prefs.setString('token', newToken);
+      dio.options.headers['Authorization'] = 'Bearer $newToken';
+      response = await dio.get(
+        ApiPathBql.home,
+      );
+      return bql.HomeModel.fromJson(response.data['data']);
     } catch (e) {
       await prefs.remove('token');
     }
