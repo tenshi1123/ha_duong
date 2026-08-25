@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../utils/constants/mediaqury.dart';
 import '../login/login_screen.dart';
 import '../../utils/constants/styles.dart';
+import 'package:ha_duong/l10n/app_localizations.dart';
 
 class Onbonding extends StatefulWidget {
   const Onbonding({super.key});
@@ -95,7 +96,7 @@ class _OnbondingState extends State<Onbonding> {
                       Row(
                         children: [
                           Text(
-                            'Bỏ qua',
+                            AppLocalizations.of(context)!.skip,
                             style: defaultText14,
                           ),
                         ],

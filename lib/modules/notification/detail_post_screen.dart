@@ -1,3 +1,4 @@
+import 'package:ha_duong/l10n/app_localizations.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html_table/flutter_html_table.dart';
 import 'package:ha_duong/models/info_model.dart';
@@ -61,7 +62,7 @@ class _DetailPostScreenState extends State<DetailPostScreen>
           },
         ),
         title: Text(
-          'Bảng tin',
+          AppLocalizations.of(context)!.txtBangTin,
           style: defaultText18B.copyWith(
             color: keyBlack,
           ),
@@ -147,12 +148,12 @@ class _DetailPostScreenState extends State<DetailPostScreen>
                             MaterialPageRoute(
                               builder: ((context) => WebViewScreen(
                                     link: data.urlFile!,
-                                    title: 'File đính kèm',
+                                    title: AppLocalizations.of(context)!.txtFileDinhKem,
                                   )),
                             ),
                           );
                         },
-                        child: Text('file đính kèm'),
+                        child: Text(AppLocalizations.of(context)!.txtFileDinhKem1),
                       ),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,

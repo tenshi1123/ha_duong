@@ -3,12 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ha_duong/models/apartment_model.dart';
 import 'package:ha_duong/models/info_model.dart';
+import 'package:ha_duong/modules/bottomnavbar/info/resident_personal_screen.dart';
 import 'package:ha_duong/repo/personal_repo.dart';
-
 import '../../../utils/constants/styles.dart';
 import '../../../utils/widget/custom_dialog.dart';
 import 'family_member.dart';
-import 'personal_screen.dart';
+import 'package:ha_duong/l10n/app_localizations.dart';
 
 class ApartmentProfile extends StatelessWidget {
   const ApartmentProfile(
@@ -21,7 +21,7 @@ class ApartmentProfile extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text('Hồ sơ căn hộ'),
+        title: Text(AppLocalizations.of(context)!.apartmentProfile),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new),
@@ -71,7 +71,7 @@ class _ApartmentItem extends StatelessWidget {
               width: 16.w,
             ),
             Text(
-              'Thông tin cư trú',
+              AppLocalizations.of(context)!.residencyInfo,
               style: defaultText16B,
             ),
             const Spacer(),
@@ -91,7 +91,7 @@ class _ApartmentItem extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    'Chủ hộ',
+                    AppLocalizations.of(context)!.headOfHousehold,
                     style: defaultText14Re.copyWith(color: Colors.black),
                   ),
                 ],
@@ -105,7 +105,10 @@ class _ApartmentItem extends StatelessWidget {
         SizedBox(
           height: 20.h,
         ),
-        infoItem(title: 'Họ và tên', info: residentModel.fullName),
+        infoItem(
+            context: context,
+            title: AppLocalizations.of(context)!.fullNameLabel,
+            info: residentModel.fullName),
         Divider(
           color: const Color(0xffF0F0F0),
           thickness: 1,
@@ -113,7 +116,10 @@ class _ApartmentItem extends StatelessWidget {
           indent: 16.w,
           height: 24.h,
         ),
-        infoItem(title: 'Số định danh', info: residentModel.idCard),
+        infoItem(
+            context: context,
+            title: AppLocalizations.of(context)!.idNumber,
+            info: residentModel.idCard),
         Divider(
           color: const Color(0xffF0F0F0),
           thickness: 1,
@@ -121,7 +127,10 @@ class _ApartmentItem extends StatelessWidget {
           indent: 16.w,
           height: 24.h,
         ),
-        infoItem(title: 'Ngày sinh', info: residentModel.dob),
+        infoItem(
+            context: context,
+            title: AppLocalizations.of(context)!.dob,
+            info: residentModel.dob),
         Divider(
           color: const Color(0xffF0F0F0),
           thickness: 1,
@@ -129,7 +138,10 @@ class _ApartmentItem extends StatelessWidget {
           indent: 16.w,
           height: 24.h,
         ),
-        infoItem(title: 'Số điện thoại', info: residentModel.phone),
+        infoItem(
+            context: context,
+            title: AppLocalizations.of(context)!.phoneLabel,
+            info: residentModel.phone),
         Divider(
           color: const Color(0xffF0F0F0),
           thickness: 1,
@@ -137,7 +149,7 @@ class _ApartmentItem extends StatelessWidget {
           indent: 16.w,
           height: 24.h,
         ),
-        infoItem(title: 'Email', info: residentModel.email),
+        infoItem(context: context, title: 'Email', info: residentModel.email),
         Divider(
           color: const Color(0xffF0F0F0),
           thickness: 1,
@@ -153,7 +165,7 @@ class _ApartmentItem extends StatelessWidget {
                       model: residentModel,
                     ));
           },
-          child: const _EditInfo('Chỉnh sửa thông tin Chủ hộ'),
+          child: _EditInfo(AppLocalizations.of(context)!.editHeadInfo),
         ),
       ],
     );
@@ -173,7 +185,7 @@ class _ApartmentInfo extends StatelessWidget {
               width: 16.w,
             ),
             Text(
-              'Thông tin căn hộ',
+              AppLocalizations.of(context)!.apartmentInfo,
               style: defaultText16B,
             ),
             const Spacer(),
@@ -182,7 +194,10 @@ class _ApartmentInfo extends StatelessWidget {
         SizedBox(
           height: 20.h,
         ),
-        infoItem(title: 'Số nhà ', info: model.name),
+        infoItem(
+            context: context,
+            title: AppLocalizations.of(context)!.txtSoNha1,
+            info: model.name),
         Divider(
           color: const Color(0xffF0F0F0),
           thickness: 1,
@@ -190,7 +205,10 @@ class _ApartmentInfo extends StatelessWidget {
           indent: 16.w,
           height: 24.h,
         ),
-        infoItem(title: 'Tầng', info: model.numberFloors),
+        infoItem(
+            context: context,
+            title: AppLocalizations.of(context)!.floor,
+            info: model.numberFloors),
         Divider(
           color: const Color(0xffF0F0F0),
           thickness: 1,
@@ -198,7 +216,10 @@ class _ApartmentInfo extends StatelessWidget {
           indent: 16.w,
           height: 24.h,
         ),
-        infoItem(title: 'Diện tích mặt sàn', info: '${model.acreage}m2'),
+        infoItem(
+            context: context,
+            title: AppLocalizations.of(context)!.floorArea,
+            info: '${model.acreage}m2'),
         Divider(
           color: const Color(0xffF0F0F0),
           thickness: 1,
@@ -206,7 +227,10 @@ class _ApartmentInfo extends StatelessWidget {
           indent: 16.w,
           height: 24.h,
         ),
-        infoItem(title: 'Tình trạng', info: model.statusText),
+        infoItem(
+            context: context,
+            title: AppLocalizations.of(context)!.statusShort,
+            info: model.statusText),
         Divider(
           color: const Color(0xffF0F0F0),
           thickness: 1,
@@ -265,7 +289,7 @@ class _FamilyMemberTile extends StatelessWidget {
         child: Row(
           children: [
             Text(
-              'Thành viên trong hộ gia đình',
+              AppLocalizations.of(context)!.familyMembers,
               style: defaultText16Re,
             ),
             const Spacer(),

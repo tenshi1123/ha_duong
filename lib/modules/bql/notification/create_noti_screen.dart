@@ -1,3 +1,4 @@
+import 'package:ha_duong/l10n/app_localizations.dart';
 import 'dart:io';
 
 import 'package:camera_camera/camera_camera.dart';
@@ -7,7 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ha_duong/bql_model/home_model.dart';
 import 'package:ha_duong/bql_repo/bql_home_repo.dart';
 import 'package:ha_duong/bql_repo/notification_repo.dart';
-import 'package:ha_duong/modules/bottomnavbar/info/personal_screen.dart';
+import 'package:ha_duong/modules/bottomnavbar/info/resident_personal_screen.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 
 import 'package:image_picker/image_picker.dart';
@@ -73,7 +74,8 @@ class _TaoThongBaoScreenState extends State<TaoThongBaoScreen> {
               context: context,
               builder: (BuildContext context) {
                 return CupertinoAlertDialog(
-                  title: const Text('Chụp ảnh thành công'),
+                  title:
+                      Text(AppLocalizations.of(context)!.bqlChupAnhThanhCong),
                   actions: <Widget>[
                     CupertinoDialogAction(
                       isDefaultAction: true,
@@ -113,8 +115,8 @@ class _TaoThongBaoScreenState extends State<TaoThongBaoScreen> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF25AAE1),
         elevation: 0,
-        title: const Text(
-          'Tạo thông báo mới',
+        title: Text(
+          AppLocalizations.of(context)!.bqlTaoThongBaoMoi,
           style: TextStyle(color: Colors.white),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
@@ -189,7 +191,8 @@ class _TaoThongBaoScreenState extends State<TaoThongBaoScreen> {
                                 items: apartments,
                                 itemLabel: (s) => s.name,
                                 initiallySelected: selected,
-                                hintText: 'Chọn tòa nhà',
+                                hintText: AppLocalizations.of(context)!
+                                    .bqlChonToaNha1,
                                 onSelectionChanged: (newSelected) {
                                   // Will be called whenever user saves selection from picker
                                   setState(() {
@@ -207,7 +210,7 @@ class _TaoThongBaoScreenState extends State<TaoThongBaoScreen> {
                 SizedBox(height: 20.h),
                 // Tiêu đề
                 RichText(
-                  text: const TextSpan(
+                  text: TextSpan(
                     text: 'Tiêu đề',
                     style: TextStyle(color: Colors.black, fontSize: 14),
                     children: [
@@ -230,8 +233,8 @@ class _TaoThongBaoScreenState extends State<TaoThongBaoScreen> {
 
                 // Nội dung
                 RichText(
-                  text: const TextSpan(
-                    text: 'Nội dung thông báo',
+                  text: TextSpan(
+                    text: AppLocalizations.of(context)!.bqlNoiDungThongBao,
                     style: TextStyle(color: Colors.black, fontSize: 14),
                     children: [
                       TextSpan(
@@ -305,7 +308,7 @@ class _TaoThongBaoScreenState extends State<TaoThongBaoScreen> {
                         side: BorderSide(color: Colors.blue.shade100),
                       ),
                     ),
-                    child: const Text('Thêm hình ảnh'),
+                    child: Text(AppLocalizations.of(context)!.bqlThemHinhAnh),
                     onPressed: () {
                       showDialog<String>(
                           context: context,
@@ -423,7 +426,7 @@ class _TaoThongBaoScreenState extends State<TaoThongBaoScreen> {
 class MultiSelectSearchDropdown<T> extends StatefulWidget {
   final List<T> items;
   final List<T>? initiallySelected;
-  final String hintText;
+  final String? hintText;
   final ValueChanged<List<T>>? onSelectionChanged;
   final String Function(T) itemLabel;
 
@@ -432,7 +435,7 @@ class MultiSelectSearchDropdown<T> extends StatefulWidget {
     required this.items,
     required this.itemLabel,
     this.initiallySelected,
-    this.hintText = 'Select...',
+    this.hintText,
     this.onSelectionChanged,
   });
 
@@ -445,7 +448,7 @@ class _MultiSelectSearchDropdownState<T>
     extends State<MultiSelectSearchDropdown<T>> {
   late List<T> _selected;
   String _previewText() {
-    if (_selected.isEmpty) return widget.hintText;
+    if (_selected.isEmpty) return widget.hintText ?? 'Select...';
     if (_selected.length == 1) return widget.itemLabel(_selected.first);
     return '${_selected.length} đã chọn';
   }
@@ -541,23 +544,25 @@ class _MultiSelectDialogState<T> extends State<_MultiSelectDialog<T>> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Chọn mục'),
+      title: Text(AppLocalizations.of(context)!.bqlChonMuc),
       content: SizedBox(
         width: double.maxFinite,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 prefixIcon: Icon(Icons.search),
-                hintText: 'Tìm kiếm...',
+                hintText: AppLocalizations.of(context)!.bqlTimKiem,
               ),
               onChanged: _onSearchChanged,
             ),
             const SizedBox(height: 12),
             Expanded(
               child: _filteredItems.isEmpty
-                  ? const Center(child: Text('Không có kết quả'))
+                  ? Center(
+                      child:
+                          Text(AppLocalizations.of(context)!.bqlKhongCoKetQua))
                   : Scrollbar(
                       child: ListView.builder(
                         shrinkWrap: true,
@@ -581,10 +586,11 @@ class _MultiSelectDialogState<T> extends State<_MultiSelectDialog<T>> {
       ),
       actions: [
         TextButton(
-            onPressed: () => Navigator.pop(context), child: const Text('Hủy')),
+            onPressed: () => Navigator.pop(context),
+            child: Text(AppLocalizations.of(context)!.bqlHuy)),
         TextButton(
           onPressed: () => Navigator.pop(context, _tempSelected),
-          child: const Text('Lưu'),
+          child: Text(AppLocalizations.of(context)!.bqlLuu),
         ),
       ],
     );
@@ -615,7 +621,7 @@ class SendOptionButtons extends StatelessWidget {
                   foregroundColor:
                       value == 'all' ? Colors.white : Colors.black87,
                 ),
-                child: const Text('Gửi tất cả'),
+                child: Text(AppLocalizations.of(context)!.bqlGuiTatCa),
               ),
             ),
             const SizedBox(width: 12),
@@ -628,7 +634,7 @@ class SendOptionButtons extends StatelessWidget {
                   foregroundColor:
                       value == 'single' ? Colors.white : Colors.black87,
                 ),
-                child: const Text('Gửi riêng'),
+                child: Text(AppLocalizations.of(context)!.bqlGuiRieng),
               ),
             ),
           ],

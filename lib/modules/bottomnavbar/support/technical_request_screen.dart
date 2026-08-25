@@ -8,6 +8,7 @@ import 'package:ha_duong/repo/support_repo.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:ha_duong/utils/widget/custom_dialog.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ha_duong/l10n/app_localizations.dart';
 
 class TechnicalRequestScreen extends StatefulWidget {
   const TechnicalRequestScreen(
@@ -85,14 +86,16 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
                             children: [
                               buildSection(
                                 icon: 'assets/icons/tinh_trang.svg',
-                                title: 'Tình trạng',
+                                title:
+                                    AppLocalizations.of(context)!.statusShort,
                                 child: Column(
                                   children: [
                                     Row(
                                       children: [
                                         RichText(
                                           text: TextSpan(
-                                            text: 'Tình trạng ',
+                                            text: AppLocalizations.of(context)!
+                                                .txtTinhTrang5,
                                             style: defaultText14M.copyWith(
                                                 color: const Color(0xff8A8A8A)),
                                             children: <TextSpan>[
@@ -114,7 +117,7 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
                                     DropdownButtonFormField<
                                         SettingSupportState>(
                                       decoration: const InputDecoration(
-                                        //labelText: 'Tình trạng',
+                                        //labelText: AppLocalizations.of(context)!.statusShort,
                                         border: OutlineInputBorder(),
                                         focusedBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
@@ -125,8 +128,8 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
                                         ),
                                       ),
                                       //value: selectedStatus,
-                                      hint: const Text(
-                                          'Tình trạng của quý khách'),
+                                      hint: Text(AppLocalizations.of(context)!
+                                          .yourStatus),
                                       items: statuses
                                           .map((status) => DropdownMenuItem(
                                                 value: status,
@@ -139,7 +142,8 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
                                         });
                                       },
                                       validator: (value) => value == null
-                                          ? 'Vui lòng chọn tình trạng'
+                                          ? AppLocalizations.of(context)!
+                                              .pleaseSelectStatus
                                           : null,
                                     ),
                                   ],
@@ -148,13 +152,15 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
                               const SizedBox(height: 16),
                               buildSection(
                                 icon: 'assets/icons/info_icon.svg',
-                                title: 'Thông tin khách hàng',
+                                title:
+                                    AppLocalizations.of(context)!.customerInfo,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     RichText(
                                       text: TextSpan(
-                                        text: 'Người liên hệ ',
+                                        text: AppLocalizations.of(context)!
+                                            .txtNguoiLienHe1,
                                         style: defaultText14M.copyWith(
                                             color: const Color(0xff8A8A8A)),
                                         children: <TextSpan>[
@@ -181,7 +187,7 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
                                           ),
                                         ),
 
-                                        //labelText: 'Người liên hệ *',
+                                        //labelText: AppLocalizations.of(context)!.txtNguoiLienHe2,
                                         border: OutlineInputBorder(
                                           borderSide: BorderSide(
                                             color: Color(
@@ -192,13 +198,15 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
                                       ),
                                       validator: (value) =>
                                           value == null || value.isEmpty
-                                              ? 'Bắt buộc nhập'
+                                              ? AppLocalizations.of(context)!
+                                                  .requiredField
                                               : null,
                                     ),
                                     SizedBox(height: 20.h),
                                     RichText(
                                       text: TextSpan(
-                                        text: 'Số điện thoại ',
+                                        text: AppLocalizations.of(context)!
+                                            .txtSoDienThoai2,
                                         style: defaultText14M.copyWith(
                                             color: const Color(0xff8A8A8A)),
                                         children: <TextSpan>[
@@ -227,13 +235,15 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
                                       keyboardType: TextInputType.phone,
                                       validator: (value) =>
                                           value == null || value.isEmpty
-                                              ? 'Bắt buộc nhập'
+                                              ? AppLocalizations.of(context)!
+                                                  .requiredField
                                               : null,
                                     ),
                                     const SizedBox(height: 20),
                                     RichText(
                                       text: TextSpan(
-                                        text: 'Căn hộ ',
+                                        text: AppLocalizations.of(context)!
+                                            .txtCanHo1,
                                         style: defaultText14M.copyWith(
                                             color: const Color(0xff8A8A8A)),
                                         children: <TextSpan>[
@@ -261,7 +271,8 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
                                       ),
                                       validator: (value) =>
                                           value == null || value.isEmpty
-                                              ? 'Bắt buộc nhập'
+                                              ? AppLocalizations.of(context)!
+                                                  .requiredField
                                               : null,
                                     ),
                                   ],
@@ -270,11 +281,11 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
                               const SizedBox(height: 16),
                               buildSection(
                                 icon: 'assets/icons/note.svg',
-                                title: 'Ghi chú',
+                                title: AppLocalizations.of(context)!.note,
                                 child: TextFormField(
                                   controller: _noteController,
                                   maxLines: 4,
-                                  decoration: const InputDecoration(
+                                  decoration: InputDecoration(
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                         color: Color(
@@ -282,9 +293,15 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
                                         width: 1.5,
                                       ),
                                     ),
-                                    hintText: 'Nhập ghi chú',
+                                    hintText:
+                                        AppLocalizations.of(context)!.enterNote,
                                     border: OutlineInputBorder(),
                                   ),
+                                  validator: (value) =>
+                                      value == null || value.isEmpty
+                                          ? AppLocalizations.of(context)!
+                                              .requiredField
+                                          : null,
                                 ),
                               ),
                               SizedBox(
@@ -295,14 +312,16 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
                                 children: [
                                   buildUploadOption(
                                     icon: Icons.image_outlined,
-                                    text: "Tải ảnh lên",
+                                    text: AppLocalizations.of(context)!
+                                        .uploadImage,
                                     onTap: () =>
                                         _pickImage(ImageSource.gallery),
                                   ),
                                   const SizedBox(width: 56),
                                   buildUploadOption(
                                     icon: Icons.camera_alt_outlined,
-                                    text: "Chụp ảnh",
+                                    text:
+                                        AppLocalizations.of(context)!.takePhoto,
                                     onTap: () => _pickImage(ImageSource.camera),
                                   ),
                                 ],
@@ -373,8 +392,10 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
                               showDialog(
                                 context: context,
                                 builder: (context) => AlertDialog(
-                                  title: const Text('Thành công'),
-                                  content: const Text('Yêu cầu đã được gửi!'),
+                                  title: Text(
+                                      AppLocalizations.of(context)!.success),
+                                  content: Text(AppLocalizations.of(context)!
+                                      .requestSent),
                                   actions: [
                                     TextButton(
                                       onPressed: () {
@@ -391,12 +412,15 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
                               showDialog(
                                 context: context,
                                 builder: (context) => AlertDialog(
-                                  title: const Text('Thất bại'),
-                                  content: const Text('Gửi yêu cầu thất bại!'),
+                                  title: Text(
+                                      AppLocalizations.of(context)!.failure),
+                                  content: Text(AppLocalizations.of(context)!
+                                      .sendRequestFailed),
                                   actions: [
                                     TextButton(
                                       onPressed: () => Navigator.pop(context),
-                                      child: const Text('Thử lại'),
+                                      child: Text(AppLocalizations.of(context)!
+                                          .tryAgain),
                                     ),
                                   ],
                                 ),
@@ -416,10 +440,11 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Center(
-                            child: Text('Gửi yêu cầu',
-                                style: defaultText14B.copyWith(
-                                  color: Colors.white,
-                                )),
+                            child:
+                                Text(AppLocalizations.of(context)!.sendRequest,
+                                    style: defaultText14B.copyWith(
+                                      color: Colors.white,
+                                    )),
                           ),
                         ),
                       ),

@@ -1,3 +1,4 @@
+import 'package:ha_duong/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ha_duong/bql_model/info_model_bql.dart';
@@ -51,7 +52,7 @@ class _DetailNotiScreenState extends State<DetailNotiScreen>
           ),
         ),
         title: Text(
-          'Chi tiết thông báo',
+          AppLocalizations.of(context)!.bqlChiTietThongBao,
           style: defaultText18B,
         ),
         centerTitle: true,

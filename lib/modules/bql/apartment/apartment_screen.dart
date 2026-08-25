@@ -1,3 +1,4 @@
+import 'package:ha_duong/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -94,7 +95,7 @@ class _ApartmentScreenState extends State<ApartmentScreen> {
         automaticallyImplyLeading: false,
         title: Center(
             child: Text(
-          'Căn hộ',
+          AppLocalizations.of(context)!.bqlCanHo,
           style: defaultText18B.copyWith(color: Colors.white),
         )),
         backgroundColor: const Color(0xFF1CA0DD),
@@ -193,7 +194,7 @@ class _ApartmentScreenState extends State<ApartmentScreen> {
                                             controller: _searchController,
                                             style: TextStyle(fontSize: 14.sp),
                                             decoration: InputDecoration(
-                                              hintText: 'Tìm kiếm tên căn hộ',
+                                              hintText: AppLocalizations.of(context)!.bqlTimKiemTenCanHo,
                                               hintStyle: TextStyle(
                                                   color: Colors.grey,
                                                   fontSize: 14.sp),
@@ -237,7 +238,7 @@ class _ApartmentScreenState extends State<ApartmentScreen> {
                                 // Dropdowns
                                 _buildDropdown(
                                   value: homeSelecteBuilding?.name,
-                                  hint: 'Chọn toà nhà',
+                                  hint: AppLocalizations.of(context)!.bqlChonToaNha,
                                   items: buildings.map((b) => b.name).toList(),
                                   onChanged: (val) {
                                     final matched = buildings.firstWhere(
@@ -256,7 +257,7 @@ class _ApartmentScreenState extends State<ApartmentScreen> {
                                 const SizedBox(height: 12),
                                 _buildDropdown(
                                   value: selectedStatus?.name,
-                                  hint: 'Chọn trạng thái',
+                                  hint: AppLocalizations.of(context)!.bqlChonTrangThai,
                                   items: statuses.map((s) => s.name).toList(),
                                   onChanged: (val) {
                                     final matched = statuses.firstWhere(
@@ -358,7 +359,7 @@ class _ApartmentScreenState extends State<ApartmentScreen> {
                             pagedList.isEmpty
                                 ? Center(
                                     child: Text(
-                                      'Không có căn hộ nào',
+                                      AppLocalizations.of(context)!.bqlKhongCoCanHoNao,
                                       style: defaultText16M.copyWith(
                                           color: Colors.grey),
                                     ),
@@ -442,13 +443,13 @@ class _ApartmentScreenState extends State<ApartmentScreen> {
                                                           Colors.grey.shade300,
                                                       thickness: 1,
                                                     ),
-                                                    _buildDetailRow("Chủ hộ",
+                                                    _buildDetailRow(AppLocalizations.of(context)!.bqlChuHo,
                                                         item.fullName),
                                                     _buildDetailRow(
                                                         "Số điện thoại",
                                                         item.phone),
                                                     _buildDetailRow(
-                                                        "Tầng",
+                                                        AppLocalizations.of(context)!.bqlTang,
                                                         item.numberFloor
                                                             .toString()),
                                                     _buildDetailRow(
@@ -460,7 +461,7 @@ class _ApartmentScreenState extends State<ApartmentScreen> {
                                                         item.totalPhuongTien
                                                             .toString()),
                                                     _buildDetailRow(
-                                                        "Tình trạng",
+                                                        AppLocalizations.of(context)!.bqlTinhTrang,
                                                         item.apartmentStatus),
                                                     _buildDetailRow(
                                                         "Mục đích sử dụng",
@@ -497,7 +498,7 @@ class _ApartmentScreenState extends State<ApartmentScreen> {
                                                           ),
                                                         ),
                                                         child: Text(
-                                                          "Chi tiết",
+                                                          AppLocalizations.of(context)!.bqlChiTiet,
                                                           style: defaultText14M
                                                               .copyWith(
                                                             color: Colors.white,

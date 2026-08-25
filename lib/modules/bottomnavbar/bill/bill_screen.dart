@@ -1,3 +1,4 @@
+import 'package:ha_duong/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ha_duong/models/info_model.dart';
@@ -50,7 +51,7 @@ class _BillScreenState extends State<BillScreen> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.white,
-          title: const Center(child: Text('Hoá đơn')),
+          title: Center(child: Text(AppLocalizations.of(context)!.txtHoaDon)),
           centerTitle: true,
           bottom: TabBar(
             labelColor: const Color(0xff0F2645),
@@ -61,8 +62,8 @@ class _BillScreenState extends State<BillScreen> {
               Tab(
                   child: Text(
                       'Chờ thanh toán (${data.listReceiptsunpaid.length})')),
-              const Tab(
-                child: Text('Lịch sử thanh toán'),
+              Tab(
+                child: Text(AppLocalizations.of(context)!.txtLichSuThanhToan),
               ),
             ],
           ),
@@ -79,7 +80,8 @@ class _BillScreenState extends State<BillScreen> {
               data.listReceiptsunpaid.isEmpty
                   ? Center(
                       child: Text(
-                        'Không có hoá đơn chờ thanh toán',
+                        AppLocalizations.of(context)!
+                            .txtKhongCoHoaDonChoThanhToan,
                         style: defaultText14B.copyWith(color: Colors.black54),
                       ),
                     )
@@ -96,7 +98,7 @@ class _BillScreenState extends State<BillScreen> {
               data.listReceiptspaid.isEmpty
                   ? Center(
                       child: Text(
-                        'Không có lịch sử thanh toán',
+                        AppLocalizations.of(context)!.txtKhongCoLichSuThanhToan,
                         style: defaultText14B.copyWith(color: Colors.black54),
                       ),
                     )
@@ -196,7 +198,7 @@ class PaymentHistory extends StatelessWidget {
                       ],
                     ),
                     Text(
-                      'Đã thanh toán',
+                      AppLocalizations.of(context)!.txtDaThanhToan,
                       style: defaultText12B.copyWith(
                           color: const Color(0xff129F20)),
                     ),
@@ -315,7 +317,7 @@ class WaitingPayment extends StatelessWidget {
                   // ),
                   RichText(
                     text: TextSpan(
-                      text: 'Hạn thanh toán: ',
+                      text: AppLocalizations.of(context)!.txtHanThanhToan2,
                       style: defaultText14M.copyWith(
                         color: const Color(0xff8A8A8A).withValues(alpha: 0.8),
                       ),

@@ -1,3 +1,4 @@
+import 'package:ha_duong/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
@@ -53,19 +54,19 @@ class ListConversationScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const ConversationItem(
-              title1: 'Lê Thanh Hải',
-              title2: 'Xin chào! Mình là Lê Thanh Hải',
+            ConversationItem(
+              title1: AppLocalizations.of(context)!.txtLeThanhHai,
+              title2: AppLocalizations.of(context)!.txtXinChaoMinhLaLeThanhHai,
               title3: 'assets/images/avatar2.png',
               title4: '',
             ),
             SizedBox(
               height: 16.h,
             ),
-            const ConversationItem(
-              title1: 'Nguyễn Thanh Huyền',
+            ConversationItem(
+              title1: AppLocalizations.of(context)!.txtNguyenThanhHuyen,
               title2:
-                  'Xin chào! Mình là Nguyễn Thanh Huyền, rất vui khi được...',
+                  AppLocalizations.of(context)!.txtXinChaoMinhLaNguyenThanhHuyenRatVuiKhiDuoc,
               title3: 'assets/images/avatar3.png',
               title4: '',
             ),

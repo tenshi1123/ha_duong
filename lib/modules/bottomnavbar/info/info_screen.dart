@@ -1,6 +1,7 @@
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ha_duong/l10n/app_localizations.dart';
 
 class InfoScreen extends StatefulWidget {
   const InfoScreen({super.key});
@@ -24,7 +25,7 @@ class _InfoScreenState extends State<InfoScreen> {
         ),
         title: Center(
           child: Text(
-            'Thông tin tài khoản    ',
+            AppLocalizations.of(context)!.txtThongTinTaiKhoan1,
             style: defaultText18B,
           ),
         ),
@@ -40,15 +41,15 @@ class _InfoScreenState extends State<InfoScreen> {
               fit: BoxFit.fill,
             ),
             MyTextFormField(
-              labelText: 'Họ và tên',
-              controller: TextEditingController(text: 'Nguyễn Thế Hoàng'),
+              labelText: AppLocalizations.of(context)!.fullNameLabel,
+              controller: TextEditingController(text: AppLocalizations.of(context)!.mockName),
               keyboardType: TextInputType.phone,
               onChanged: (value) {
                 print('Họ và tên đã thay đổi: $value');
               },
             ),
             MyTextFormField(
-              labelText: 'Số điện thoại',
+              labelText: AppLocalizations.of(context)!.phoneLabel,
               controller: TextEditingController(text: '097 111 626'),
               keyboardType: TextInputType.phone,
               onChanged: (value) {

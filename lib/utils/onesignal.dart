@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ha_duong/app.dart';
+import 'package:ha_duong/bql_model/home_model.dart';
+import 'package:ha_duong/bql_repo/bql_home_repo.dart';
 import 'package:ha_duong/models/chat_model.dart';
 import 'package:ha_duong/models/suport_model.dart';
 import 'package:ha_duong/modules/bottomnavbar/support/request_status_screen.dart';
@@ -48,6 +50,14 @@ Future<void> initOneSignal() async {
           ),
         );
       } else if (data['type'] == 'bangtin') {
+        navigatorKey.currentState?.push(
+          MaterialPageRoute(
+            builder: (_) => DetailPostScreen(
+              postId: requestId,
+            ),
+          ),
+        );
+      } else if (data['type'] == 'post') {
         navigatorKey.currentState?.push(
           MaterialPageRoute(
             builder: (_) => DetailPostScreen(

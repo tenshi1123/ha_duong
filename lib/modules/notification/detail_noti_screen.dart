@@ -1,3 +1,4 @@
+import 'package:ha_duong/l10n/app_localizations.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:ha_duong/models/chat_model.dart';
 import 'package:ha_duong/utils/constants/color.dart';
@@ -46,7 +47,7 @@ class _DetailNotiScreenState extends State<DetailNotiScreen>
           },
         ),
         title: Text(
-          'Chi tiết thông báo',
+          AppLocalizations.of(context)!.txtChiTietThongBao,
           style: defaultText18B,
         ),
         centerTitle: true,

@@ -1,3 +1,4 @@
+import 'package:ha_duong/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // ignore: implementation_imports
@@ -402,7 +403,7 @@ PageBuilder _resolvePageBuilder<B extends BlocBase<Object?>>({
 }) {
   if (blocValue != null && blocProviders != null) {
     throw ArgumentError(
-      'Do not pass value to [blocValue] & [blocProviders] at the same time.',
+      "Do not pass value to blocValue & blocProviders at the same time",
     );
   }
 

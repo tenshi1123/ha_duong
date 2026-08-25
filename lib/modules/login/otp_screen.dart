@@ -9,6 +9,7 @@ import 'package:ha_duong/modules/bottomnavbar/bottom_nav_bar.dart';
 import 'package:ha_duong/repo/home_repo.dart';
 import 'package:ha_duong/repo/login_repo.dart';
 import 'package:otp_pin_field/otp_pin_field.dart';
+import 'package:ha_duong/l10n/app_localizations.dart';
 
 import '../../../utils/constants/color.dart';
 
@@ -57,7 +58,7 @@ class _OtpScreenState extends State<OtpScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: const BackButton(color: Colors.black),
-        title: const Text("Xác thực SĐT"),
+        title: Text(AppLocalizations.of(context)!.verifyPhoneNumber),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -69,7 +70,7 @@ class _OtpScreenState extends State<OtpScreen> {
               height: screenHeight * 0.02,
             ),
             Text(
-              'Nhập mã OTP',
+              AppLocalizations.of(context)!.enterOtp,
               style: TextStyle(
                 fontSize: 20.sp,
                 color: key1Color,
@@ -80,7 +81,7 @@ class _OtpScreenState extends State<OtpScreen> {
               height: screenHeight * 0.02,
             ),
             Text(
-              'Mã OTP được gửi qua số điện thoại đã đăng kí',
+              AppLocalizations.of(context)!.otpSentToRegisteredPhone,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14.sp,
@@ -143,7 +144,7 @@ class _OtpScreenState extends State<OtpScreen> {
                           ),
                           alignment: Alignment.center,
                           child: Text(
-                            'Xác minh',
+                            AppLocalizations.of(context)!.verify,
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 20.sp,
@@ -161,7 +162,7 @@ class _OtpScreenState extends State<OtpScreen> {
 
   Future<void> verifyOtp() async {
     if (smsOTP == null || smsOTP == '') {
-      showAlertDialog(context, 'xin mời nhập mã otp');
+      showAlertDialog(context, AppLocalizations.of(context)!.pleaseEnterOtp);
       return;
     }
     try {
@@ -185,13 +186,14 @@ class _OtpScreenState extends State<OtpScreen> {
         if (loged == true) {
           InfoModel? infoHomeModel = await HomeRepo().getInfoCudan();
           if (infoHomeModel != null) {
-            Navigator.pushReplacement(
+            Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
                 builder: (context) => BottomNavBar(
                   infoHomeModel: infoHomeModel,
                 ),
               ),
+              (route) => false,
             );
           }
         } else {
@@ -199,13 +201,13 @@ class _OtpScreenState extends State<OtpScreen> {
             context: context,
             builder: (BuildContext context) {
               return CupertinoAlertDialog(
-                title: const Text('Vui lòng thử lại'),
-                content: const Text('Vui lòng kiểm tra lại SDT'),
+                title: Text(AppLocalizations.of(context)!.pleaseTryAgain),
+                content: Text(AppLocalizations.of(context)!.pleaseCheckPhoneNumber),
                 actions: <Widget>[
                   CupertinoDialogAction(
                     isDefaultAction: true,
                     child: Text(
-                      'Đồng ý',
+                      AppLocalizations.of(context)!.agree,
                       style: TextStyle(fontSize: 20, color: key1Color),
                     ),
                     onPressed: () {
@@ -220,24 +222,24 @@ class _OtpScreenState extends State<OtpScreen> {
           );
         }
       } on FirebaseAuthException catch (e) {
-        String message = "Đã có lỗi xảy ra, vui lòng thử lại.";
+        String message = AppLocalizations.of(context)!.errorOccurredTryAgain;
 
         if (e.code == 'invalid-verification-code') {
-          message = "Mã OTP không chính xác.";
+          message = AppLocalizations.of(context)!.incorrectOtp;
         } else if (e.code == 'session-expired') {
-          message = "Mã OTP đã hết hạn, vui lòng yêu cầu mã mới.";
+          message = AppLocalizations.of(context)!.otpExpired;
         }
 
         // Hiển thị dialog cảnh báo
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text("Lỗi xác thực"),
+            title: Text(AppLocalizations.of(context)!.authError),
             content: Text(message),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: const Text("OK"),
+                child: Text(AppLocalizations.of(context)!.ok),
               )
             ],
           ),
@@ -256,9 +258,9 @@ class _OtpScreenState extends State<OtpScreen> {
       case 'ERROR_INVALID_VERIFICATION_CODE':
         FocusScope.of(context).requestFocus(FocusNode());
         setState(() {
-          errorMessage = 'Invalid Code';
+          errorMessage = AppLocalizations.of(context)!.txtInvalidCode;
         });
-        showAlertDialog(context, 'Invalid Code');
+        showAlertDialog(context, AppLocalizations.of(context)!.txtInvalidCode);
         break;
       default:
         showAlertDialog(context, error.message ?? 'Error');

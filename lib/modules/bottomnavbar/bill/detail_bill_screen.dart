@@ -6,6 +6,7 @@ import 'package:ha_duong/utils/constants/color.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:flutter_dash/flutter_dash.dart';
 import 'package:intl/intl.dart';
+import 'package:ha_duong/l10n/app_localizations.dart';
 
 class DetailBillScreen extends StatelessWidget {
   const DetailBillScreen(
@@ -37,7 +38,7 @@ class DetailBillScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text('Chi tiết hoá đơn'),
+        title: Text(AppLocalizations.of(context)!.invoiceDetail),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(1), // chiều cao của divider
           child: Divider(
@@ -90,7 +91,7 @@ class DetailBillScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Text(
-                              'Tên khách hàng:',
+                              AppLocalizations.of(context)!.customerNameColon,
                               style: defaultText14.copyWith(
                                 color: const Color(0xff383838),
                                 fontWeight: FontWeight.w400,
@@ -120,7 +121,7 @@ class DetailBillScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Text(
-                              'Kỳ hoá đơn:',
+                              AppLocalizations.of(context)!.invoicePeriodColon,
                               style: defaultText14.copyWith(
                                 color: const Color(0xff383838),
                                 fontWeight: FontWeight.w400,
@@ -143,7 +144,7 @@ class DetailBillScreen extends StatelessWidget {
                     height: 20.h,
                   ),
                   Text(
-                    'Chi tiết hoá đơn',
+                    AppLocalizations.of(context)!.invoiceDetail,
                     style: defaultText18B,
                   ),
                   // Padding(
@@ -158,7 +159,7 @@ class DetailBillScreen extends StatelessWidget {
                   //           crossAxisAlignment: CrossAxisAlignment.start,
                   //           children: [
                   //             Text(
-                  //               'Hoá đơn điện',
+                  //               AppLocalizations.of(context)!.electricityInvoice,
                   //               style: defaultText18B,
                   //             ),
                   //             SizedBox(
@@ -173,7 +174,7 @@ class DetailBillScreen extends StatelessWidget {
                   //                     padding:
                   //                         EdgeInsets.symmetric(vertical: 12.h),
                   //                     child: Text(
-                  //                       electricBill[index],
+                  //                       getElectricBill(context)[index],
                   //                       style: defaultText14M,
                   //                     ),
                   //                   );
@@ -186,7 +187,7 @@ class DetailBillScreen extends StatelessWidget {
                   //           crossAxisAlignment: CrossAxisAlignment.end,
                   //           children: [
                   //             Text(
-                  //               '298.700 đ',
+                  //               AppLocalizations.of(context)!.mockPrice1,
                   //               style: defaultText18B,
                   //             ),
                   //             SizedBox(
@@ -222,7 +223,7 @@ class DetailBillScreen extends StatelessWidget {
                       bottom: 10.h,
                     ),
                     child: Text(
-                      'Hoá đơn gửi xe',
+                      AppLocalizations.of(context)!.parkingInvoice,
                       style: defaultText16B,
                     ),
                   ),
@@ -266,13 +267,13 @@ class DetailBillScreen extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text('Chủ xe:', style: defaultText14M),
-                                        Text('Số điện thoại:',
+                                        Text(AppLocalizations.of(context)!.vehicleOwnerColon, style: defaultText14M),
+                                        Text(AppLocalizations.of(context)!.phoneNumberColon,
                                             style: defaultText14M),
-                                        Text('Tên phương tiện:',
+                                        Text(AppLocalizations.of(context)!.vehicleNameColon,
                                             style: defaultText14M),
-                                        Text('Phí:', style: defaultText14M),
-                                        Text('Biển số:', style: defaultText14M),
+                                        Text(AppLocalizations.of(context)!.feeColon, style: defaultText14M),
+                                        Text(AppLocalizations.of(context)!.licensePlateColon, style: defaultText14M),
                                       ],
                                     ),
                                   ),
@@ -332,7 +333,7 @@ class DetailBillScreen extends StatelessWidget {
                       bottom: 10.h,
                     ),
                     child: Text(
-                      'Phí toà nhà',
+                      AppLocalizations.of(context)!.buildingFee,
                       style: defaultText16B,
                     ),
                   ),
@@ -353,27 +354,27 @@ class DetailBillScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Diện tích:',
+                                    AppLocalizations.of(context)!.areaColon,
                                     style: defaultText14M,
                                   ),
                                   Text(
-                                    'Phí:',
+                                    AppLocalizations.of(context)!.feeColon,
                                     style: defaultText14M,
                                   ),
                                   Text(
-                                    'Phí thu thêm:',
+                                    AppLocalizations.of(context)!.additionalFeeColon,
                                     style: defaultText14M,
                                   ),
                                   Text(
-                                    'Phí bảo trì:',
+                                    AppLocalizations.of(context)!.maintenanceFeeColon,
                                     style: defaultText14M,
                                   ),
                                   Text(
-                                    'Tiền điện:',
+                                    AppLocalizations.of(context)!.electricFeeColon,
                                     style: defaultText14M,
                                   ),
                                   Text(
-                                    'Tiền nước:',
+                                    AppLocalizations.of(context)!.waterFeeColon,
                                     style: defaultText14M,
                                   ),
                                 ],
@@ -443,7 +444,7 @@ class DetailBillScreen extends StatelessWidget {
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Hạn thanh toán', style: defaultText14M),
+                            Text(AppLocalizations.of(context)!.paymentDeadline, style: defaultText14M),
                             Text(
                               receiptsDetailModel
                                   .receiptsDetailModel.hanThanhToan,
@@ -462,7 +463,7 @@ class DetailBillScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Tổng Phí', style: defaultText14M),
+                      Text(AppLocalizations.of(context)!.totalFee, style: defaultText14M),
                       Text(
                         '${formatCurrency(receiptsDetailModel.receiptsDetailModel.fee)} đ',
                         style: defaultText14B.copyWith(
@@ -477,7 +478,7 @@ class DetailBillScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Phí Nợ', style: defaultText14M),
+                      Text(AppLocalizations.of(context)!.debtFee, style: defaultText14M),
                       Text(
                         '${formatCurrency(receiptsDetailModel.receiptsDetailModel.feeDebt)} đ',
                         style: defaultText14B.copyWith(
@@ -492,7 +493,7 @@ class DetailBillScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Phí đã thanh toán', style: defaultText14M),
+                      Text(AppLocalizations.of(context)!.paidFee, style: defaultText14M),
                       Text(
                         '${formatCurrency(receiptsDetailModel.receiptsDetailModel.feePaid)} đ',
                         style: defaultText14B.copyWith(
@@ -507,7 +508,7 @@ class DetailBillScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Phí thu thừa', style: defaultText14M),
+                      Text(AppLocalizations.of(context)!.overpaidFee, style: defaultText14M),
                       Text(
                         '${formatCurrency(receiptsDetailModel.receiptsDetailModel.phiThuThua)} đ',
                         style: defaultText14B.copyWith(
@@ -539,7 +540,7 @@ class DetailBillScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Phí thanh toán thực tế', style: defaultText14M),
+                      Text(AppLocalizations.of(context)!.actualPaymentFee, style: defaultText14M),
                       Text(
                         '${formatCurrency(totalFinalFee.toString())} đ',
                         style: defaultText14B.copyWith(
@@ -615,7 +616,7 @@ class DetailBillScreen extends StatelessWidget {
                   ),
                   child: Center(
                       child: Text(
-                    type == 1 ? 'Thanh toán ngay' : "Đã thanh toán",
+                    type == 1 ? AppLocalizations.of(context)!.payNow : AppLocalizations.of(context)!.paid,
                     style: defaultText14B.copyWith(
                         color:
                             type == 1 ? Colors.white : const Color(0xff004071)),
@@ -675,7 +676,7 @@ class _ItemBill extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Hoá đơn hàng tháng',
+                      AppLocalizations.of(context)!.monthlyInvoice,
                       style: defaultText14M.copyWith(
                         color: const Color(0xff8A8A8A).withValues(alpha: 0.8),
                       ),
@@ -685,7 +686,7 @@ class _ItemBill extends StatelessWidget {
                     ),
                     RichText(
                       text: TextSpan(
-                        text: 'Tổng phí: ',
+                        text: AppLocalizations.of(context)!.txtTongPhi2,
                         style: defaultText14M.copyWith(
                           color: const Color(0xff8A8A8A).withValues(alpha: 0.8),
                         ),
@@ -705,7 +706,7 @@ class _ItemBill extends StatelessWidget {
                     ),
                     RichText(
                       text: TextSpan(
-                        text: 'Tháng: ',
+                        text: AppLocalizations.of(context)!.txtThang1,
                         style: defaultText14M.copyWith(
                           color: const Color(0xff004071),
                         ),
@@ -726,14 +727,14 @@ class _ItemBill extends StatelessWidget {
           ),
           RichText(
             text: TextSpan(
-              text: 'Tình trạng: ',
+              text: AppLocalizations.of(context)!.txtTinhTrang3,
               style: defaultText14.copyWith(
                 color: const Color(0xff004071),
                 fontWeight: FontWeight.w600,
               ),
               children: [
                 TextSpan(
-                  text: type == 1 ? 'Chưa thanh toán' : 'Đã thanh toán',
+                  text: type == 1 ? AppLocalizations.of(context)!.unpaid : AppLocalizations.of(context)!.paid,
                   style: defaultText14M.copyWith(
                     color: type == 0
                         ? const Color(0xff25AAE1)
@@ -749,53 +750,55 @@ class _ItemBill extends StatelessWidget {
   }
 }
 
-List<String> electricBill = [
-  'Số sử dụng:',
-  'Số kỳ đầu:',
-  'Số kỳ cuối:',
-  'Đơn vị tính:',
-  'Chi tiết số sử dụng:',
-  ' (Từ 1-50 KWh) x giá 1.950 đ:',
-  ' (Từ 51-100 KWh) x giá 2.015 đ:',
-  ' (Từ 101-200 KWh) x giá 2.340 đ:',
-  ' (Từ 201-300 KWh) x giá 2.947 đ:',
-  ' (Từ 301-400 KWh) x giá 3.294 đ:',
-  ' (Từ 400 KWh trở lên) x giá 3.403 đ:',
-  'Tổng tiền:',
+List<String> getElectricBill(BuildContext context) => [
+  AppLocalizations.of(context)!.usageAmountColon,
+  AppLocalizations.of(context)!.firstPeriodAmountColon,
+  AppLocalizations.of(context)!.lastPeriodAmountColon,
+  AppLocalizations.of(context)!.unitColon,
+  AppLocalizations.of(context)!.usageDetailColon,
+  AppLocalizations.of(context)!.txtTu150KwhXGia1950D1,
+  AppLocalizations.of(context)!.txtTu51100KwhXGia2015D1,
+  AppLocalizations.of(context)!.txtTu101200KwhXGia2340D1,
+  AppLocalizations.of(context)!.txtTu201300KwhXGia2947D1,
+  AppLocalizations.of(context)!.txtTu301400KwhXGia3294D1,
+  AppLocalizations.of(context)!.txtTu400KwhTroLenXGia3403D1,
+  AppLocalizations.of(context)!.totalAmountColon,
 ];
-List<String> vehicleBill = [
-  'Chủ xe:',
-  'Số điện thoại:',
-  'Tên phương tiện:',
-  'Phí:',
-  'Biến số:',
+List<String> getVehicleBill(BuildContext context) => [
+  AppLocalizations.of(context)!.vehicleOwnerColon,
+  AppLocalizations.of(context)!.phoneNumberColon,
+  AppLocalizations.of(context)!.vehicleNameColon,
+  AppLocalizations.of(context)!.feeColon,
+  AppLocalizations.of(context)!.licensePlateTypoColon,
 ];
-List<String> phiToaNha = [
-  'Diện tích:',
-  'Phí:',
-  'Phí thu thêm:',
-  'Phí bảo trì:',
-  'Tiền điện:',
-  'Tiền nước:',
-];
-
-List<String> waterBill = [
-  'Số sử dụng:',
-  'Số kỳ đầu:',
-  'Số kỳ cuối:',
-  'Đơn vị tính:',
-  'Chi tiết số sử dụng:',
-  ' (Từ 1-10 m3) x giá 9.775 đ:',
-  ' (Từ 11-20 m3) x giá 11.385 đ:',
-  ' (Từ 21-30 m3) x giá 18.400 đ:',
-  ' (Từ 31 m3 trở lên) x giá 31.050 đ:',
-  'Tổng tiền:',
+List<String> getPhiToaNha(BuildContext context) => [
+  AppLocalizations.of(context)!.areaColon,
+  AppLocalizations.of(context)!.feeColon,
+  AppLocalizations.of(context)!.additionalFeeColon,
+  AppLocalizations.of(context)!.maintenanceFeeColon,
+  AppLocalizations.of(context)!.electricFeeColon,
+  AppLocalizations.of(context)!.waterFeeColon,
 ];
 
-List<String> parkingBill = [
-  'Đơn vị tính:',
-  'Chi tiết',
-  'Tổng tiền:',
+List<String> getWaterBill(BuildContext context) => [
+  AppLocalizations.of(context)!.usageAmountColon,
+  AppLocalizations.of(context)!.firstPeriodAmountColon,
+  AppLocalizations.of(context)!.lastPeriodAmountColon,
+  AppLocalizations.of(context)!.unitColon,
+  AppLocalizations.of(context)!.usageDetailColon,
+  AppLocalizations.of(context)!.txtTu110M3XGia9775D1,
+  AppLocalizations.of(context)!.txtTu1120M3XGia11385D1,
+  AppLocalizations.of(context)!.txtTu2130M3XGia18400D1,
+  AppLocalizations.of(context)!.txtTu31M3TroLenXGia31050D1,
+  AppLocalizations.of(context)!.totalAmountColon,
+];
+
+List<String> getParkingBill(BuildContext context) => [
+  AppLocalizations.of(context)!.unitColon,
+  AppLocalizations.of(context)!.detail,
+  AppLocalizations.of(context)!.totalAmountColon,
+  AppLocalizations.of(context)!.detail,
+  AppLocalizations.of(context)!.totalAmountColon,
 ];
 
 String formatCurrency(String input) {
@@ -804,3 +807,4 @@ String formatCurrency(String input) {
   final formatter = NumberFormat('#,###', 'vi_VN');
   return formatter.format(number);
 }
+                              

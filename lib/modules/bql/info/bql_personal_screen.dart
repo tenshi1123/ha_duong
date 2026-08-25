@@ -2,6 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ha_duong/cubit/language_cubit.dart';
+import 'package:ha_duong/l10n/app_localizations.dart';
 import 'package:ha_duong/main.dart';
 import 'package:ha_duong/modules/bottomnavbar/bql_bottom_nav_bar.dart';
 import 'package:ha_duong/modules/bql/info/change_pass.dart';
@@ -11,8 +14,8 @@ import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class PersonalScreen extends StatelessWidget {
-  const PersonalScreen({
+class BqlPersonalScreen extends StatelessWidget {
+  const BqlPersonalScreen({
     super.key,
   });
 
@@ -143,7 +146,7 @@ class PersonalScreen extends StatelessWidget {
               width: 28.w,
             ),
             title: Text(
-              'Thông tin tài khoản',
+              AppLocalizations.of(context)!.bqlThongTinTaiKhoan,
               style: defaultText16M,
             ),
             trailing: const Icon(Icons.arrow_forward_ios),
@@ -169,7 +172,28 @@ class PersonalScreen extends StatelessWidget {
               width: 28.w,
             ),
             title: Text(
-              'Đổi mật khẩu',
+              AppLocalizations.of(context)!.bqlDoiMatKhau,
+              style: defaultText16M,
+            ),
+            trailing: const Icon(Icons.arrow_forward_ios),
+          ),
+          Container(
+            height: 1.h,
+            width: 303.w,
+            margin: EdgeInsets.only(left: 56.w, right: 16.w),
+            color: const Color(0xff292929).withAlpha(16),
+          ),
+          ListTile(
+            onTap: () {
+              showLanguageDialog(context);
+            },
+            leading: Icon(
+              Icons.language,
+              size: 28.sp,
+              color: const Color(0xff273D8C),
+            ),
+            title: Text(
+              AppLocalizations.of(context)!.txtNgonNgu,
               style: defaultText16M,
             ),
             trailing: const Icon(Icons.arrow_forward_ios),
@@ -199,13 +223,13 @@ class PersonalScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       Text(
-                        'Đăng xuất',
+                        AppLocalizations.of(context)!.bqlDangXuat,
                         style: defaultText16M.copyWith(
                           color: const Color(0xffED1C24),
                         ),
                       ),
                       Text(
-                        'Bạn chắc chắn muốn đăng xuất?',
+                        AppLocalizations.of(context)!.confirmLogout,
                         style: defaultText16M.copyWith(
                           color: const Color(0xff8A8A8A),
                         ),
@@ -226,7 +250,7 @@ class PersonalScreen extends StatelessWidget {
                               ),
                               child: Center(
                                 child: Text(
-                                  "Hủy",
+                                  AppLocalizations.of(context)!.bqlHuy,
                                   style: defaultText14B.copyWith(
                                     color: const Color(0xff273D8C),
                                   ),
@@ -255,7 +279,7 @@ class PersonalScreen extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12.r)),
                             child: Text(
-                              "Đăng xuất",
+                              AppLocalizations.of(context)!.bqlDangXuat,
                               style: defaultText14B.copyWith(
                                 color: Colors.white,
                               ),
@@ -274,7 +298,7 @@ class PersonalScreen extends StatelessWidget {
               width: 28.w,
             ),
             title: Text(
-              'Đăng xuất',
+              AppLocalizations.of(context)!.bqlDangXuat,
               style: defaultText16M.copyWith(color: const Color(0xffED1C24)),
             ),
             trailing: const Icon(Icons.arrow_forward_ios),
@@ -295,27 +319,75 @@ Widget infoItem({
   required String title,
   required String info,
 }) {
-  return Row(
-    children: [
-      SizedBox(
-        width: 16.w,
+  return Row(children: [
+    SizedBox(
+      width: 16.w,
+    ),
+    Text(
+      title,
+      style: defaultText14Re.copyWith(
+        color: const Color(0xff8A8A8A),
       ),
-      Text(
-        title,
-        style: defaultText14Re.copyWith(
-          color: const Color(0xff8A8A8A),
+    ),
+    const Spacer(),
+    Text(
+      info,
+      style: defaultText14Re.copyWith(
+        color: Colors.black,
+      ),
+    ),
+    SizedBox(
+      width: 16.w,
+    ),
+  ]);
+}
+
+void showLanguageDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (_) {
+      return AlertDialog(
+        title: Text(AppLocalizations.of(context)!.txtNgonNgu),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _LanguageItem(
+              title: 'Tiếng Việt',
+              locale: const Locale('vi'),
+            ),
+            _LanguageItem(
+              title: 'English',
+              locale: const Locale('en'),
+            ),
+          ],
         ),
-      ),
-      const Spacer(),
-      Text(
-        info,
-        style: defaultText14Re.copyWith(
-          color: Colors.black,
-        ),
-      ),
-      SizedBox(
-        width: 16.w,
-      ),
-    ],
+      );
+    },
   );
+}
+
+class _LanguageItem extends StatelessWidget {
+  final String title;
+  final Locale locale;
+
+  const _LanguageItem({
+    required this.title,
+    required this.locale,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final current = context.watch<LanguageCubit>().state;
+
+    return ListTile(
+      title: Text(title),
+      trailing: current.languageCode == locale.languageCode
+          ? const Icon(Icons.check, color: Colors.green)
+          : null,
+      onTap: () {
+        context.read<LanguageCubit>().changeLanguage(locale);
+        Navigator.pop(context);
+      },
+    );
+  }
 }

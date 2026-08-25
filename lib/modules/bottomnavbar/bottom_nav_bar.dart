@@ -10,7 +10,7 @@ import "package:onesignal_flutter/onesignal_flutter.dart";
 import "package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart";
 import 'package:flutter_svg/flutter_svg.dart';
 import "bill/bill_screen.dart";
-import "info/personal_screen.dart";
+import "info/resident_personal_screen.dart";
 import "service/extension_screen.dart";
 import "support/support_screen.dart";
 
@@ -133,7 +133,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           ),
         ),
         PersistentTabConfig(
-          screen: PersonalScreen(
+          screen: ResidentPersonalScreen(
             infoHomeModel: widget.infoHomeModel,
           ),
           item: ItemConfig(

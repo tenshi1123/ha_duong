@@ -224,6 +224,7 @@ class PostItem extends StatelessWidget {
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
             width: 240.w,
@@ -241,15 +242,16 @@ class PostItem extends StatelessWidget {
           SizedBox(
             height: 10.h,
           ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 6.w),
-              child: Text(
-                postModel.name,
-                style: defaultText14B,
-                maxLines: 2,
-              ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 6.w),
+            child: Text(
+              postModel.name,
+              style: defaultText14B,
+              maxLines: 2,
             ),
+          ),
+          SizedBox(
+            height: 6.h,
           ),
           Padding(
             padding: EdgeInsetsGeometry.symmetric(horizontal: 6.w),
@@ -258,7 +260,8 @@ class PostItem extends StatelessWidget {
               style: defaultText12Re,
               maxLines: 1,
             ),
-          )
+          ),
+          Spacer()
         ],
       ),
     );

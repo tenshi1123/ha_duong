@@ -8,7 +8,7 @@ import 'package:ha_duong/bql_repo/login_repo_bql.dart';
 import 'package:ha_duong/modules/bql/apartment/apartment_screen.dart';
 import 'package:ha_duong/modules/bql/bill/dien_nuoc_screen.dart';
 import 'package:ha_duong/modules/bql/home/change_info/change_info.dart';
-import 'package:ha_duong/modules/bql/home/home.dart';
+import 'package:ha_duong/modules/bql/home/home_bql.dart';
 import 'package:ha_duong/modules/bql/home/yeucau_hotro/list_request_screen.dart';
 import 'package:ha_duong/modules/bql/home/yeucau_hotro/list_tien_ich.dart';
 import 'package:ha_duong/modules/bql/home/yeucau_hotro/request_detail_screen.dart';
@@ -16,6 +16,7 @@ import 'package:ha_duong/modules/bql/notification/home_noti_screen.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:ha_duong/l10n/app_localizations.dart';
 
 late InfoModelBql infoHomeModel;
 
@@ -39,10 +40,15 @@ class _BottomNavBarBqlState extends State<BottomNavBarBql> {
     super.initState();
     setupOneSignal();
     infoHomeModel = widget.infoModel;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     _screens = [
       HomeScreen(
         homeModel: widget.homeModel,
-        isTest: widget.infoModel.name == 'Như Thật',
+        isTest: widget.infoModel.name == AppLocalizations.of(context)!.nhuThat,
       ),
       ApartmentScreen(
         homeModel: widget.homeModel,
@@ -100,7 +106,7 @@ class _BottomNavBarBqlState extends State<BottomNavBarBql> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Yêu cầu hỗ trợ',
+                    AppLocalizations.of(context)!.supportRequest,
                     style: TextStyle(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.bold,
@@ -109,7 +115,7 @@ class _BottomNavBarBqlState extends State<BottomNavBarBql> {
                   ),
                   SizedBox(height: 12.h),
                   Text(
-                    'Những yêu cầu, phản ánh của cư dân sẽ được cập nhật tại đây!',
+                    AppLocalizations.of(context)!.residentRequestsUpdatedHere,
                     textAlign: TextAlign.center,
                     style: defaultText14M.copyWith(
                       color: const Color(0xff8A8A8A),
@@ -140,7 +146,7 @@ class _BottomNavBarBqlState extends State<BottomNavBarBql> {
                             );
                           },
                           child: Text(
-                            'Hỗ trợ / Phản ánh',
+                            AppLocalizations.of(context)!.supportFeedback,
                             style: defaultText14M.copyWith(color: Colors.white),
                           ),
                         ),
@@ -167,7 +173,7 @@ class _BottomNavBarBqlState extends State<BottomNavBarBql> {
                             );
                           },
                           child: Text(
-                            'Thay đổi thông tin',
+                            AppLocalizations.of(context)!.changeInformation,
                             style: defaultText14M.copyWith(color: Colors.white),
                           ),
                         ),
@@ -221,11 +227,11 @@ class _BottomNavBarBqlState extends State<BottomNavBarBql> {
     // sendUserTag(userId);
   }
 
-  final List<BottomNavigationBarItem> _items = [
-    const BottomNavigationBarItem(
+  List<BottomNavigationBarItem> _items(BuildContext context) => [
+    BottomNavigationBarItem(
       icon: Icon(Icons.home_outlined),
       activeIcon: Icon(Icons.home, color: Color(0xff004071)),
-      label: 'Trang chủ',
+      label: AppLocalizations.of(context)!.home,
     ),
     BottomNavigationBarItem(
       icon: SvgPicture.asset(
@@ -234,7 +240,7 @@ class _BottomNavBarBqlState extends State<BottomNavBarBql> {
       activeIcon: SvgPicture.asset(
         'assets/icons/active_apartment.svg',
       ),
-      label: 'Căn hộ',
+      label: AppLocalizations.of(context)!.apartment,
     ),
     BottomNavigationBarItem(
       icon: SvgPicture.asset(
@@ -243,7 +249,7 @@ class _BottomNavBarBqlState extends State<BottomNavBarBql> {
       activeIcon: SvgPicture.asset(
         'assets/icons/active_support.svg',
       ),
-      label: 'Hỗ trợ',
+      label: AppLocalizations.of(context)!.support,
     ),
     BottomNavigationBarItem(
       icon: SvgPicture.asset(
@@ -252,7 +258,7 @@ class _BottomNavBarBqlState extends State<BottomNavBarBql> {
       activeIcon: SvgPicture.asset(
         'assets/icons/active_dvu.svg',
       ),
-      label: 'Điện/Nước',
+      label: AppLocalizations.of(context)!.electricityWater,
     ),
     BottomNavigationBarItem(
       icon: SvgPicture.asset(
@@ -261,7 +267,7 @@ class _BottomNavBarBqlState extends State<BottomNavBarBql> {
       activeIcon: SvgPicture.asset(
         'assets/icons/active_noti.svg',
       ),
-      label: 'Thông báo',
+      label: AppLocalizations.of(context)!.notification,
     ),
   ];
 
@@ -313,7 +319,7 @@ class _BottomNavBarBqlState extends State<BottomNavBarBql> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              'Yêu cầu hỗ trợ',
+                              AppLocalizations.of(context)!.supportRequest,
                               style: TextStyle(
                                 fontSize: 20.sp,
                                 fontWeight: FontWeight.bold,
@@ -322,7 +328,7 @@ class _BottomNavBarBqlState extends State<BottomNavBarBql> {
                             ),
                             SizedBox(height: 12.h),
                             Text(
-                              'Những yêu cầu, phản ánh của cư dân sẽ được cập nhật tại đây!',
+                              AppLocalizations.of(context)!.residentRequestsUpdatedHere,
                               textAlign: TextAlign.center,
                               style: defaultText14M.copyWith(
                                 color: const Color(0xff8A8A8A),
@@ -356,7 +362,7 @@ class _BottomNavBarBqlState extends State<BottomNavBarBql> {
                                       );
                                     },
                                     child: Text(
-                                      'Hỗ trợ / Phản ánh',
+                                      AppLocalizations.of(context)!.supportFeedback,
                                       style: defaultText14M.copyWith(
                                           color: Colors.white),
                                     ),
@@ -387,7 +393,7 @@ class _BottomNavBarBqlState extends State<BottomNavBarBql> {
                                       );
                                     },
                                     child: Text(
-                                      'Thay đổi thông tin',
+                                      AppLocalizations.of(context)!.changeInformation,
                                       style: defaultText14M.copyWith(
                                           color: Colors.white),
                                     ),
@@ -437,7 +443,7 @@ class _BottomNavBarBqlState extends State<BottomNavBarBql> {
             selectedItemColor: Colors.blue,
             unselectedItemColor: Colors.grey,
             showUnselectedLabels: true,
-            items: _items,
+            items: _items(context),
           ),
         ),
       ),

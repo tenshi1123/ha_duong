@@ -1,3 +1,4 @@
+import 'package:ha_duong/l10n/app_localizations.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
@@ -57,7 +58,7 @@ class _ChatScreenState extends State<ChatScreen> {
               context: context,
               builder: (BuildContext context) {
                 return CupertinoAlertDialog(
-                  title: const Text('Chụp ảnh thành công'),
+                  title: Text(AppLocalizations.of(context)!.txtChupAnhThanhCong),
                   actions: <Widget>[
                     CupertinoDialogAction(
                       isDefaultAction: true,
@@ -107,7 +108,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 width: 10.w,
               ),
               Text(
-                'Chat với ban quản lý',
+                AppLocalizations.of(context)!.txtChatVoiBanQuanLy,
                 style: defaultText18B,
               ),
             ],
@@ -120,7 +121,7 @@ class _ChatScreenState extends State<ChatScreen> {
           actions: [
             IconButton(
               icon: const Icon(Icons.call),
-              tooltip: 'Show Snackbar',
+              tooltip: AppLocalizations.of(context)!.txtShowSnackbar,
               onPressed: () {
                 _makePhoneCall(_chatModel.hotline);
               },
@@ -228,9 +229,9 @@ class _ChatScreenState extends State<ChatScreen> {
                         child: photos.isEmpty
                             ? TextField(
                                 controller: messageController,
-                                decoration: const InputDecoration(
-                                  hintText: "Nhập tin nhắn...",
-                                  hintStyle: TextStyle(color: Colors.black54),
+                                decoration: InputDecoration(
+                                  hintText: AppLocalizations.of(context)!.txtNhapTinNhan,
+                                  hintStyle: const TextStyle(color: Colors.black54),
                                   border: InputBorder.none,
                                 ),
                                 style: defaultText14M,
@@ -304,8 +305,8 @@ class _ChatScreenState extends State<ChatScreen> {
                             builder: (BuildContext context) {
                               return CupertinoAlertDialog(
                                 title: Text(isSuccess
-                                    ? 'Tin nhắn đã được gửi'
-                                    : 'Tin nhắn chưa được gửi'),
+                                    ? AppLocalizations.of(context)!.txtTinNhanDaDuocGui
+                                    : AppLocalizations.of(context)!.txtTinNhanChuaDuocGui),
                                 actions: <Widget>[
                                   CupertinoDialogAction(
                                     isDefaultAction: true,

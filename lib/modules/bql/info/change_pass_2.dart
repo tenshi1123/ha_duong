@@ -1,3 +1,4 @@
+import 'package:ha_duong/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -67,7 +68,7 @@ class _ChangePass2ScreenState extends State<ChangePass2Screen> {
               height: 8.h,
             ),
             Text(
-              'Hay chọn một mật khẩu an toàn chỉ mình bạn biết',
+              AppLocalizations.of(context)!.bqlHayChonMotMatKhauAnToanChiMinhBanBiet,
               style: defaultText16M.copyWith(
                 color: const Color(0xff292929).withValues(alpha: 0.4),
               ),
@@ -103,7 +104,7 @@ class _ChangePass2ScreenState extends State<ChangePass2Screen> {
                       color: const Color(0xff292929).withValues(alpha: 0.4),
                     ),
                     labelStyle: defaultText14M,
-                    hintText: 'Nhập mật khẩu mới',
+                    hintText: AppLocalizations.of(context)!.bqlNhapMatKhauMoi,
                     border:
                         const OutlineInputBorder(borderSide: BorderSide.none),
                     hintStyle: TextStyle(
@@ -171,7 +172,7 @@ class _ChangePass2ScreenState extends State<ChangePass2Screen> {
                       color: const Color(0xff292929).withValues(alpha: 0.4),
                     ),
                     labelStyle: defaultText14M,
-                    hintText: 'Nhập lại mật khẩu',
+                    hintText: AppLocalizations.of(context)!.bqlNhapLaiMatKhau,
                     border:
                         const OutlineInputBorder(borderSide: BorderSide.none),
                     hintStyle: TextStyle(
@@ -252,7 +253,7 @@ class _ChangePass2ScreenState extends State<ChangePass2Screen> {
                               actions: <Widget>[
                                 TextButton(
                                   child: Text(
-                                    'OK',
+                                    AppLocalizations.of(context)!.bqlOk,
                                     style: defaultText16B,
                                   ),
                                   onPressed: () {
@@ -268,7 +269,7 @@ class _ChangePass2ScreenState extends State<ChangePass2Screen> {
                       }
                     : null,
                 child: Text(
-                  'Đổi mật khẩu',
+                  AppLocalizations.of(context)!.bqlDoiMatKhau,
                   style: defaultText14B.copyWith(
                     color: (_submit1 && _submit2)
                         ? Colors.white

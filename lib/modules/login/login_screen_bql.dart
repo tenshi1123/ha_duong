@@ -12,6 +12,9 @@ import 'package:ha_duong/utils/constants/color.dart';
 import '../../utils/constants/styles.dart';
 
 import 'forgot_password_screen.dart';
+import 'package:ha_duong/l10n/app_localizations.dart';
+import 'package:local_auth/local_auth.dart';
+import '../../utils/secure_storage_helper.dart';
 
 class LoginScreenBql extends StatefulWidget {
   const LoginScreenBql({super.key});
@@ -24,6 +27,84 @@ class _LoginScreenBqlState extends State<LoginScreenBql> {
   final _focusNode = FocusNode();
   final _focusNode1 = FocusNode();
   bool isTrue = false;
+
+  final LocalAuthentication auth = LocalAuthentication();
+  bool _canCheckBiometrics = false;
+  String? _savedEmail;
+  String? _savedPassword;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData().then((_) {
+      setState(() {});
+    });
+    _checkBiometrics();
+  }
+
+  Future<void> _checkBiometrics() async {
+    bool canCheckBiometrics = await auth.canCheckBiometrics;
+    bool isDeviceSupported = await auth.isDeviceSupported();
+    String? email = await SecureStorageHelper.getBqlEmail();
+    String? password = await SecureStorageHelper.getBqlPassword();
+    String? userType = await SecureStorageHelper.getUserType();
+
+    if (canCheckBiometrics && isDeviceSupported && email != null && password != null && userType == 'bql') {
+      setState(() {
+        _canCheckBiometrics = true;
+        _savedEmail = email;
+        _savedPassword = password;
+      });
+    }
+  }
+
+  Future<void> _authenticate() async {
+    try {
+      bool authenticated = await auth.authenticate(
+        localizedReason: 'Đăng nhập bằng vân tay/khuôn mặt',
+        options: const AuthenticationOptions(
+          stickyAuth: true,
+          biometricOnly: true,
+        ),
+      );
+      if (authenticated && _savedEmail != null && _savedPassword != null) {
+        setState(() {
+          _isLoading = true;
+        });
+        bool loged = await LoginRepoBql().login(_savedEmail!, _savedPassword!);
+        if (loged) {
+          InfoModelBql? infoHomeModel = await InfoRepo().getInfo();
+          HomeModel? homeModel = await HomeRepo().getHomeModel();
+          if (infoHomeModel != null && homeModel != null && mounted) {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BottomNavBarBql(
+                  infoModel: infoHomeModel,
+                  homeModel: homeModel,
+                ),
+              ),
+              (route) => false,
+            );
+          }
+        } else {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Đăng nhập thất bại. Vui lòng thử lại.')),
+            );
+          }
+        }
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      }
+    } catch (e) {
+      debugPrint('Biometric error: $e');
+    }
+  }
+
   bool isemailValid(String? email) {
     if (email == null) return false;
     final regExp = RegExp(
@@ -36,14 +117,6 @@ class _LoginScreenBqlState extends State<LoginScreenBql> {
   TextEditingController? emailController = TextEditingController();
   Future<void> fetchData() async {
     isTrue = await LoginRepoBql().fetchBoolValue() ?? false;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    fetchData().then((_) {
-      setState(() {});
-    });
   }
 
   @override
@@ -68,7 +141,7 @@ class _LoginScreenBqlState extends State<LoginScreenBql> {
                 Row(
                   children: [
                     Text(
-                      'Xin chào!',
+                      AppLocalizations.of(context)!.hello,
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.clip,
                       style: TextStyle(
@@ -82,7 +155,7 @@ class _LoginScreenBqlState extends State<LoginScreenBql> {
                 Row(
                   children: [
                     Text(
-                      'Chào mừng đã trở lại, hãy đăng nhập',
+                      AppLocalizations.of(context)!.welcomeBackLogin,
                       textAlign: TextAlign.right,
                       style: TextStyle(
                         color: subBlack,
@@ -99,7 +172,7 @@ class _LoginScreenBqlState extends State<LoginScreenBql> {
                 Row(
                   children: [
                     Text(
-                      'Tài khoản',
+                      AppLocalizations.of(context)!.account,
                       style: TextStyle(
                         color: key1Color,
                         fontSize: 14.sp,
@@ -132,7 +205,7 @@ class _LoginScreenBqlState extends State<LoginScreenBql> {
                           Icons.person_2_outlined,
                           color: subBlack,
                         ),
-                        hintText: 'Email',
+                        hintText: AppLocalizations.of(context)!.email,
                         border: const OutlineInputBorder(
                             borderSide: BorderSide.none),
                         hintStyle: TextStyle(
@@ -149,7 +222,7 @@ class _LoginScreenBqlState extends State<LoginScreenBql> {
                 Row(
                   children: [
                     Text(
-                      'Mật khẩu',
+                      AppLocalizations.of(context)!.password,
                       style: TextStyle(
                         color: key1Color,
                         fontSize: 14.sp,
@@ -183,7 +256,7 @@ class _LoginScreenBqlState extends State<LoginScreenBql> {
                           Icons.lock_outline,
                           color: subBlack,
                         ),
-                        hintText: 'Mật khẩu',
+                        hintText: AppLocalizations.of(context)!.password,
                         border: const OutlineInputBorder(
                             borderSide: BorderSide.none),
                         hintStyle: TextStyle(
@@ -230,7 +303,7 @@ class _LoginScreenBqlState extends State<LoginScreenBql> {
                         );
                       },
                       child: Text(
-                        'Quên mật khẩu?',
+                        AppLocalizations.of(context)!.forgotPasswordQuestion,
                         style: TextStyle(
                           color: const Color(0xff004071),
                           fontSize: 16.sp,
@@ -255,14 +328,14 @@ class _LoginScreenBqlState extends State<LoginScreenBql> {
                         builder: (BuildContext context) {
                           return AlertDialog(
                             title: Text(
-                              'Email không đúng định dạng',
+                              AppLocalizations.of(context)!.invalidEmailFormat,
                               style: defaultText16.copyWith(
                                 color: const Color.fromARGB(255, 29, 29, 29),
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
                             content: Text(
-                              'Vui lòng kiểm tra lại email đã nhập',
+                              AppLocalizations.of(context)!.pleaseCheckEmail,
                               style: defaultText16.copyWith(
                                   color: const Color(0xff3C3C3C)),
                             ),
@@ -271,7 +344,7 @@ class _LoginScreenBqlState extends State<LoginScreenBql> {
                             actions: <Widget>[
                               TextButton(
                                 child: Text(
-                                  'ok',
+                                  AppLocalizations.of(context)!.ok,
                                   style: defaultText16.copyWith(
                                       color: const Color(0xff3C3C3C)),
                                 ),
@@ -299,7 +372,7 @@ class _LoginScreenBqlState extends State<LoginScreenBql> {
                             await InfoRepo().getInfo();
                         HomeModel? homeModel = await HomeRepo().getHomeModel();
                         if (infoHomeModel != null && homeModel != null) {
-                          Navigator.pushReplacement(
+                          Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
                               builder: (context) => BottomNavBarBql(
@@ -307,6 +380,7 @@ class _LoginScreenBqlState extends State<LoginScreenBql> {
                                 homeModel: homeModel,
                               ),
                             ),
+                            (route) => false,
                           );
                         }
                       } else {
@@ -315,14 +389,14 @@ class _LoginScreenBqlState extends State<LoginScreenBql> {
                           builder: (BuildContext context) {
                             return AlertDialog(
                               title: Text(
-                                'Đăng nhập thất bại',
+                                AppLocalizations.of(context)!.loginFailed,
                                 style: defaultText16.copyWith(
                                   color: const Color.fromARGB(255, 29, 29, 29),
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
                               content: Text(
-                                'Vui lòng kiểm tra lại tài khoản và mật khẩu',
+                                AppLocalizations.of(context)!.pleaseCheckAccountAndPassword,
                                 style: defaultText16.copyWith(
                                     color: const Color(0xff3C3C3C)),
                               ),
@@ -331,7 +405,7 @@ class _LoginScreenBqlState extends State<LoginScreenBql> {
                               actions: <Widget>[
                                 TextButton(
                                   child: Text(
-                                    'OK',
+                                    AppLocalizations.of(context)!.ok,
                                     style: defaultText16.copyWith(
                                         color: const Color(0xff3C3C3C)),
                                   ),
@@ -366,7 +440,7 @@ class _LoginScreenBqlState extends State<LoginScreenBql> {
                           ),
                           child: Center(
                             child: Text(
-                              'Đăng nhập',
+                              AppLocalizations.of(context)!.login,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Colors.white,
@@ -377,12 +451,22 @@ class _LoginScreenBqlState extends State<LoginScreenBql> {
                           ),
                         ),
                 ),
+                // Biometric Button
+                if (_canCheckBiometrics) ...[
+                  SizedBox(height: 20.h),
+                  IconButton(
+                    iconSize: 50.r,
+                    icon: const Icon(Icons.fingerprint, color: Color(0xff004071)),
+                    onPressed: _authenticate,
+                  ),
+                  Text('Đăng nhập bằng sinh trắc học', style: defaultText14M.copyWith(color: const Color(0xff004071))),
+                ],
                 SizedBox(
                   height: 20.h,
                 ),
                 isTrue
                     ? Text(
-                        'Bạn muốn trải nghiệm ứng dụng?',
+                        AppLocalizations.of(context)!.wantToExperienceApp,
                         style: defaultText16.copyWith(
                             color: const Color(0xff8A8A8A),
                             fontWeight: FontWeight.w400),
@@ -398,7 +482,7 @@ class _LoginScreenBqlState extends State<LoginScreenBql> {
                           );
                         },
                         child: Text(
-                          'Để lại thông tin',
+                          AppLocalizations.of(context)!.leaveInformation,
                           style: defaultText18B.copyWith(
                               color: const Color(0xff004071),
                               fontWeight: FontWeight.w500),

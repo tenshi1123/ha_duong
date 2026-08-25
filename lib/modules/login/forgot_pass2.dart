@@ -4,6 +4,7 @@ import '../../router/app_pages.dart';
 import '../../router/app_router.dart';
 import '../../utils/constants/color.dart';
 import '../../utils/constants/styles.dart';
+import 'package:ha_duong/l10n/app_localizations.dart';
 
 class ForgotPass2 extends StatefulWidget {
   const ForgotPass2({super.key, required this.contact});
@@ -46,7 +47,7 @@ class _ForgotPass2State extends State<ForgotPass2> {
               Row(
                 children: [
                   Text(
-                    'Thay đổi mật khẩu',
+                    AppLocalizations.of(context)!.changePassword,
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.clip,
                     style: TextStyle(
@@ -101,7 +102,7 @@ class _ForgotPass2State extends State<ForgotPass2> {
                         });
                       },
                     ),
-                    hintText: 'Nhập mật khẩu mới',
+                    hintText: AppLocalizations.of(context)!.enterNewPassword,
                     border:
                         const OutlineInputBorder(borderSide: BorderSide.none),
                     hintStyle: TextStyle(
@@ -133,7 +134,7 @@ class _ForgotPass2State extends State<ForgotPass2> {
                       Icons.lock_outline,
                       color: subBlack,
                     ),
-                    hintText: 'Nhập lại mật khẩu',
+                    hintText: AppLocalizations.of(context)!.reEnterPassword,
                     border:
                         const OutlineInputBorder(borderSide: BorderSide.none),
                     hintStyle: TextStyle(
@@ -174,7 +175,7 @@ class _ForgotPass2State extends State<ForgotPass2> {
                     builder: (BuildContext context) {
                       return AlertDialog(
                         title: Text(
-                          'Đổi mật khẩu thành công',
+                          AppLocalizations.of(context)!.changePasswordSuccess,
                           style: defaultText16M.copyWith(
                             color: const Color.fromARGB(255, 29, 29, 29),
                             fontWeight: FontWeight.w700,
@@ -185,7 +186,7 @@ class _ForgotPass2State extends State<ForgotPass2> {
                         actions: <Widget>[
                           TextButton(
                             child: Text(
-                              'ok',
+                              AppLocalizations.of(context)!.ok,
                               style: defaultText16M.copyWith(
                                   color: const Color(0xff3C3C3C)),
                             ),
@@ -210,7 +211,7 @@ class _ForgotPass2State extends State<ForgotPass2> {
                   ),
                   child: Center(
                     child: Text(
-                      'Đổi mật khẩu',
+                      AppLocalizations.of(context)!.changePasswordButton,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,

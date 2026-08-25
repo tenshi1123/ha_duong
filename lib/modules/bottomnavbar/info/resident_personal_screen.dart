@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ha_duong/cubit/language_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ha_duong/main.dart';
@@ -13,9 +15,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../login/login_screen.dart';
 import 'apartment_profile.dart';
 import 'registered_vehicle_screen.dart';
+import 'package:ha_duong/l10n/app_localizations.dart';
 
-class PersonalScreen extends StatelessWidget {
-  const PersonalScreen({super.key, required this.infoHomeModel});
+class ResidentPersonalScreen extends StatelessWidget {
+  const ResidentPersonalScreen({super.key, required this.infoHomeModel});
   final InfoModel infoHomeModel;
   @override
   Widget build(BuildContext context) {
@@ -36,7 +39,7 @@ class PersonalScreen extends StatelessWidget {
                 height: 86.h,
               ),
               Text(
-                'Thông tin tài khoản',
+                AppLocalizations.of(context)!.accountInfo,
                 style: defaultText18B.copyWith(
                   color: Colors.white,
                 ),
@@ -93,7 +96,8 @@ class PersonalScreen extends StatelessWidget {
                                           // Nút Tải ảnh lên
                                           buildUploadOption(
                                             icon: Icons.image_outlined,
-                                            text: "Tải ảnh lên",
+                                            text: AppLocalizations.of(context)!
+                                                .uploadImage,
                                             onTap: () {
                                               // Xử lý tải ảnh lên
                                               pickImageFromGallery1(
@@ -105,7 +109,8 @@ class PersonalScreen extends StatelessWidget {
                                           // Nút Chụp ảnh
                                           buildUploadOption(
                                             icon: Icons.camera_alt_outlined,
-                                            text: "Chụp ảnh",
+                                            text: AppLocalizations.of(context)!
+                                                .takePhoto,
                                             onTap: () {
                                               pickImageFromCamera1(
                                                 context,
@@ -131,7 +136,8 @@ class PersonalScreen extends StatelessWidget {
                 height: 16.h,
               ),
               infoItem(
-                title: 'Họ và tên',
+                context: context,
+                title: AppLocalizations.of(context)!.fullNameLabel,
                 info: infoHomeModel.resident.fullName,
               ),
               Divider(
@@ -142,7 +148,8 @@ class PersonalScreen extends StatelessWidget {
                 height: 24.h,
               ),
               infoItem(
-                title: 'Số định danh',
+                context: context,
+                title: AppLocalizations.of(context)!.idNumber,
                 info: infoHomeModel.resident.idCard,
               ),
               Divider(
@@ -153,7 +160,8 @@ class PersonalScreen extends StatelessWidget {
                 height: 24.h,
               ),
               infoItem(
-                title: 'Ngày sinh',
+                context: context,
+                title: AppLocalizations.of(context)!.dob,
                 info: infoHomeModel.resident.dob,
               ),
               Divider(
@@ -164,7 +172,8 @@ class PersonalScreen extends StatelessWidget {
                 height: 24.h,
               ),
               infoItem(
-                title: 'Số điện thoại',
+                context: context,
+                title: AppLocalizations.of(context)!.phoneLabel,
                 info: infoHomeModel.resident.phone,
               ),
               Divider(
@@ -175,6 +184,7 @@ class PersonalScreen extends StatelessWidget {
                 height: 24.h,
               ),
               infoItem(
+                context: context,
                 title: 'Email',
                 info: infoHomeModel.resident.email,
               ),
@@ -208,8 +218,9 @@ class PersonalScreen extends StatelessWidget {
                     if (context.mounted) {
                       hideLoadingDialog(context);
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text('Có lỗi xảy ra, thử lại sau')),
+                        SnackBar(
+                            content: Text(AppLocalizations.of(context)!
+                                .errorTryAgainLater)),
                       );
                     }
                   }
@@ -236,7 +247,7 @@ class PersonalScreen extends StatelessWidget {
                           width: 16.w,
                         ),
                         Text(
-                          'Hồ sơ căn hộ',
+                          AppLocalizations.of(context)!.apartmentProfile,
                           style: defaultText16M.copyWith(
                             color: Colors.black,
                           ),
@@ -287,7 +298,48 @@ class PersonalScreen extends StatelessWidget {
                           width: 16.w,
                         ),
                         Text(
-                          'Phương tiện đăng ký',
+                          AppLocalizations.of(context)!.registeredVehicles,
+                          style: defaultText16M.copyWith(
+                            color: Colors.black,
+                          ),
+                        ),
+                        const Spacer(),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: const Color(0xff383838),
+                          size: 16.w,
+                        ),
+                        SizedBox(
+                          width: 16.w,
+                        ),
+                      ],
+                    ),
+                    Divider(
+                      color: const Color(0xffF0F0F0),
+                      thickness: 1,
+                      endIndent: 16.w,
+                      indent: 16.w,
+                      height: 24.h,
+                    ),
+                  ],
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  showLanguageDialog(context);
+                },
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 6.h,
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 16.w,
+                        ),
+                        Text(
+                          AppLocalizations.of(context)!.txtNgonNgu,
                           style: defaultText16M.copyWith(
                             color: Colors.black,
                           ),
@@ -321,23 +373,23 @@ class PersonalScreen extends StatelessWidget {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: const Text('Xác nhận'),
-                          content: const Text(
-                            'Bạn có chắc chắn muốn xóa tài khoản của mình?',
+                          title: Text(AppLocalizations.of(context)!.confirm),
+                          content: Text(
+                            AppLocalizations.of(context)!.confirmDeleteAccount,
                           ),
                           actions: [
                             TextButton(
                               onPressed: () {
                                 Navigator.of(context).pop(); // Đóng dialog
                               },
-                              child: const Text('Hủy'),
+                              child: Text(AppLocalizations.of(context)!.cancel),
                             ),
                             TextButton(
                               onPressed: () async {
                                 // Xử lý xóa tài khoản ở đây
                                 Navigator.of(context).pop(); // Đóng dialog
                               },
-                              child: const Text('Xóa'),
+                              child: Text(AppLocalizations.of(context)!.delete),
                             ),
                           ],
                         );
@@ -355,7 +407,7 @@ class PersonalScreen extends StatelessWidget {
                             width: 16.w,
                           ),
                           Text(
-                            'Xóa tài khoản',
+                            AppLocalizations.of(context)!.deleteAccount,
                             style: defaultText16M.copyWith(
                               color: Colors.red,
                             ),
@@ -395,13 +447,13 @@ class PersonalScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           Text(
-                            'Đăng xuất',
+                            AppLocalizations.of(context)!.logout,
                             style: defaultText16M.copyWith(
                               color: const Color(0xffED1C24),
                             ),
                           ),
                           Text(
-                            'Bạn chắc chắn muốn đăng xuất?',
+                            AppLocalizations.of(context)!.confirmLogout,
                             style: defaultText16M.copyWith(
                               color: const Color(0xff8A8A8A),
                             ),
@@ -422,7 +474,7 @@ class PersonalScreen extends StatelessWidget {
                                   ),
                                   child: Center(
                                     child: Text(
-                                      "Hủy",
+                                      AppLocalizations.of(context)!.cancel,
                                       style: defaultText14B.copyWith(
                                         color: const Color(0xff273D8C),
                                       ),
@@ -453,7 +505,7 @@ class PersonalScreen extends StatelessWidget {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12.r)),
                                 child: Text(
-                                  "Đăng xuất",
+                                  AppLocalizations.of(context)!.logout,
                                   style: defaultText14B.copyWith(
                                     color: Colors.white,
                                   ),
@@ -475,7 +527,7 @@ class PersonalScreen extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                      'Đăng xuất',
+                      AppLocalizations.of(context)!.logout,
                       style: defaultText16M.copyWith(
                         color: const Color(0xff004071),
                       ),
@@ -535,6 +587,7 @@ Widget buildUploadOption({
 }
 
 Widget infoItem({
+  required BuildContext context,
   required String title,
   required String info,
 }) {
@@ -551,7 +604,7 @@ Widget infoItem({
       ),
       const Spacer(),
       Text(
-        info == '' ? "Chưa cập nhật" : info,
+        info == '' ? AppLocalizations.of(context)!.notUpdated : info,
         style: defaultText14Re.copyWith(
           color: Colors.black,
         ),
@@ -581,5 +634,55 @@ void showLoadingDialog(BuildContext context) {
 void hideLoadingDialog(BuildContext context) {
   if (Navigator.of(context, rootNavigator: true).canPop()) {
     Navigator.of(context, rootNavigator: true).pop();
+  }
+}
+
+void showLanguageDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (_) {
+      return AlertDialog(
+        title: Text(AppLocalizations.of(context)!.txtNgonNgu),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _LanguageItem(
+              title: 'Tiếng Việt',
+              locale: const Locale('vi'),
+            ),
+            _LanguageItem(
+              title: 'English',
+              locale: const Locale('en'),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
+
+class _LanguageItem extends StatelessWidget {
+  final String title;
+  final Locale locale;
+
+  const _LanguageItem({
+    required this.title,
+    required this.locale,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final current = context.watch<LanguageCubit>().state;
+
+    return ListTile(
+      title: Text(title),
+      trailing: current.languageCode == locale.languageCode
+          ? const Icon(Icons.check, color: Colors.green)
+          : null,
+      onTap: () {
+        context.read<LanguageCubit>().changeLanguage(locale);
+        Navigator.pop(context);
+      },
+    );
   }
 }

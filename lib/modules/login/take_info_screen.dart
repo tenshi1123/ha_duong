@@ -4,6 +4,7 @@ import 'package:ha_duong/modules/login/sucess_screen.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 
 import '../../utils/constants/color.dart';
+import 'package:ha_duong/l10n/app_localizations.dart';
 
 class TakeInfoScreen extends StatefulWidget {
   const TakeInfoScreen({super.key});
@@ -35,14 +36,14 @@ class _TakeInfoScreenState extends State<TakeInfoScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Thông tin của bạn',
+              AppLocalizations.of(context)!.yourInformation,
               style: defaultText20B.copyWith(
                 color: const Color(0xff0F2645),
                 fontSize: 24.sp,
               ),
             ),
             Text(
-              'Đăng ký để trải nghiệm ứng dụng!',
+              AppLocalizations.of(context)!.registerToExperienceApp,
               style: defaultText16M.copyWith(
                 color: const Color(0xff8A8A8A),
               ),
@@ -69,7 +70,7 @@ class _TakeInfoScreenState extends State<TakeInfoScreen> {
                       Icons.person_outline,
                       color: subBlack,
                     ),
-                    hintText: 'Họ và tên',
+                    hintText: AppLocalizations.of(context)!.fullName,
                     border:
                         const OutlineInputBorder(borderSide: BorderSide.none),
                     hintStyle: TextStyle(
@@ -102,7 +103,7 @@ class _TakeInfoScreenState extends State<TakeInfoScreen> {
                       Icons.call_outlined,
                       color: subBlack,
                     ),
-                    hintText: 'Số điện thoại',
+                    hintText: AppLocalizations.of(context)!.phoneNumber,
                     border:
                         const OutlineInputBorder(borderSide: BorderSide.none),
                     hintStyle: TextStyle(
@@ -136,7 +137,7 @@ class _TakeInfoScreenState extends State<TakeInfoScreen> {
                     Icons.chat_bubble_outline,
                     color: subBlack,
                   ),
-                  hintText: 'Nội dung ghi chú',
+                  hintText: AppLocalizations.of(context)!.noteContent,
                   border: const OutlineInputBorder(borderSide: BorderSide.none),
                   hintStyle: TextStyle(
                     fontSize: 16.sp,
@@ -166,7 +167,7 @@ class _TakeInfoScreenState extends State<TakeInfoScreen> {
                 ),
                 child: Center(
                   child: Text(
-                    'Gửi thông tin',
+                    AppLocalizations.of(context)!.sendInformation,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,

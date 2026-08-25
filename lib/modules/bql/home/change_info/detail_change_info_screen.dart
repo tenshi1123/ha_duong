@@ -1,3 +1,4 @@
+import 'package:ha_duong/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -154,7 +155,7 @@ class _DetailChangeInfoScreenState extends State<DetailChangeInfoScreen> {
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: const Text('Thành công'),
+                title: Text(AppLocalizations.of(context)!.bqlThanhCong),
                 content: Text(type == 1
                     ? 'Yêu cầu đã được duyệt!'
                     : 'Yêu cầu đã bị từ chối!'),
@@ -164,7 +165,7 @@ class _DetailChangeInfoScreenState extends State<DetailChangeInfoScreen> {
                       Navigator.pop(context); // đóng dialog
                       Navigator.pop(context); // đóng luôn màn hiện tại
                     },
-                    child: const Text('OK'),
+                    child: Text(AppLocalizations.of(context)!.bqlOk),
                   ),
                 ],
               ),
@@ -183,7 +184,7 @@ class _DetailChangeInfoScreenState extends State<DetailChangeInfoScreen> {
         ),
         child: Center(
           child: Text(
-            type == 1 ? 'Chấp nhận thay đổi' : 'Từ chối yêu cầu',
+            type == 1 ? 'Chấp nhận thay đổi' : AppLocalizations.of(context)!.bqlTuChoiYeuCau,
             style: defaultText14B.copyWith(
               color: Colors.white,
             ),
@@ -243,19 +244,19 @@ class ResidentInfoForm extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildField('Họ và tên', data.fullName),
+          _buildField(AppLocalizations.of(context)!.bqlHoVaTen, data.fullName),
           _buildField('Số định danh', data.cccdCmt),
-          _buildField('Ngày sinh', data.dob),
+          _buildField(AppLocalizations.of(context)!.bqlNgaySinh, data.dob),
           _buildField('Số điện thoại', data.phone),
-          _buildField('Email', data.email),
+          _buildField(AppLocalizations.of(context)!.bqlEmail, data.email),
           _buildField(
-              'Quan hệ với chủ hộ', _mapRelationship(data.relationshipType)),
+              AppLocalizations.of(context)!.bqlQuanHeVoiChuHo, _mapRelationship(context, data.relationshipType)),
           SizedBox(height: 24.h),
           Row(
             children: [
               const Icon(Icons.image_outlined, color: Colors.blueAccent),
               SizedBox(width: 8.w),
-              Text('Ảnh xác minh thông tin',
+              Text(AppLocalizations.of(context)!.bqlAnhXacMinhThongTin,
                   style: defaultText16B.copyWith(color: Colors.blueAccent)),
             ],
           ),
@@ -328,16 +329,16 @@ class ResidentInfoForm extends StatelessWidget {
     );
   }
 
-  String _mapRelationship(String code) {
+  String _mapRelationship(BuildContext context, String code) {
     switch (code) {
       case 'chu_ho':
-        return 'Chủ hộ';
+        return AppLocalizations.of(context)!.bqlChuHo;
       case 'vo':
-        return 'Vợ';
+        return AppLocalizations.of(context)!.bqlVo;
       case 'chong':
-        return 'Chồng';
+        return AppLocalizations.of(context)!.bqlChong;
       case 'con':
-        return 'Con';
+        return AppLocalizations.of(context)!.bqlCon;
       default:
         return code;
     }

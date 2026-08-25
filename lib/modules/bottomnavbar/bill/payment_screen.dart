@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ha_duong/models/info_model.dart';
@@ -7,6 +8,7 @@ import 'package:screenshot/screenshot.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:typed_data'; // Để làm việc với dữ liệu byte
 import 'package:gal/gal.dart';
+import 'package:ha_duong/l10n/app_localizations.dart';
 
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen(
@@ -45,7 +47,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 241, 241, 241),
       appBar: AppBar(
-        title: const Text('Thanh toán'),
+        title: Text(AppLocalizations.of(context)!.payment),
         centerTitle: true,
         backgroundColor: Colors.white,
         leading: IconButton(
@@ -64,8 +66,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
-              child: const Text(
-                'Cư dân vui lòng thanh toán hóa đơn theo mã QR dưới đây:',
+              child: Text(AppLocalizations.of(context)!.pleasePayQR,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 20,
@@ -93,6 +94,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 ),
               ),
             ),
+            _buildCopyRow(AppLocalizations.of(context)!.txtSoTaiKhoan, widget.paymentInforModel.accNumber),
+            _buildCopyRow(AppLocalizations.of(context)!.amount, widget.totalFinalFee.toString()),
+            _buildCopyRow(AppLocalizations.of(context)!.transferContent,
+                '${widget.paymentInforModel.apartmentName} ${widget.paymentInforModel.buildingName} ${widget.receiptTime}'),
+            SizedBox(height: 20.h),
             ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
@@ -105,8 +111,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 Icons.download,
                 color: Color(0xff004071),
               ),
-              label: Text('Chụp và lưu mã QR', style: defaultText14M),
+              label: Text(AppLocalizations.of(context)!.captureAndSaveQR, style: defaultText14M),
             ),
+            SizedBox(height: 60.h),
           ],
         ),
       ),
@@ -120,9 +127,52 @@ class _PaymentScreenState extends State<PaymentScreen> {
       context: context,
       builder: (context) => Scaffold(
         appBar: AppBar(
-          title: const Text("Mã Qr đã lưu"),
+          title: Text(AppLocalizations.of(context)!.savedQRCode),
         ),
         body: Center(child: Image.memory(capturedImage)),
+      ),
+    );
+  }
+
+  Widget _buildCopyRow(String label, String value) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    color: Colors.grey[700],
+                  ),
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  value,
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.copy, color: Color(0xff004071)),
+            onPressed: () {
+              Clipboard.setData(ClipboardData(text: value));
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(AppLocalizations.of(context)!.copied)),
+              );
+            },
+          ),
+        ],
       ),
     );
   }
@@ -139,8 +189,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
         final bool granted = await Gal.requestAccess(toAlbum: false);
         if (!granted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-                content: Text('Quyền truy cập thư viện ảnh bị từ chối.')),
+            SnackBar(
+                content: Text(AppLocalizations.of(context)!.photoLibraryDenied)),
           );
           // Tùy chọn: Mở cài đặt ứng dụng để người dùng cấp quyền thủ công
           if (await Permission.photos.isPermanentlyDenied) {
@@ -167,11 +217,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
         );
 
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Đã lưu ảnh mã QR vào thư viện ảnh!')),
+          SnackBar(content: Text(AppLocalizations.of(context)!.txtDaLuuAnhMaQrVaoThuVienAnh)),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Không thể chụp ảnh widget.')),
+          SnackBar(content: Text(AppLocalizations.of(context)!.cannotCaptureWidget)),
         );
       }
     } catch (e) {

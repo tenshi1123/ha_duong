@@ -4,6 +4,7 @@ import 'package:ha_duong/modules/bottomnavbar/service/service_screen.dart';
 import 'package:ha_duong/repo/home_repo.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import '../../../utils/constants/styles.dart';
+import 'package:ha_duong/l10n/app_localizations.dart';
 
 class ExtensionScreen extends StatefulWidget {
   const ExtensionScreen({super.key, required this.id});
@@ -50,7 +51,7 @@ class _ExtensionScreenState extends State<ExtensionScreen> {
         // ),
         title: Center(
           child: Text(
-            'Dịch vụ tiện ích',
+            AppLocalizations.of(context)!.utilityServices,
             style: defaultText18B.copyWith(
               color: const Color(0xff3C3C3C),
             ),
@@ -60,9 +61,7 @@ class _ExtensionScreenState extends State<ExtensionScreen> {
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : listUtilities.isEmpty
-              ? const Center(
-                  child: Text(
-                    'Không có dữ liệu',
+              ? Center(child: Text(AppLocalizations.of(context)!.noData,
                     style: TextStyle(fontSize: 16, color: Colors.black54),
                   ),
                 )

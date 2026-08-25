@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ha_duong/models/info_model.dart';
+import 'package:ha_duong/modules/bottomnavbar/info/resident_personal_screen.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:ha_duong/utils/widget/custom_dialog.dart';
 import 'package:widgets_easier/widgets_easier.dart';
-import 'personal_screen.dart';
+import 'package:ha_duong/l10n/app_localizations.dart';
 
 class FamilyMemberScreen extends StatelessWidget {
   const FamilyMemberScreen(
@@ -19,7 +20,7 @@ class FamilyMemberScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text(
-          'Thành viên trong hộ gia đình',
+          AppLocalizations.of(context)!.familyMembers,
           style: defaultText18M,
         ),
         leading: IconButton(
@@ -96,7 +97,7 @@ class AddMemberButton extends StatelessWidget {
               width: 8.w,
             ),
             Text(
-              'Thêm thành viên',
+              AppLocalizations.of(context)!.addMember,
               style: defaultText14B.copyWith(color: const Color(0xff25AAE1)),
             ),
           ],
@@ -130,31 +131,10 @@ class FamilyMember extends StatelessWidget {
         SizedBox(
           height: 20.h,
         ),
-        infoItem(title: 'Số định danh', info: model.idCard),
-        Divider(
-          color: const Color(0xffF0F0F0),
-          thickness: 1,
-          endIndent: 16.w,
-          indent: 16.w,
-          height: 24.h,
-        ),
-        infoItem(title: 'Ngày sinh', info: model.dob),
-        Divider(
-          color: const Color(0xffF0F0F0),
-          thickness: 1,
-          endIndent: 16.w,
-          indent: 16.w,
-          height: 24.h,
-        ),
-        infoItem(title: 'Số điện thoại', info: model.phone),
-        Divider(
-          color: const Color(0xffF0F0F0),
-          thickness: 1,
-          endIndent: 16.w,
-          indent: 16.w,
-          height: 24.h,
-        ),
-        infoItem(title: 'Email', info: model.email),
+        infoItem(
+            context: context,
+            title: AppLocalizations.of(context)!.idNumber,
+            info: model.idCard),
         Divider(
           color: const Color(0xffF0F0F0),
           thickness: 1,
@@ -163,8 +143,39 @@ class FamilyMember extends StatelessWidget {
           height: 24.h,
         ),
         infoItem(
-            title: 'Quan hệ với chủ hộ',
-            info: _convertToLabel(model.relationshipType)),
+            context: context,
+            title: AppLocalizations.of(context)!.dob,
+            info: model.dob),
+        Divider(
+          color: const Color(0xffF0F0F0),
+          thickness: 1,
+          endIndent: 16.w,
+          indent: 16.w,
+          height: 24.h,
+        ),
+        infoItem(
+            context: context,
+            title: AppLocalizations.of(context)!.phoneLabel,
+            info: model.phone),
+        Divider(
+          color: const Color(0xffF0F0F0),
+          thickness: 1,
+          endIndent: 16.w,
+          indent: 16.w,
+          height: 24.h,
+        ),
+        infoItem(context: context, title: 'Email', info: model.email),
+        Divider(
+          color: const Color(0xffF0F0F0),
+          thickness: 1,
+          endIndent: 16.w,
+          indent: 16.w,
+          height: 24.h,
+        ),
+        infoItem(
+            context: context,
+            title: AppLocalizations.of(context)!.relationToHead,
+            info: _convertToLabel(context, model.relationshipType)),
         GestureDetector(
           onTap: () {
             showDialog<String>(
@@ -209,7 +220,7 @@ class FamilyMember extends StatelessWidget {
                     width: 8.w,
                   ),
                   Text(
-                    'Chỉnh sửa thông tin thành viên',
+                    AppLocalizations.of(context)!.editMemberInfo,
                     style:
                         defaultText14B.copyWith(color: const Color(0xff25AAE1)),
                   ),
@@ -221,18 +232,18 @@ class FamilyMember extends StatelessWidget {
   }
 }
 
-String _convertToLabel(String key) {
+String _convertToLabel(BuildContext context, String key) {
   switch (key) {
     case 'vo_chong':
-      return 'Vợ/Chồng';
+      return AppLocalizations.of(context)!.spouse;
     case 'con_cai':
-      return 'Con cái';
+      return AppLocalizations.of(context)!.children;
     case 'bo_me':
-      return 'Bố/Mẹ';
+      return AppLocalizations.of(context)!.parents;
     case 'anh_chi_em':
-      return 'Anh/Chị/Em';
+      return AppLocalizations.of(context)!.siblings;
     case 'khach_thue':
-      return 'Khách thuê';
+      return AppLocalizations.of(context)!.tenant;
     default:
       return key;
   }

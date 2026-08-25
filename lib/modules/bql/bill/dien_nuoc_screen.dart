@@ -1,3 +1,4 @@
+import 'package:ha_duong/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -121,7 +122,7 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                 value: homeSelecteBuilding,
                 icon: Icon(Icons.keyboard_arrow_down, size: 20.sp),
                 hint: Text(
-                  'Chọn toà nhà',
+                  AppLocalizations.of(context)!.bqlChonToaNha,
                   style: defaultText14M,
                 ),
                 items: buildings.map((b) {
@@ -165,7 +166,7 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                       value: selectMonth,
                       icon: Icon(Icons.keyboard_arrow_down, size: 20.sp),
                       hint: Text(
-                        'Chọn tháng',
+                        AppLocalizations.of(context)!.bqlChonThang,
                         style: defaultText14M,
                       ),
                       items: listMonth.map((b) {
@@ -208,7 +209,7 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                       controller: _searchController,
                       style: TextStyle(fontSize: 14.sp),
                       decoration: InputDecoration(
-                        hintText: 'Tìm kiếm tên căn hộ',
+                        hintText: AppLocalizations.of(context)!.bqlTimKiemTenCanHo,
                         hintStyle:
                             TextStyle(color: Colors.grey, fontSize: 14.sp),
                         border: InputBorder.none,
@@ -346,7 +347,7 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            'Tên căn hộ',
+                                            AppLocalizations.of(context)!.bqlTenCanHo,
                                             style: defaultText14M.copyWith(
                                                 color: const Color(0xff8A8A8A)),
                                           ),

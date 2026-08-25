@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../utils/constants/color.dart';
 import 'change_pass_2.dart';
+import 'package:ha_duong/l10n/app_localizations.dart';
 
 class ChangePassScreen extends StatefulWidget {
   const ChangePassScreen({super.key});
@@ -52,14 +53,14 @@ class _ChangePassScreenState extends State<ChangePassScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Thay đổi mật khẩu',
+              AppLocalizations.of(context)!.changePassword,
               style: defaultText20B.copyWith(fontSize: 24.sp),
             ),
             SizedBox(
               height: 8.h,
             ),
             Text(
-              'Bây giờ hãy nhập mật khẩu hiện tại của bạn',
+              AppLocalizations.of(context)!.enterCurrentPasswordNow,
               style: defaultText16M.copyWith(
                 color: const Color(0xff292929).withValues(alpha: 0.4),
               ),
@@ -95,7 +96,7 @@ class _ChangePassScreenState extends State<ChangePassScreen> {
                       color: const Color(0xff292929).withValues(alpha: 0.4),
                     ),
                     labelStyle: defaultText14M,
-                    hintText: 'Nhập mật khẩu hiện tại',
+                    hintText: AppLocalizations.of(context)!.enterCurrentPassword,
                     border:
                         const OutlineInputBorder(borderSide: BorderSide.none),
                     hintStyle: TextStyle(
@@ -151,7 +152,7 @@ class _ChangePassScreenState extends State<ChangePassScreen> {
                       }
                     : null,
                 child: Text(
-                  'Xác nhận',
+                  AppLocalizations.of(context)!.confirm,
                   style: defaultText14B.copyWith(
                     color: _submit
                         ? Colors.white

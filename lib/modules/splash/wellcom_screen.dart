@@ -4,6 +4,7 @@ import 'package:ha_duong/modules/login/login_screen_bql.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import '../../utils/constants/color.dart';
 import '../login/login_screen.dart';
+import 'package:ha_duong/l10n/app_localizations.dart';
 
 class WellcomeScreen extends StatelessWidget {
   const WellcomeScreen({super.key});
@@ -44,7 +45,7 @@ class WellcomeScreen extends StatelessWidget {
                       color: pri500,
                     ),
                     child: Center(
-                      child: Text('Đăng nhập với vai trò cư dân',
+                      child: Text(AppLocalizations.of(context)!.loginAsResident,
                           textAlign: TextAlign.center,
                           style: defaultText14B.copyWith(color: Colors.white)),
                     ),
@@ -72,7 +73,7 @@ class WellcomeScreen extends StatelessWidget {
                       color: pri500,
                     ),
                     child: Center(
-                      child: Text("Đăng nhập với vai trò quản lý",
+                      child: Text(AppLocalizations.of(context)!.loginAsManager,
                           textAlign: TextAlign.center,
                           style: defaultText14B.copyWith(color: Colors.white)),
                     ),

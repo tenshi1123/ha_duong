@@ -13,6 +13,7 @@ import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../../models/apartment_model.dart';
 import '../../notification/notification_screen.dart';
+import 'package:ha_duong/l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.infoHomeModel});
@@ -229,7 +230,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       child: Text(
-                        'Yêu cầu thanh toán',
+                        AppLocalizations.of(context)!.paymentRequest,
                         style: defaultText16B,
                       ),
                     ),
@@ -240,7 +241,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ? Padding(
                       padding: EdgeInsets.only(left: 20.w, bottom: 10.h),
                       child: Text(
-                        'Không có yêu cầu thanh toán nào',
+                        AppLocalizations.of(context)!.noPaymentRequest,
                         style: defaultText14,
                       ),
                     )
@@ -338,7 +339,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Padding(
                 padding: EdgeInsets.only(left: 20.w, bottom: 10.h, top: 12.h),
                 child: Text(
-                  'Bảng tin toà nhà',
+                  AppLocalizations.of(context)!.buildingNews,
                   style: defaultText16B,
                 ),
               ),
@@ -381,63 +382,68 @@ class _HomeScreenState extends State<HomeScreen> {
               Padding(
                 padding: EdgeInsets.only(left: 20.w, right: 20.w),
                 child: SizedBox(
-                  //width: 375.w,
-                  height: 235.h,
-                  child: Column(
+                  height: 350.h,
+                  child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      ClipRRect(
-                        child: SizedBox(
-                          height: 220.h,
-                          width: 375.w,
-                          child: PageView.builder(
-                            padEnds: false,
-                            controller: controller3,
-                            itemCount: posts.length,
-                            itemBuilder: (_, index) {
-                              final sortedPosts = [
-                                ...posts.where((p) => p.type != '1'),
-                                ...posts.where((p) => p.type == '1'),
-                              ].reversed.toList();
-                              return PostItem(
-                                postModel: sortedPosts[index],
-                              );
-                            },
+                    children: [
+                      Expanded(
+                        child: ClipRRect(
+                          child: SizedBox(
+                            height: 320.h,
+                            child: PageView.builder(
+                              padEnds: false,
+                              controller: controller3,
+                              scrollDirection:
+                                  Axis.vertical, // <- thêm dòng này
+                              itemCount: posts.length,
+                              itemBuilder: (_, index) {
+                                final sortedPosts = [
+                                  ...posts.where((p) => p.type != '1'),
+                                  ...posts.where((p) => p.type == '1'),
+                                ].reversed.toList();
+
+                                return PostItem(
+                                  postModel: sortedPosts[index],
+                                );
+                              },
+                            ),
                           ),
                         ),
                       ),
-                      posts.length < 2
-                          ? const SizedBox()
-                          : SmoothPageIndicator(
-                              controller: controller3,
-                              count: posts.length > 3 ? 3 : posts.length,
-                              effect: CustomizableEffect(
-                                activeDotDecoration: DotDecoration(
-                                  width: 20.w,
-                                  height: 8.h,
-                                  color: Colors.indigo,
-                                  borderRadius: BorderRadius.circular(24),
-                                ),
-                                dotDecoration: DotDecoration(
-                                  width: 8.w,
-                                  height: 8.h,
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.circular(16),
-                                  verticalOffset: 0,
-                                ),
-                                spacing: 6.0,
-                              ),
-                              onDotClicked: (index) {
-                                controller2.animateToPage(index,
-                                    duration: const Duration(milliseconds: 300),
-                                    curve: Curves.easeInOut);
-                              },
-                            ),
+                      // SizedBox(width: 12.w),
+                      // posts.length < 2
+                      //     ? const SizedBox()
+                      //     : SmoothPageIndicator(
+                      //         controller: controller3,
+                      //         count: posts.length > 3 ? 3 : posts.length,
+                      //         axisDirection: Axis.vertical, // <- đổi sang dọc
+                      //         effect: CustomizableEffect(
+                      //           activeDotDecoration: DotDecoration(
+                      //             width: 8.w,
+                      //             height: 20.h,
+                      //             color: Colors.indigo,
+                      //             borderRadius: BorderRadius.circular(24),
+                      //           ),
+                      //           dotDecoration: DotDecoration(
+                      //             width: 8.w,
+                      //             height: 8.h,
+                      //             color: Colors.grey,
+                      //             borderRadius: BorderRadius.circular(16),
+                      //           ),
+                      //           spacing: 6.0,
+                      //         ),
+                      //         onDotClicked: (index) {
+                      //           controller3.animateToPage(
+                      //             index,
+                      //             duration: const Duration(milliseconds: 300),
+                      //             curve: Curves.easeInOut,
+                      //           );
+                      //         },
+                      //       ),
                     ],
                   ),
                 ),
-              ),
+              )
             ],
           ),
         ),

@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ha_duong/models/suport_model.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:intl/intl.dart';
+import 'package:ha_duong/l10n/app_localizations.dart';
 
 class RequestStatusScreen extends StatelessWidget {
   final List<RequestStatusModel> requestStatus;
@@ -28,7 +29,7 @@ class RequestStatusScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text('Trạng thái yêu cầu', style: defaultText14M),
+        title: Text(AppLocalizations.of(context)!.requestStatus, style: defaultText14M),
       ),
       body: Container(
         margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
@@ -41,10 +42,10 @@ class RequestStatusScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildInfoSection(),
+              _buildInfoSection(context),
               Padding(
                 padding: EdgeInsets.only(bottom: 16.h, top: 6.h),
-                child: Text('Tiến trình xử lý:', style: defaultText14M),
+                child: Text(AppLocalizations.of(context)!.processingProgress, style: defaultText14M),
               ),
               if (requestStatus.isNotEmpty)
                 ...List.generate(requestStatus.length, (index) {
@@ -55,7 +56,7 @@ class RequestStatusScreen extends StatelessWidget {
               else
                 _buildStepItem(
                   RequestStatusModel(
-                    name: 'Tạo yêu cầu',
+                    name: AppLocalizations.of(context)!.createRequest,
                     createAt: DateTime.parse(createAt),
                     type: '0',
                   ),
@@ -69,13 +70,13 @@ class RequestStatusScreen extends StatelessWidget {
   }
 
   /// 👉 Gom phần info (Người gửi, Yêu cầu, Tình trạng, Note, Ảnh)
-  Widget _buildInfoSection() {
+  Widget _buildInfoSection(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         RichText(
           text: TextSpan(
-            text: 'Người gửi : ',
+            text: AppLocalizations.of(context)!.txtNguoiGui1,
             style: defaultText14M.copyWith(
               color: const Color(0xff8A8A8A).withValues(alpha: 0.8),
             ),
@@ -90,7 +91,7 @@ class RequestStatusScreen extends StatelessWidget {
         SizedBox(height: 6.h),
         RichText(
           text: TextSpan(
-            text: 'Yêu cầu : ',
+            text: AppLocalizations.of(context)!.txtYeuCau2,
             style: defaultText14M.copyWith(
               color: const Color(0xff8A8A8A).withValues(alpha: 0.8),
             ),
@@ -105,7 +106,7 @@ class RequestStatusScreen extends StatelessWidget {
         SizedBox(height: 6.h),
         RichText(
           text: TextSpan(
-            text: 'Tình trạng : ',
+            text: AppLocalizations.of(context)!.txtTinhTrang4,
             style: defaultText14M.copyWith(
               color: const Color(0xff8A8A8A).withValues(alpha: 0.8),
             ),

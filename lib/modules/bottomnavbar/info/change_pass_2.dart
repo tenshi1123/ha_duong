@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../utils/constants/color.dart';
+import 'package:ha_duong/l10n/app_localizations.dart';
 
 class ChangePass2Screen extends StatefulWidget {
   const ChangePass2Screen({super.key});
@@ -59,14 +60,14 @@ class _ChangePass2ScreenState extends State<ChangePass2Screen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Thay đổi mật khẩu',
+              AppLocalizations.of(context)!.changePassword,
               style: defaultText20B.copyWith(fontSize: 24.sp),
             ),
             SizedBox(
               height: 8.h,
             ),
             Text(
-              'Hay chọn một mật khẩu an toàn chỉ mình bạn biết',
+              AppLocalizations.of(context)!.chooseSafePassword,
               style: defaultText16M.copyWith(
                 color: const Color(0xff292929).withValues(alpha: 0.4),
               ),
@@ -102,7 +103,7 @@ class _ChangePass2ScreenState extends State<ChangePass2Screen> {
                       color: const Color(0xff292929).withValues(alpha: 0.4),
                     ),
                     labelStyle: defaultText14M,
-                    hintText: 'Nhập mật khẩu mới',
+                    hintText: AppLocalizations.of(context)!.enterNewPasswordTitle,
                     border:
                         const OutlineInputBorder(borderSide: BorderSide.none),
                     hintStyle: TextStyle(
@@ -170,7 +171,7 @@ class _ChangePass2ScreenState extends State<ChangePass2Screen> {
                       color: const Color(0xff292929).withValues(alpha: 0.4),
                     ),
                     labelStyle: defaultText14M,
-                    hintText: 'Nhập lại mật khẩu',
+                    hintText: AppLocalizations.of(context)!.reEnterPasswordTitle,
                     border:
                         const OutlineInputBorder(borderSide: BorderSide.none),
                     hintStyle: TextStyle(
@@ -222,7 +223,7 @@ class _ChangePass2ScreenState extends State<ChangePass2Screen> {
                           builder: (BuildContext context) {
                             return AlertDialog(
                               title: Text(
-                                'Đổi mật khẩu thành công',
+                                AppLocalizations.of(context)!.passwordChangedSuccessfully,
                                 style: defaultText14M,
                               ),
                               content: Image.asset(
@@ -252,7 +253,7 @@ class _ChangePass2ScreenState extends State<ChangePass2Screen> {
                       }
                     : null,
                 child: Text(
-                  'Đổi mật khẩu',
+                  AppLocalizations.of(context)!.changePasswordButton,
                   style: defaultText14B.copyWith(
                     color: (_submit1 && _submit2)
                         ? Colors.white

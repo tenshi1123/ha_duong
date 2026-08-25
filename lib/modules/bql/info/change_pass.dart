@@ -1,3 +1,4 @@
+import 'package:ha_duong/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -58,7 +59,7 @@ class _ChangePassScreenState extends State<ChangePassScreen> {
               height: 8.h,
             ),
             Text(
-              'Bây giờ hãy nhập mật khẩu hiện tại của bạn',
+              AppLocalizations.of(context)!.bqlBayGioHayNhapMatKhauHienTaiCuaBan,
               style: defaultText16M.copyWith(
                 color: const Color(0xff292929).withValues(alpha: 0.4),
               ),
@@ -94,7 +95,7 @@ class _ChangePassScreenState extends State<ChangePassScreen> {
                       color: const Color(0xff292929).withValues(alpha: 0.4),
                     ),
                     labelStyle: defaultText14M,
-                    hintText: 'Nhập mật khẩu hiện tại',
+                    hintText: AppLocalizations.of(context)!.bqlNhapMatKhauHienTai,
                     border:
                         const OutlineInputBorder(borderSide: BorderSide.none),
                     hintStyle: TextStyle(
@@ -152,7 +153,7 @@ class _ChangePassScreenState extends State<ChangePassScreen> {
                       }
                     : null,
                 child: Text(
-                  'Xác nhận',
+                  AppLocalizations.of(context)!.bqlXacNhan,
                   style: defaultText14B.copyWith(
                     color: _submit
                         ? Colors.white

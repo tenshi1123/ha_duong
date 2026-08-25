@@ -9,6 +9,12 @@ import 'package:ha_duong/repo/login_repo.dart';
 import 'package:ha_duong/utils/constants/color.dart';
 import '../../utils/constants/styles.dart';
 import 'take_info_screen.dart';
+import 'package:ha_duong/l10n/app_localizations.dart';
+import 'package:local_auth/local_auth.dart';
+import '../../utils/secure_storage_helper.dart';
+import 'package:ha_duong/models/info_model.dart';
+import 'package:ha_duong/repo/home_repo.dart';
+import 'package:ha_duong/modules/bottomnavbar/bottom_nav_bar.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -17,6 +23,79 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final LocalAuthentication auth = LocalAuthentication();
+  bool _canCheckBiometrics = false;
+  String? _savedPhone;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkBiometrics();
+  }
+
+  Future<void> _checkBiometrics() async {
+    bool canCheckBiometrics = await auth.canCheckBiometrics;
+    bool isDeviceSupported = await auth.isDeviceSupported();
+    String? phone = await SecureStorageHelper.getResidentPhone();
+    String? userType = await SecureStorageHelper.getUserType();
+
+    if (canCheckBiometrics &&
+        isDeviceSupported &&
+        phone != null &&
+        userType == 'resident') {
+      setState(() {
+        _canCheckBiometrics = true;
+        _savedPhone = phone;
+      });
+    }
+  }
+
+  Future<void> _authenticate() async {
+    try {
+      bool authenticated = await auth.authenticate(
+        localizedReason: 'Đăng nhập bằng vân tay/khuôn mặt',
+        options: const AuthenticationOptions(
+          stickyAuth: true,
+          biometricOnly: true,
+        ),
+      );
+      if (authenticated && _savedPhone != null) {
+        setState(() {
+          _isLoading = true;
+        });
+        bool loged = await LoginRepo().login(_savedPhone!);
+        if (loged == true) {
+          InfoModel? infoHomeModel = await HomeRepo().getInfoCudan();
+          if (infoHomeModel != null && mounted) {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BottomNavBar(
+                  infoHomeModel: infoHomeModel,
+                ),
+              ),
+              (route) => false,
+            );
+          }
+        } else {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                  content: Text('Đăng nhập thất bại. Vui lòng thử lại.')),
+            );
+          }
+        }
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      }
+    } catch (e) {
+      log('Biometric error: $e');
+    }
+  }
+
   final _focusNode1 = FocusNode();
   bool isPhoneNoValid(String? phoneNo) {
     if (phoneNo == null) return false;
@@ -62,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Xin chào!',
+                          AppLocalizations.of(context)!.hello,
                           textAlign: TextAlign.left,
                           overflow: TextOverflow.clip,
                           style: TextStyle(
@@ -72,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         Text(
-                          'Chào mừng đã trở lại, hãy đăng nhập',
+                          AppLocalizations.of(context)!.welcomeBackLogin,
                           textAlign: TextAlign.right,
                           style: TextStyle(
                             color: subBlack,
@@ -92,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Row(
                   children: [
                     Text(
-                      'Tài khoản',
+                      AppLocalizations.of(context)!.account,
                       style: TextStyle(
                         color: key1Color,
                         fontSize: 14.sp,
@@ -127,7 +206,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         filled: true, // Bật nền
                         fillColor: Color(0xffF2F2F2),
-                        hintText: 'Số điện thoại',
+                        hintText: AppLocalizations.of(context)!.phoneNumber,
                         border: const OutlineInputBorder(
                             borderSide: BorderSide.none),
                         focusedBorder: OutlineInputBorder(
@@ -151,7 +230,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 // Row(
                 //   children: [
                 //     Text(
-                //       'Mật khẩu',
+                //       AppLocalizations.of(context)!.txtMatKhau,
                 //       style: TextStyle(
                 //         color: key1Color,
                 //         fontSize: 14.sp,
@@ -185,7 +264,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 //           Icons.lock_outline,
                 //           color: subBlack,
                 //         ),
-                //         hintText: 'Mật khẩu',
+                //         hintText: AppLocalizations.of(context)!.txtMatKhau,
                 //         border: const OutlineInputBorder(
                 //             borderSide: BorderSide.none),
                 //         hintStyle: TextStyle(
@@ -230,7 +309,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 //         );
                 //       },
                 //       child: Text(
-                //         'Quên mật khẩu?',
+                //         AppLocalizations.of(context)!.txtQuenMatKhau1,
                 //         style: TextStyle(
                 //           color: const Color(0xff004071),
                 //           fontSize: 16.sp,
@@ -258,14 +337,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   //       builder: (BuildContext context) {
                   //         return AlertDialog(
                   //           title: Text(
-                  //             'Số điện thoại không đúng định dạng',
+                  //             AppLocalizations.of(context)!.txtSoDienThoaiKhongDungDinhDang,
                   //             style: defaultText16.copyWith(
                   //               color: const Color.fromARGB(255, 29, 29, 29),
                   //               fontWeight: FontWeight.w700,
                   //             ),
                   //           ),
                   //           content: Text(
-                  //             'Vui lòng kiểm tra lại số điện thoại đã nhập',
+                  //             AppLocalizations.of(context)!.txtVuiLongKiemTraLaiSoDienThoaiDaNhap,
                   //             style: defaultText16.copyWith(
                   //                 color: const Color(0xff3C3C3C)),
                   //           ),
@@ -309,14 +388,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   //     context: context,
                   //     builder: (BuildContext context) {
                   //       return CupertinoAlertDialog(
-                  //         title: const Text('Vui lòng thử lại'),
+                  //         title: Text(AppLocalizations.of(context)!.txtVuiLongThuLai),
                   //         content: const Text(
-                  //             'Vui lòng kiểm tra lại SDT và mật khẩu của bạn'),
+                  //             AppLocalizations.of(context)!.txtVuiLongKiemTraLaiSdtVaMatKhauCuaBan),
                   //         actions: <Widget>[
                   //           CupertinoDialogAction(
                   //             isDefaultAction: true,
                   //             child: Text(
-                  //               'Đồng ý',
+                  //               AppLocalizations.of(context)!.txtDongY,
                   //               style: TextStyle(
                   //                   fontSize: 20, color: key1Color),
                   //             ),
@@ -349,17 +428,17 @@ class _LoginScreenState extends State<LoginScreen> {
                           context: context,
                           builder: (context) => AlertDialog(
                             title: Text(
-                              'Lỗi kết nối',
+                              AppLocalizations.of(context)!.connectionError,
                               style: defaultText14M,
                             ),
                             content: Text(
-                              'Không thể gửi mã OTP. Vui lòng thử lại.',
+                              AppLocalizations.of(context)!.cannotSendOtp,
                               style: defaultText14M,
                             ),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.of(context).pop(),
-                                child: const Text('OK'),
+                                child: Text(AppLocalizations.of(context)!.ok),
                               ),
                             ],
                           ),
@@ -373,18 +452,19 @@ class _LoginScreenState extends State<LoginScreen> {
                         builder: (BuildContext context) {
                           return AlertDialog(
                             title: Text(
-                              'Số điện thoại không đúng định dạng',
+                              AppLocalizations.of(context)!.invalidPhoneNumber,
                               style: defaultText14M,
                             ),
                             content: Text(
-                              'Vui lòng kiểm tra lại số điện thoại đã nhập',
+                              AppLocalizations.of(context)!
+                                  .pleaseCheckPhoneNumber,
                               style: defaultText14M,
                             ),
                             actionsPadding:
                                 const EdgeInsets.symmetric(horizontal: 10.0),
                             actions: <Widget>[
                               TextButton(
-                                child: const Text('OK'),
+                                child: Text(AppLocalizations.of(context)!.ok),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                   setState(() {
@@ -406,14 +486,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         showDialog(
                           context: context,
                           builder: (context) => AlertDialog(
-                            title: Text('Lỗi', style: defaultText14M),
+                            title: Text(AppLocalizations.of(context)!.error,
+                                style: defaultText14M),
                             content: Text(
-                                'Số điện thoại của bạn chưa đăng ký cư dân',
+                                AppLocalizations.of(context)!
+                                    .phoneNotRegisteredResident,
                                 style: defaultText14M),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.of(context).pop(),
-                                child: const Text('OK'),
+                                child: Text(AppLocalizations.of(context)!.ok),
                               ),
                             ],
                           ),
@@ -436,14 +518,17 @@ class _LoginScreenState extends State<LoginScreen> {
                             showDialog(
                               context: context,
                               builder: (context) => AlertDialog(
-                                title: Text('Lỗi', style: defaultText14M),
-                                content: Text('Xác thực thất bại',
+                                title: Text(AppLocalizations.of(context)!.error,
+                                    style: defaultText14M),
+                                content: Text(
+                                    AppLocalizations.of(context)!.authFailed,
                                     style: defaultText14M),
                                 actions: [
                                   TextButton(
                                     onPressed: () =>
                                         Navigator.of(context).pop(),
-                                    child: const Text('OK'),
+                                    child:
+                                        Text(AppLocalizations.of(context)!.ok),
                                   ),
                                 ],
                               ),
@@ -466,7 +551,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             }
                           },
                           codeAutoRetrievalTimeout: (verificationId) {
-                            log("Auto Retrieval timeout");
+                            log(AppLocalizations.of(context)!
+                                .txtAutoRetrievalTimeout);
                           },
                         );
                       }
@@ -489,7 +575,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: const Color(0xff004071),
                           ),
                           child: Center(
-                            child: Text('Đăng nhập',
+                            child: Text(AppLocalizations.of(context)!.login,
                                 textAlign: TextAlign.center,
                                 style: defaultText16B.copyWith(
                                   color: Colors.white,
@@ -499,15 +585,24 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 // Đăng nhập nếu là phụ huynh
 
-                SizedBox(
-                  height: 10.h,
-                ),
-
+                // Biometric Button
+                if (_canCheckBiometrics) ...[
+                  SizedBox(height: 20.h),
+                  IconButton(
+                    iconSize: 50.r,
+                    icon:
+                        const Icon(Icons.fingerprint, color: Color(0xff004071)),
+                    onPressed: _authenticate,
+                  ),
+                  Text('Đăng nhập bằng sinh trắc học',
+                      style: defaultText14M.copyWith(
+                          color: const Color(0xff004071))),
+                ],
                 SizedBox(
                   height: 60.h,
                 ),
                 Text(
-                  'Bạn muốn trải nghiệm ứng dụng?',
+                  AppLocalizations.of(context)!.wantToExperienceApp,
                   style: defaultText16.copyWith(
                       color: const Color(0xff8A8A8A),
                       fontWeight: FontWeight.w400),
@@ -521,7 +616,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       );
                     },
                     child: Text(
-                      'Để lại thông tin',
+                      AppLocalizations.of(context)!.leaveInformation,
                       style: defaultText18B.copyWith(
                           color: const Color(0xff004071),
                           fontWeight: FontWeight.w500),

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'otp_screen.dart';
+import 'package:ha_duong/l10n/app_localizations.dart';
 
 class ForgotPassScreen extends StatefulWidget {
   const ForgotPassScreen({super.key});
@@ -52,7 +53,7 @@ class _ForgotPassScreenState extends State<ForgotPassScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Text('Quên mật khẩu', style: defaultText20B),
+                Text(AppLocalizations.of(context)!.forgotPassword, style: defaultText20B),
                 Image(
                   image: const AssetImage('assets/images/forgot_pass2.png'),
                   height: 343.h,
@@ -63,7 +64,7 @@ class _ForgotPassScreenState extends State<ForgotPassScreen> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
                   child: Text(
-                    'Hãy nhập SĐT đã đăng ký để đặt lại mật khẩu.',
+                    AppLocalizations.of(context)!.enterRegisteredPhoneToResetPassword,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: const Color(0xff8A8A8A),
@@ -99,7 +100,7 @@ class _ForgotPassScreenState extends State<ForgotPassScreen> {
                           fit: BoxFit.scaleDown,
                           color: const Color(0xff8A8A8A),
                         ),
-                        hintText: 'Số điện thoại',
+                        hintText: AppLocalizations.of(context)!.phoneNumber,
                         border: const OutlineInputBorder(
                             borderSide: BorderSide.none),
                         hintStyle: TextStyle(
@@ -121,19 +122,19 @@ class _ForgotPassScreenState extends State<ForgotPassScreen> {
                         builder: (BuildContext context) {
                           return AlertDialog(
                             title: Text(
-                              'Số điện thoại không đúng định dạng',
+                              AppLocalizations.of(context)!.invalidPhoneNumber,
                               style: defaultText14M,
                             ),
                             content: Text(
-                              'Vui lòng kiểm tra lại số điện thoại đã nhập',
+                              AppLocalizations.of(context)!.pleaseCheckPhoneNumber,
                               style: defaultText14M,
                             ),
                             actionsPadding:
                                 const EdgeInsets.symmetric(horizontal: 10.0),
                             actions: <Widget>[
                               TextButton(
-                                child: const Text(
-                                  'ok',
+                                child: Text(
+                                  AppLocalizations.of(context)!.ok,
                                 ),
                                 onPressed: () {
                                   Navigator.of(context).pop();
@@ -166,7 +167,7 @@ class _ForgotPassScreenState extends State<ForgotPassScreen> {
                             );
                           },
                           codeAutoRetrievalTimeout: (verificationId) {
-                            log("Auto Retiveral timeout");
+                            log(AppLocalizations.of(context)!.txtAutoRetiveralTimeout);
                           });
                     }
                   },
@@ -179,7 +180,7 @@ class _ForgotPassScreenState extends State<ForgotPassScreen> {
                     ),
                     child: Center(
                       child: Text(
-                        'Xác minh OTP',
+                        AppLocalizations.of(context)!.verifyOtp,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.white,

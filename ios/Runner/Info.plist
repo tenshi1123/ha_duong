@@ -37,6 +37,8 @@
 		<string>$(FLUTTER_BUILD_NUMBER)</string>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
+		<key>NSFaceIDUsageDescription</key>
+		<string>This app requires Face ID for biometric authentication to log in securely.</string>
 		<key>NSCameraUsageDescription</key>
 		<string>The app requires access to camera to take pictures and send them to the Management Board.</string>
 		<key>NSMicrophoneUsageDescription</key>

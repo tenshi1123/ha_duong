@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ha_duong/modules/login/login_screen.dart';
 
 import '../../utils/constants/styles.dart';
+import 'package:ha_duong/l10n/app_localizations.dart';
 
 class SucessScreen extends StatelessWidget {
   const SucessScreen({super.key});
@@ -24,7 +25,7 @@ class SucessScreen extends StatelessWidget {
               height: 24.h,
             ),
             Text(
-              'Gửi thông tin đăng ký thành công',
+              AppLocalizations.of(context)!.sendRegistrationInfoSuccess,
               style: defaultText16B.copyWith(
                 color: const Color(0xff3C3C3C),
               ),
@@ -35,7 +36,7 @@ class SucessScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Text(
-                'Yay! Bạn đã gửi thông tin đăng ký trải nghiệm ứng dụng thành công.',
+                AppLocalizations.of(context)!.registrationInfoSentSuccessfully,
                 style: defaultText14Re.copyWith(
                   color: const Color(0xff8A8A8A),
                 ),
@@ -60,7 +61,7 @@ class SucessScreen extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    'Quay về đăng nhập',
+                    AppLocalizations.of(context)!.backToLogin,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,

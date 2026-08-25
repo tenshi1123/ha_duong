@@ -1,3 +1,4 @@
+import 'package:ha_duong/l10n/app_localizations.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:camera_camera/camera_camera.dart';
@@ -68,7 +69,8 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
               context: context,
               builder: (BuildContext context) {
                 return CupertinoAlertDialog(
-                  title: const Text('Chụp ảnh thành công'),
+                  title:
+                      Text(AppLocalizations.of(context)!.bqlChupAnhThanhCong),
                   actions: <Widget>[
                     CupertinoDialogAction(
                       isDefaultAction: true,
@@ -110,7 +112,7 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: Colors.white,
-        title: const Text("Thêm note"),
+        title: Text(AppLocalizations.of(context)!.bqlThemNote),
         content: TextField(
           controller: controller,
           maxLines: 3,
@@ -133,7 +135,7 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
               });
               Navigator.pop(context);
             },
-            child: const Text("Lưu"),
+            child: Text(AppLocalizations.of(context)!.bqlLuu),
           ),
         ],
       ),
@@ -145,7 +147,7 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
     return Scaffold(
       backgroundColor: const Color(0xffFAFAFA),
       appBar: AppBar(
-        title: const Text('Chi tiết yêu cầu hỗ trợ'),
+        title: Text(AppLocalizations.of(context)!.bqlChiTietYeuCauHoTro),
         backgroundColor: const Color(0xFF1CA0DD),
         foregroundColor: Colors.white,
         elevation: 0,
@@ -184,7 +186,7 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
                     ),
                     children: [
                       _buildRequestInfoCard(),
-                      _buildImageContent(detailRequestModel.value.img),
+                      _buildImageContent(context, detailRequestModel.value.img),
                       const SizedBox(height: 20),
                       const Text('Trạng thái tiến độ:',
                           style: TextStyle(fontWeight: FontWeight.w600)),
@@ -242,7 +244,8 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
                             side: BorderSide(color: Colors.blue.shade100),
                           ),
                         ),
-                        child: const Text('Thêm hình ảnh'),
+                        child:
+                            Text(AppLocalizations.of(context)!.bqlThemHinhAnh),
                         onPressed: () {
                           showDialog<String>(
                               context: context,
@@ -301,7 +304,8 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
                                 ),
                               ),
                               onPressed: _openNoteDialog,
-                              child: const Text('Thêm note'),
+                              child: Text(
+                                  AppLocalizations.of(context)!.bqlThemNote),
                             )
                           :
                           // Nếu đã có note thì hiển thị note
@@ -327,7 +331,7 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
                         padding: EdgeInsets.only(left: 12.w),
                         child: _buildStepItem(
                           RequestStatusModel(
-                            name: 'Tạo yêu cầu',
+                            name: AppLocalizations.of(context)!.bqlTaoYeuCau,
                             createAt: detailRequestModel.value.createdAt,
                             type: '0',
                           ),
@@ -420,7 +424,7 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
       ),
       child: DropdownButton<SettingSuppportStatus>(
         value: selectedStatus,
-        hint: const Text('Nhập tình trạng xử lý'),
+        hint: Text(AppLocalizations.of(context)!.bqlNhapTinhTrangXuLy),
         isExpanded: true,
         underline: const SizedBox(),
         items: detailRequestModel.listStatus.map((status) {
@@ -430,8 +434,50 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
           );
         }).toList(),
         onChanged: (value) {
-          if (value != null) {
-            setState(() => selectedStatus = value);
+          if (value != null && value != selectedStatus) {
+            showDialog(
+              context: context,
+              builder: (BuildContext dialogContext) {
+                return AlertDialog(
+                  title: Text(
+                    'Xác nhận',
+                    style: defaultText16.copyWith(
+                      color: const Color.fromARGB(255, 29, 29, 29),
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  content: Text(
+                    'Bạn có chắc muốn thay đổi?',
+                    style: defaultText16.copyWith(
+                      color: const Color(0xff3C3C3C),
+                    ),
+                  ),
+                  actions: <Widget>[
+                    TextButton(
+                      child: Text(
+                        AppLocalizations.of(context)!.bqlHuy,
+                        style: defaultText16.copyWith(
+                            color: const Color(0xff8A8A8A)),
+                      ),
+                      onPressed: () {
+                        Navigator.of(dialogContext).pop();
+                      },
+                    ),
+                    TextButton(
+                      child: Text(
+                        'Đồng ý',
+                        style: defaultText16.copyWith(
+                            color: const Color(0xFF1CA0DD)),
+                      ),
+                      onPressed: () {
+                        Navigator.of(dialogContext).pop();
+                        setState(() => selectedStatus = value);
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
           }
         },
       ),
@@ -510,12 +556,14 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                DateFormat('dd/MM/yyyy').format(step.createAt),
+                DateFormat(AppLocalizations.of(context)!.bqlDdmmyyyy)
+                    .format(step.createAt),
                 style: defaultText12.copyWith(color: const Color(0xff8A8A8A)),
               ),
               const SizedBox(height: 4),
               Text(
-                DateFormat('HH:mm').format(step.createAt),
+                DateFormat(AppLocalizations.of(context)!.bqlHhmm)
+                    .format(step.createAt),
                 style: defaultText12.copyWith(color: const Color(0xff8A8A8A)),
               ),
             ],
@@ -573,7 +621,8 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
                   ),
                   (step.img != null && step.img!.isNotEmpty && step.img != '[]')
                       ? SizedBox(
-                          height: 125.h, child: _buildImageContent(step.img!))
+                          height: 125.h,
+                          child: _buildImageContent(context, step.img!))
                       : SizedBox(),
                 ],
               ),
@@ -591,43 +640,96 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
         child: ElevatedButton(
           onPressed: () async {
             if (selectedStatus != null) {
-              await TechnicalRequestsRepo().changeStatus(
-                id: widget.id,
-                statusId: selectedStatus?.id ?? '',
-                photos: photos,
-                noteText: note,
-              );
-              final response =
-                  await TechnicalRequestsRepo().getDetailRequest(widget.id);
-              setState(() {
-                detailRequestModel = response;
-                selectedStatus = response.listStatus.firstWhere(
-                  (status) => status.id == selectedStatus?.id,
-                );
-                isLoading = false;
-              });
+              bool isMissingInfo = photos.isEmpty && note == null;
+              String warningMsg = isMissingInfo
+                  ? 'Bạn chưa thêm hình ảnh và note.\nBạn có chắc chắn muốn thay đổi?'
+                  : 'Bạn có chắc chắn muốn thay đổi?';
+
               showDialog(
                 context: context,
-                builder: (BuildContext context) {
+                builder: (BuildContext dialogContext) {
                   return AlertDialog(
                     title: Text(
-                      'Cập nhật thành công',
+                      'Xác nhận',
                       style: defaultText16.copyWith(
                         color: const Color.fromARGB(255, 29, 29, 29),
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    actionsPadding:
-                        const EdgeInsets.symmetric(horizontal: 10.0),
+                    content: Text(
+                      warningMsg,
+                      style: defaultText16.copyWith(
+                        color: const Color(0xff3C3C3C),
+                      ),
+                    ),
                     actions: <Widget>[
                       TextButton(
                         child: Text(
-                          'ok',
+                          AppLocalizations.of(context)!.bqlHuy,
                           style: defaultText16.copyWith(
-                              color: const Color(0xff3C3C3C)),
+                              color: const Color(0xff8A8A8A)),
                         ),
                         onPressed: () {
-                          Navigator.of(context).pop();
+                          Navigator.of(dialogContext).pop();
+                        },
+                      ),
+                      TextButton(
+                        child: Text(
+                          'Đồng ý',
+                          style: defaultText16.copyWith(
+                              color: const Color(0xFF1CA0DD)),
+                        ),
+                        onPressed: () async {
+                          Navigator.of(dialogContext).pop();
+
+                          await TechnicalRequestsRepo().changeStatus(
+                            id: widget.id,
+                            statusId: selectedStatus?.id ?? '',
+                            photos: photos,
+                            noteText: note,
+                          );
+                          final response = await TechnicalRequestsRepo()
+                              .getDetailRequest(widget.id);
+                          setState(() {
+                            detailRequestModel = response;
+                            selectedStatus = response.listStatus.firstWhere(
+                              (status) => status.id == selectedStatus?.id,
+                            );
+                            isLoading = false;
+                          });
+
+                          if (!mounted) return;
+
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext successContext) {
+                              return AlertDialog(
+                                title: Text(
+                                  AppLocalizations.of(context)!
+                                      .bqlCapNhatThanhCong,
+                                  style: defaultText16.copyWith(
+                                    color:
+                                        const Color.fromARGB(255, 29, 29, 29),
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                actionsPadding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: Text(
+                                      'ok',
+                                      style: defaultText16.copyWith(
+                                          color: const Color(0xff3C3C3C)),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.of(successContext).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
                         },
                       ),
                     ],
@@ -640,7 +742,7 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
                 builder: (BuildContext context) {
                   return AlertDialog(
                     title: Text(
-                      'Vui lòng chọn trạng thái xử lý',
+                      AppLocalizations.of(context)!.bqlVuiLongChonTrangThaiXuLy,
                       style: defaultText16.copyWith(
                         color: const Color.fromARGB(255, 29, 29, 29),
                         fontWeight: FontWeight.w700,
@@ -681,17 +783,34 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
   }
 }
 
-Widget _buildImageContent(String content) {
+Widget _buildImageContent(BuildContext context, String content) {
   List<String> imageUrls = List<String>.from(json.decode(content));
   if (imageUrls.isEmpty) {
     return const SizedBox();
   } else if (imageUrls.length == 1) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(12),
-      child: Image.network(
-        imageUrls[0],
-        fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) => const Icon(Icons.error),
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (_) => Dialog(
+            backgroundColor: Colors.transparent,
+            insetPadding: const EdgeInsets.all(10),
+            child: InteractiveViewer(
+              panEnabled: true,
+              minScale: 0.5,
+              maxScale: 4.0,
+              child: Image.network(imageUrls[0], fit: BoxFit.contain),
+            ),
+          ),
+        );
+      },
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Image.network(
+          imageUrls[0],
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) => const Icon(Icons.error),
+        ),
       ),
     );
   }
@@ -706,12 +825,30 @@ Widget _buildImageContent(String content) {
       mainAxisSpacing: 8,
     ),
     itemBuilder: (context, index) {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: Image.network(
-          imageUrls[index],
-          fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) => const Icon(Icons.error),
+      return GestureDetector(
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (_) => Dialog(
+              backgroundColor: Colors.transparent,
+              insetPadding: const EdgeInsets.all(10),
+              child: InteractiveViewer(
+                panEnabled: true,
+                minScale: 0.5,
+                maxScale: 4.0,
+                child: Image.network(imageUrls[index], fit: BoxFit.contain),
+              ),
+            ),
+          );
+        },
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Image.network(
+            imageUrls[index],
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) =>
+                const Icon(Icons.error),
+          ),
         ),
       );
     },

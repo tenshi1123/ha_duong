@@ -1,3 +1,4 @@
+import 'package:ha_duong/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ha_duong/bql_model/home_model.dart';
@@ -20,6 +21,29 @@ class _SupportRequestPageState extends State<SupportRequestPage> {
   int currentPage = 1;
   bool isLoading = true;
   late List<TechnicalSupportModel> listTechnicalRequests;
+  String? selectedStatus = 'Tất cả';
+  List<String> listStatus = ['Tất cả'];
+  TextEditingController searchNoteController = TextEditingController();
+  String searchNoteQuery = '';
+
+  List<TechnicalSupportModel> get filteredList {
+    if (isLoading) return [];
+    var list = listTechnicalRequests;
+    if (selectedStatus != null && selectedStatus != 'Tất cả') {
+      list = list.where((element) => element.lastestStatusName == selectedStatus).toList();
+    }
+    if (searchNoteQuery.trim().isNotEmpty) {
+      list = list.where((element) => element.note.toLowerCase().contains(searchNoteQuery.trim().toLowerCase())).toList();
+    }
+    return list;
+  }
+
+  @override
+  void dispose() {
+    searchNoteController.dispose();
+    super.dispose();
+  }
+
   @override
   void initState() {
     fetchData();
@@ -35,6 +59,13 @@ class _SupportRequestPageState extends State<SupportRequestPage> {
       // Cập nhật state sau khi có dữ liệu
       setState(() {
         listTechnicalRequests = response;
+        listStatus = ['Tất cả'];
+        for (var item in response) {
+          if (!listStatus.contains(item.lastestStatusName)) {
+            listStatus.add(item.lastestStatusName);
+          }
+        }
+        selectedStatus = 'Tất cả';
         isLoading = false;
       });
     } catch (e) {
@@ -109,7 +140,7 @@ class _SupportRequestPageState extends State<SupportRequestPage> {
                   value: homeSelecteBuilding,
                   icon: Icon(Icons.keyboard_arrow_down, size: 20.sp),
                   hint: Text(
-                    'Chọn toà nhà',
+                    AppLocalizations.of(context)!.bqlChonToaNha,
                     style: defaultText14M,
                   ),
                   items: widget.listBuild.map((b) {
@@ -130,6 +161,77 @@ class _SupportRequestPageState extends State<SupportRequestPage> {
                 ),
               ),
             ),
+            Container(
+              height: 50.h,
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              margin: EdgeInsets.only(
+                left: 16.w,
+                right: 16.w,
+                bottom: 16.h,
+              ),
+              decoration: BoxDecoration(
+                border:
+                    Border.all(color: const Color(0xff00A1E4), width: 1.5.w),
+                borderRadius: BorderRadius.circular(20.r),
+              ),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  isExpanded: true,
+                  value: selectedStatus,
+                  icon: Icon(Icons.keyboard_arrow_down, size: 20.sp),
+                  hint: Text(
+                    "Tất cả trạng thái",
+                    style: defaultText14M,
+                  ),
+                  items: listStatus.map((s) {
+                    return DropdownMenuItem(
+                      value: s,
+                      child: Text(
+                        s,
+                        style: defaultText14M,
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedStatus = value;
+                    });
+                  },
+                ),
+              ),
+            ),
+            Container(
+              height: 50.h,
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              margin: EdgeInsets.only(
+                left: 16.w,
+                right: 16.w,
+                bottom: 16.h,
+              ),
+              decoration: BoxDecoration(
+                border:
+                    Border.all(color: const Color(0xff00A1E4), width: 1.5.w),
+                borderRadius: BorderRadius.circular(20.r),
+              ),
+              child: Center(
+                child: TextField(
+                  controller: searchNoteController,
+                  onChanged: (value) {
+                    setState(() {
+                      searchNoteQuery = value;
+                    });
+                  },
+                  decoration: InputDecoration(
+                    isDense: true,
+                    hintText: "Tìm kiếm theo ghi chú...",
+                    hintStyle: defaultText14M,
+                    border: InputBorder.none,
+                    icon: Icon(Icons.search, size: 20.sp, color: Colors.grey),
+                  ),
+                  style: defaultText14M,
+                ),
+              ),
+            ),
 
             isLoading
                 ? const Center(child: CircularProgressIndicator())
@@ -137,9 +239,9 @@ class _SupportRequestPageState extends State<SupportRequestPage> {
                     child: ListView.builder(
                       padding: EdgeInsets.symmetric(
                           horizontal: 20.w, vertical: 16.h),
-                      itemCount: listTechnicalRequests.length,
+                      itemCount: filteredList.length,
                       itemBuilder: (context, index) {
-                        final item = listTechnicalRequests[index];
+                        final item = filteredList[index];
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 16),
                           child: _RequestCard(
@@ -233,7 +335,7 @@ class _RequestCard extends StatelessWidget {
               Expanded(
                 child: RichText(
                   text: TextSpan(
-                    text: 'Tình trạng : ',
+                    text: AppLocalizations.of(context)!.bqlTinhTrang2,
                     style: defaultText14M.copyWith(
                       color: const Color(0xff8A8A8A).withValues(alpha: 0.8),
                     ),

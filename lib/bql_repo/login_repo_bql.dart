@@ -7,6 +7,7 @@ import 'package:ha_duong/utils/constants/api_path_bql.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
+import '../utils/secure_storage_helper.dart';
 
 class LoginRepoBql {
   Dio dio = Dio();
@@ -35,7 +36,10 @@ class LoginRepoBql {
     }
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('token', response.data["refresh_token"]);
-    return response.data["token"] != null;
+    if (response.data["refresh_token"] != null) {
+      await SecureStorageHelper.saveBqlCredentials(email, password);
+    }
+    return response.data["refresh_token"] != null;
   }
 
   Future<bool> forgotPassWord(

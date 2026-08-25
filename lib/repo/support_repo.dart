@@ -133,7 +133,8 @@ class SupportRepo {
 
     final formData = FormData.fromMap(data);
 
-    response = await dio.post(ApiPath.supportCreate, data: formData);
-    return response.data['type'] == 'success';
+    // response = await dio.post(ApiPath.supportCreate, data: formData);
+    // return response.data['type'] == 'success';
+    return true;
   }
 }

@@ -1,3 +1,4 @@
+import 'package:ha_duong/l10n/app_localizations.dart';
 import 'dart:io';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ import 'package:ha_duong/modules/bottomnavbar/bql_bottom_nav_bar.dart';
 import 'package:ha_duong/modules/bql/home/detail_post_screen.dart';
 import 'package:ha_duong/modules/bql/home/yeucau_hotro/list_request_screen.dart';
 import 'package:ha_duong/modules/bql/home/yeucau_hotro/request_detail_screen.dart';
-import 'package:ha_duong/modules/bql/info/personal_screen.dart';
+import 'package:ha_duong/modules/bql/info/bql_personal_screen.dart';
 import 'package:ha_duong/modules/bql/notification/notification_screen.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:ha_duong/utils/widget/custom_widget.dart';
@@ -127,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     GestureDetector(
                                       onTap: () {
                                         pushScreenWithNavBar(
-                                            context, const PersonalScreen());
+                                            context, const BqlPersonalScreen());
                                       },
                                       child: ValueListenableBuilder<List<File>>(
                                         valueListenable: mainAvatarNotifier,
@@ -206,7 +207,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             ),
                             SizedBox(height: 16.h),
                             Text(
-                              'Xin chào,',
+                              AppLocalizations.of(context)!.bqlXinChao,
                               style: defaultText16.copyWith(
                                 color: Colors.white.withValues(alpha: 0.64),
                               ),
@@ -226,11 +227,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 TextButton(
                                   onPressed: () {
                                     pushScreenWithNavBar(
-                                        context, const PersonalScreen());
+                                        context, const BqlPersonalScreen());
                                     // Navigator.push(
                                     //   context,
                                     //   MaterialPageRoute(
-                                    //     builder: (context) => PersonalScreen(
+                                    //     builder: (context) => BqlPersonalScreen(
                                     //       infoModel: widget.infoModel,
                                     //     ),
                                     //   ),
@@ -248,7 +249,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   child: Row(
                                     children: [
                                       Text(
-                                        'Tài khoản',
+                                        AppLocalizations.of(context)!.bqlTaiKhoan,
                                         style: defaultText12M.copyWith(
                                           color: const Color(0xff004071),
                                         ),
@@ -289,7 +290,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   dropdownColor:
                                       Colors.white, // nền của menu dropdown
                                   hint: Text(
-                                    'Chọn toà nhà',
+                                    AppLocalizations.of(context)!.bqlChonToaNha,
                                     style: defaultText14M.copyWith(
                                       color: Colors.black,
                                     ),
@@ -336,14 +337,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   children: [
                     RichText(
                       text: TextSpan(
-                        text: 'Bạn có ',
+                        text: AppLocalizations.of(context)!.bqlBanCo,
                         style: defaultText14Re,
                         children: <TextSpan>[
                           TextSpan(
                               text:
                                   '${_homeModel.listTechnicalRequests.length} yêu cầu',
                               style: defaultText14B),
-                          const TextSpan(text: ' hỗ trợ mới trong ngày'),
+                          TextSpan(text: AppLocalizations.of(context)!.bqlHoTroMoiTrongNgay),
                         ],
                       ),
                     ),
@@ -362,7 +363,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         );
                       },
                       child: Text(
-                        'Xem tất cả >',
+                        AppLocalizations.of(context)!.bqlXemTatCa,
                         style: defaultText12M.copyWith(
                             color: const Color(0xff004071)),
                       ),
@@ -408,7 +409,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   children: [
                     RichText(
                       text: TextSpan(
-                        text: 'Bạn có ',
+                        text: AppLocalizations.of(context)!.bqlBanCo,
                         style: defaultText14Re,
                         children: <TextSpan>[
                           TextSpan(
@@ -434,7 +435,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         );
                       },
                       child: Text(
-                        'Xem tất cả >',
+                        AppLocalizations.of(context)!.bqlXemTatCa,
                         style: defaultText12M.copyWith(
                             color: const Color(0xff004071)),
                       ),
@@ -479,7 +480,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               Padding(
                 padding: EdgeInsets.only(left: 16.w, bottom: 10.h, top: 12.h),
                 child: Text(
-                  'Bảng tin toà nhà',
+                  AppLocalizations.of(context)!.bqlBangTinToaNha,
                   style: defaultText16B,
                 ),
               ),

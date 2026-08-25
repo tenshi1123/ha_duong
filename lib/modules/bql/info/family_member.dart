@@ -1,3 +1,4 @@
+import 'package:ha_duong/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -5,7 +6,7 @@ import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:ha_duong/utils/widget/custom_dialog_bql.dart';
 
 import 'package:widgets_easier/widgets_easier.dart';
-import 'personal_screen.dart';
+import 'bql_personal_screen.dart';
 
 class FamilyMemberScreen extends StatelessWidget {
   const FamilyMemberScreen({super.key});
@@ -40,7 +41,7 @@ class FamilyMemberScreen extends StatelessWidget {
                   width: 16.w,
                 ),
                 Text(
-                  'Nguyễn Thu Hương ',
+                  AppLocalizations.of(context)!.bqlNguyenThuHuong,
                   style: defaultText16B,
                 ),
                 const Spacer(),
@@ -57,7 +58,7 @@ class FamilyMemberScreen extends StatelessWidget {
               indent: 16.w,
               height: 24.h,
             ),
-            infoItem(title: 'Ngày sinh', info: '02/06/1996'),
+            infoItem(title: AppLocalizations.of(context)!.bqlNgaySinh, info: '02/06/1996'),
             Divider(
               color: const Color(0xffE6E6E6),
               thickness: 1,
@@ -73,7 +74,7 @@ class FamilyMemberScreen extends StatelessWidget {
               indent: 16.w,
               height: 24.h,
             ),
-            infoItem(title: 'Email', info: 'Abcxyz@gmail.com'),
+            infoItem(title: AppLocalizations.of(context)!.bqlEmail, info: AppLocalizations.of(context)!.bqlAbcxyzgmailcom),
             Divider(
               color: const Color(0xffE6E6E6),
               thickness: 1,
@@ -81,7 +82,7 @@ class FamilyMemberScreen extends StatelessWidget {
               indent: 16.w,
               height: 24.h,
             ),
-            infoItem(title: 'Quan hệ với chủ hộ', info: 'Vợ'),
+            infoItem(title: AppLocalizations.of(context)!.bqlQuanHeVoiChuHo, info: AppLocalizations.of(context)!.bqlVo),
             Container(
                 margin: EdgeInsets.symmetric(
                   horizontal: 16.w,
@@ -123,7 +124,7 @@ class FamilyMemberScreen extends StatelessWidget {
                         width: 8.w,
                       ),
                       Text(
-                        'Chỉnh sửa thông tin thành viên',
+                        AppLocalizations.of(context)!.bqlChinhSuaThongTinThanhVien,
                         style: defaultText14B.copyWith(
                             color: const Color(0xff25AAE1)),
                       ),
@@ -174,7 +175,7 @@ class AddMemberButton extends StatelessWidget {
               width: 8.w,
             ),
             Text(
-              'Thêm thành viên',
+              AppLocalizations.of(context)!.bqlThemThanhVien,
               style: defaultText14B.copyWith(color: const Color(0xff25AAE1)),
             ),
           ],

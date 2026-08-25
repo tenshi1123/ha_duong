@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import '../utils/constants/api_path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../utils/secure_storage_helper.dart';
 
 class LoginRepo {
   Dio dio = Dio();
@@ -28,6 +29,9 @@ class LoginRepo {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('token', response.data["refresh_token"]);
     await prefs.setString('refresh_token', response.data["refresh_token"]);
+    if (response.data["refresh_token"] != null) {
+      await SecureStorageHelper.saveResidentCredentials(code);
+    }
     return response.data["refresh_token"] != null;
   }
 

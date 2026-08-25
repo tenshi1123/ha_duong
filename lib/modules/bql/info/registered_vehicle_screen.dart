@@ -1,8 +1,9 @@
+import 'package:ha_duong/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 
-import 'personal_screen.dart';
+import 'bql_personal_screen.dart';
 
 class RegisteredVehicleScreen extends StatelessWidget {
   const RegisteredVehicleScreen({super.key});
@@ -55,7 +56,7 @@ class VehicleItem extends StatelessWidget {
               width: 16.w,
             ),
             Text(
-              'Xe máy',
+              AppLocalizations.of(context)!.bqlXeMay,
               style: defaultText16B,
             ),
             const Spacer(),
@@ -75,7 +76,7 @@ class VehicleItem extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    'Chủ xe',
+                    AppLocalizations.of(context)!.bqlChuXe1,
                     style: defaultText14Re.copyWith(color: Colors.black),
                   ),
                 ],
@@ -89,7 +90,7 @@ class VehicleItem extends StatelessWidget {
         SizedBox(
           height: 20.h,
         ),
-        infoItem(title: 'Chủ sở hữu', info: 'PHẠM TUẤN KHANG'),
+        infoItem(title: AppLocalizations.of(context)!.bqlChuSoHuu, info: AppLocalizations.of(context)!.bqlPhamTuanKhang),
         Divider(
           color: const Color(0xffE6E6E6),
           thickness: 1,
@@ -97,7 +98,7 @@ class VehicleItem extends StatelessWidget {
           indent: 16.w,
           height: 24.h,
         ),
-        infoItem(title: 'Biển số xe', info: '29BE-019.19'),
+        infoItem(title: AppLocalizations.of(context)!.bqlBienSoXe, info: AppLocalizations.of(context)!.bql29be01919),
         Divider(
           color: const Color(0xffE6E6E6),
           thickness: 1,
@@ -105,7 +106,7 @@ class VehicleItem extends StatelessWidget {
           indent: 16.w,
           height: 24.h,
         ),
-        infoItem(title: 'Liên hệ', info: '0971116262'),
+        infoItem(title: AppLocalizations.of(context)!.bqlLienHe, info: '0971116262'),
         Divider(
           color: const Color(0xffE6E6E6),
           thickness: 1,
@@ -113,7 +114,7 @@ class VehicleItem extends StatelessWidget {
           indent: 16.w,
           height: 24.h,
         ),
-        infoItem(title: 'Đăng kí từ', info: '02/06/2023'),
+        infoItem(title: AppLocalizations.of(context)!.bqlDangKiTu, info: '02/06/2023'),
         Divider(
           color: const Color(0xffE6E6E6),
           thickness: 1,
@@ -121,7 +122,7 @@ class VehicleItem extends StatelessWidget {
           indent: 16.w,
           height: 24.h,
         ),
-        infoItem(title: 'Phí gửi', info: '50.000đ/Tháng'),
+        infoItem(title: AppLocalizations.of(context)!.bqlPhiGui, info: '50.000đ/Tháng'),
       ],
     );
   }

@@ -1,3 +1,4 @@
+import 'package:ha_duong/l10n/app_localizations.dart';
 import 'package:ha_duong/models/chat_model.dart';
 import 'package:ha_duong/modules/notification/detail_noti_screen.dart';
 import 'package:ha_duong/repo/chat_noti_repo.dart';
@@ -44,7 +45,7 @@ class _NotificationScreenState extends State<NotificationScreen>
           },
         ),
         title: Text(
-          'Thông báo',
+          AppLocalizations.of(context)!.txtThongBao,
           style: defaultText18B,
         ),
         centerTitle: true,
@@ -59,7 +60,7 @@ class _NotificationScreenState extends State<NotificationScreen>
             filtered.isEmpty
                 ? Center(
                     child: Text(
-                      'Không có thông báo',
+                      AppLocalizations.of(context)!.txtKhongCoThongBao,
                       style: defaultText14B,
                     ),
                   )
@@ -246,17 +247,17 @@ class _NotificationScreenState extends State<NotificationScreen>
     final today = DateTime(now.year, now.month, now.day);
     final created = DateTime(date.year, date.month, date.day);
 
-    if (created == today) return 'Hôm nay';
-    if (created == today.subtract(const Duration(days: 1))) return 'Hôm qua';
+    if (created == today) return AppLocalizations.of(context)!.txtHomNay;
+    if (created == today.subtract(const Duration(days: 1))) return AppLocalizations.of(context)!.txtHomQua;
 
     final weekday = [
-      'Chủ nhật',
-      'Thứ hai',
-      'Thứ ba',
-      'Thứ tư',
-      'Thứ năm',
-      'Thứ sáu',
-      'Thứ bảy'
+      AppLocalizations.of(context)!.txtChuNhat,
+      AppLocalizations.of(context)!.txtThuHai,
+      AppLocalizations.of(context)!.txtThuBa,
+      AppLocalizations.of(context)!.txtThuTu,
+      AppLocalizations.of(context)!.txtThuNam,
+      AppLocalizations.of(context)!.txtThuSau,
+      AppLocalizations.of(context)!.txtThuBay
     ][created.weekday % 7];
 
     final formattedDate =

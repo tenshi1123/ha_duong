@@ -1,3 +1,4 @@
+import 'package:ha_duong/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ha_duong/app.dart';
@@ -113,7 +114,7 @@ class _ListExtensionScreenState extends State<ListExtensionScreen>
                 value: homeSelecteBuilding,
                 icon: Icon(Icons.keyboard_arrow_down, size: 20.sp),
                 hint: Text(
-                  'Chọn toà nhà',
+                  AppLocalizations.of(context)!.bqlChonToaNha,
                   style: defaultText14M,
                 ),
                 items: widget.listBuild.map((b) {
@@ -189,7 +190,7 @@ class _RequestCard extends StatelessWidget {
               SizedBox(
                 width: 60.w,
                 child: Text(
-                  'Dịch vụ',
+                  AppLocalizations.of(context)!.bqlDichVu,
                   style: defaultText14M.copyWith(fontWeight: FontWeight.w600),
                 ),
               ),
@@ -209,7 +210,7 @@ class _RequestCard extends StatelessWidget {
               SizedBox(
                 width: 60.w,
                 child: Text(
-                  'Căn hộ',
+                  AppLocalizations.of(context)!.bqlCanHo,
                   style: defaultText14M.copyWith(fontWeight: FontWeight.w600),
                 ),
               ),
@@ -229,7 +230,7 @@ class _RequestCard extends StatelessWidget {
               SizedBox(
                 width: 60.w,
                 child: Text(
-                  'Họ tên',
+                  AppLocalizations.of(context)!.bqlHoTen,
                   style: defaultText14M.copyWith(fontWeight: FontWeight.w600),
                 ),
               ),
@@ -249,7 +250,7 @@ class _RequestCard extends StatelessWidget {
               SizedBox(
                 width: 60.w,
                 child: Text(
-                  'SDT',
+                  AppLocalizations.of(context)!.bqlSdt,
                   style: defaultText14M.copyWith(fontWeight: FontWeight.w600),
                 ),
               ),
@@ -267,7 +268,7 @@ class _RequestCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Thời gian',
+                AppLocalizations.of(context)!.bqlThoiGian,
                 style: defaultText14M.copyWith(fontWeight: FontWeight.w600),
               ),
               SizedBox(width: 4.w),
@@ -286,7 +287,7 @@ class _RequestCard extends StatelessWidget {
               SizedBox(
                 width: 60.w,
                 child: Text(
-                  'Note',
+                  AppLocalizations.of(context)!.bqlNote,
                   style: defaultText14M.copyWith(fontWeight: FontWeight.w600),
                 ),
               ),

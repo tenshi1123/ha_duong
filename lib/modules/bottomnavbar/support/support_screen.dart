@@ -12,6 +12,7 @@ import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:ha_duong/utils/widget/custom_dialog.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:ha_duong/l10n/app_localizations.dart';
 
 class SupportScreen extends StatefulWidget {
   const SupportScreen({super.key, required this.id});
@@ -70,7 +71,7 @@ class _SupportScreenState extends State<SupportScreen> with RouteAware {
           backgroundColor: Colors.white,
           title: Center(
             child: Text(
-              'Trung tâm hỗ trợ',
+              AppLocalizations.of(context)!.txtTrungTamHoTro,
               style: defaultText18B,
             ),
           ),
@@ -89,7 +90,7 @@ class _SupportScreenState extends State<SupportScreen> with RouteAware {
               } else if (snapshot.hasError) {
                 return Center(child: Text('Error: ${snapshot.error}'));
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Center(child: Text('Không có dữ liệu'));
+                return Center(child: Text(AppLocalizations.of(context)!.noData));
               }
 
               final data = snapshot.data!;
@@ -121,7 +122,7 @@ class _SupportScreenState extends State<SupportScreen> with RouteAware {
                         child: Row(
                           children: [
                             Text(
-                              'Danh sách hỗ trợ',
+                              AppLocalizations.of(context)!.supportList,
                               style: defaultText16B.copyWith(
                                 color: const Color(0xff383838),
                               ),
@@ -206,7 +207,7 @@ class _SupportScreenState extends State<SupportScreen> with RouteAware {
                                         );
                                       },
                                       child: Text(
-                                        'Xem thêm ...',
+                                        AppLocalizations.of(context)!.seeMore,
                                         style: defaultText14M.copyWith(
                                           color: const Color(0xff004071),
                                         ),
@@ -356,7 +357,7 @@ class SupportItem extends StatelessWidget {
 
                           borderRadius: BorderRadius.circular(6.r),
                         ),
-                        child: Text(model.latestStatusName ?? 'Chưa xử lý',
+                        child: Text(model.latestStatusName ?? AppLocalizations.of(context)!.unprocessedStatus,
                             style: defaultText14M.copyWith(
                               color: model.latestStatusType == null
                                   ? const Color(0xff8A8A8A)

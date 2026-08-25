@@ -1,3 +1,4 @@
+import 'package:ha_duong/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -38,7 +39,7 @@ class _DetailPostScreenState extends State<DetailPostScreen>
           },
         ),
         title: Text(
-          'Bảng tin',
+          AppLocalizations.of(context)!.bqlBangTin,
           style: defaultText18B.copyWith(
             color: keyBlack,
           ),

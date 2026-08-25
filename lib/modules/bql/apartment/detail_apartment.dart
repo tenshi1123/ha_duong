@@ -1,3 +1,4 @@
+import 'package:ha_duong/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -21,21 +22,21 @@ class _ApartmentInfoScreenState extends State<ApartmentInfoScreen> {
   bool showMenu = false;
   int _selectedMenuIndex = 0;
 
-  final List<_MenuItem> menuItems = [
-    _MenuItem('assets/icons/warehouse.svg', 'Căn hộ', true),
-    _MenuItem('assets/icons/user5.svg', 'Cư dân', false),
-    _MenuItem('assets/icons/sports_car.svg', 'Phương tiện', false),
-    _MenuItem('assets/icons/allocation.svg', 'Phí dịch vụ', false),
-    _MenuItem('assets/icons/notification.svg', 'SMS', false),
-    _MenuItem('assets/icons/receipt.svg', 'Biên lai', false),
+  List<_MenuItem> get menuItems => [
+    _MenuItem('assets/icons/warehouse.svg', AppLocalizations.of(context)!.bqlCanHo, true),
+    _MenuItem('assets/icons/user5.svg', AppLocalizations.of(context)!.bqlCuDan, false),
+    _MenuItem('assets/icons/sports_car.svg', AppLocalizations.of(context)!.bqlPhuongTien, false),
+    _MenuItem('assets/icons/allocation.svg', AppLocalizations.of(context)!.bqlPhiDichVu, false),
+    _MenuItem('assets/icons/notification.svg', AppLocalizations.of(context)!.bqlSms, false),
+    _MenuItem('assets/icons/receipt.svg', AppLocalizations.of(context)!.bqlBienLai, false),
   ];
 
-  final List<_InfoItem> infoItems = [
-    _InfoItem('Tên căn hộ', '2H601'),
-    _InfoItem('Tầng', 'Tầng 6'),
+  List<_InfoItem> get infoItems => [
+    _InfoItem(AppLocalizations.of(context)!.bqlTenCanHo, AppLocalizations.of(context)!.bql2h601),
+    _InfoItem(AppLocalizations.of(context)!.bqlTang, AppLocalizations.of(context)!.bqlTang6),
     _InfoItem('Diện tích (m2)', '82,35'),
-    _InfoItem('Tình trạng', 'Đang ở'),
-    _InfoItem('Mục đích sử dụng', 'Hộ dân'),
+    _InfoItem(AppLocalizations.of(context)!.bqlTinhTrang, AppLocalizations.of(context)!.bqlDangO),
+    _InfoItem('Mục đích sử dụng', AppLocalizations.of(context)!.bqlHoDan),
   ];
   ApartmentDetailModel? apartmentDetail;
   List<CudanModel> listCudan = [];
@@ -254,7 +255,7 @@ class _HomeWidget extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Tên căn hộ',
+                        Text(AppLocalizations.of(context)!.bqlTenCanHo,
                             style: defaultText14B.copyWith(color: Colors.grey)),
                         SizedBox(height: 4.h),
                         Text(
@@ -280,7 +281,7 @@ class _HomeWidget extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Tầng',
+                        Text(AppLocalizations.of(context)!.bqlTang,
                             style: defaultText14B.copyWith(color: Colors.grey)),
                         SizedBox(height: 4.h),
                         Text(model?.numberFloor ?? '', style: defaultBoldText),
@@ -330,7 +331,7 @@ class _HomeWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Tình trạng',
+                  Text(AppLocalizations.of(context)!.bqlTinhTrang,
                       style: defaultText14B.copyWith(color: Colors.grey)),
                   SizedBox(height: 4.h),
                   Text(model?.apartmentStatus ?? '', style: defaultBoldText),
@@ -400,7 +401,7 @@ class _CudanWidget extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Họ tên',
+                        Text(AppLocalizations.of(context)!.bqlHoTen,
                             style: defaultText14B.copyWith(color: Colors.grey)),
                         SizedBox(height: 4.h),
                         Text(
@@ -428,7 +429,7 @@ class _CudanWidget extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Email',
+                        Text(AppLocalizations.of(context)!.bqlEmail,
                             style: defaultText14B.copyWith(color: Colors.grey)),
                         SizedBox(height: 4.h),
                         Text(
@@ -481,7 +482,7 @@ class _CudanWidget extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Ngày sinh',
+                        Text(AppLocalizations.of(context)!.bqlNgaySinh,
                             style: defaultText14B.copyWith(color: Colors.grey)),
                         SizedBox(height: 4.h),
                         Text(item.dob, style: defaultBoldText),
@@ -506,7 +507,7 @@ class _CudanWidget extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('CCCD',
+                        Text(AppLocalizations.of(context)!.bqlCccd,
                             style: defaultText14B.copyWith(color: Colors.grey)),
                         SizedBox(height: 4.h),
                         Text(
@@ -530,7 +531,7 @@ class _CudanWidget extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Quan hệ',
+                        Text(AppLocalizations.of(context)!.bqlQuanHe,
                             style: defaultText14B.copyWith(color: Colors.grey)),
                         SizedBox(height: 4.h),
                         Text(item.relaName, style: defaultBoldText),
@@ -556,7 +557,7 @@ class _PhuongTienWidget extends StatelessWidget {
       child: listPhuongtien.isEmpty
           ? Center(
               child: Text(
-                'Không có phương tiện nào',
+                AppLocalizations.of(context)!.bqlKhongCoPhuongTienNao,
                 style: defaultText14M,
               ),
             )
@@ -602,7 +603,7 @@ class _PhuongTienWidget extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Chủ sở hữu',
+                              Text(AppLocalizations.of(context)!.bqlChuSoHuu,
                                   style: defaultText14B.copyWith(
                                       color: Colors.grey)),
                               SizedBox(height: 4.h),
@@ -659,7 +660,7 @@ class _PhuongTienWidget extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Tên phương tiện',
+                                Text(AppLocalizations.of(context)!.bqlTenPhuongTien,
                                     style: defaultText14B.copyWith(
                                         color: Colors.grey)),
                                 SizedBox(height: 4.h),
@@ -686,7 +687,7 @@ class _PhuongTienWidget extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Biển số xe',
+                              Text(AppLocalizations.of(context)!.bqlBienSoXe,
                                   style: defaultText14B.copyWith(
                                       color: Colors.grey)),
                               SizedBox(height: 4.h),
@@ -716,7 +717,7 @@ class _PhuongTienWidget extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Phí gửi xe',
+                              Text(AppLocalizations.of(context)!.bqlPhiGuiXe,
                                   style: defaultText14B.copyWith(
                                       color: Colors.grey)),
                               SizedBox(height: 4.h),
@@ -755,7 +756,7 @@ class _PhiDichVuWidgetState extends State<_PhiDichVuWidget> {
     return widget.listPhiDichVu.isEmpty
         ? Center(
             child: Text(
-            'Không có phí dịch vụ nào',
+            AppLocalizations.of(context)!.bqlKhongCoPhiDichVuNao,
             style: defaultText14M,
           ))
         : Expanded(
@@ -816,21 +817,21 @@ class _PhiDichVuWidgetState extends State<_PhiDichVuWidget> {
                             children: [
                               _buildDetailRow(
                                   "Phí cần thu",
-                                  NumberFormat('#,###', 'vi_VN')
+                                  NumberFormat('#,###', AppLocalizations.of(context)!.bqlVivn)
                                       .format(int.parse(item.fee))),
                               _buildDetailRow(
                                   "Phí đã thu",
-                                  NumberFormat('#,###', 'vi_VN')
+                                  NumberFormat('#,###', AppLocalizations.of(context)!.bqlVivn)
                                       .format(int.parse(item.feePaid))),
-                              _buildDetailRow("Email", item.email),
-                              _buildDetailRow("SMS", item.sms),
+                              _buildDetailRow(AppLocalizations.of(context)!.bqlEmail, item.email),
+                              _buildDetailRow(AppLocalizations.of(context)!.bqlSms, item.sms),
                               Padding(
                                 padding: EdgeInsets.symmetric(vertical: 10.h),
                                 child: Row(
                                   children: [
                                     Expanded(
                                       child: Text(
-                                        'Trạng thái',
+                                        AppLocalizations.of(context)!.bqlTrangThai,
                                         style: defaultText14Re,
                                       ),
                                     ),
@@ -901,7 +902,7 @@ class _ListSmsWidgetState extends State<_ListSmsWidget> {
     return widget.listSms.isEmpty
         ? Center(
             child: Text(
-            'Chưa có SMS nào',
+            AppLocalizations.of(context)!.bqlChuaCoSmsNao,
             style: defaultText14M,
           ))
         : Expanded(
@@ -926,7 +927,7 @@ class _ListSmsWidgetState extends State<_ListSmsWidget> {
                             height: 28.h,
                           ),
                           title: Text(
-                            DateFormat('yyyy-MM-dd / kk:mm')
+                            DateFormat(AppLocalizations.of(context)!.bqlYyyymmddKkmm)
                                 .format(item.createdAt),
                             style: defaultText16M,
                           ),
@@ -976,7 +977,7 @@ class _ListSmsWidgetState extends State<_ListSmsWidget> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Nội dung',
+                                      AppLocalizations.of(context)!.bqlNoiDung,
                                       style: defaultText14M.copyWith(
                                         color: const Color(0xff8A8A8A),
                                       ),
@@ -1017,7 +1018,7 @@ class _ListSmsWidgetState extends State<_ListSmsWidget> {
                                             MainAxisAlignment.spaceEvenly,
                                         children: [
                                           Text(
-                                            'Loại tin',
+                                            AppLocalizations.of(context)!.bqlLoaiTin,
                                             style: defaultText14M.copyWith(
                                               color: const Color(0xff8A8A8A),
                                             ),
@@ -1051,7 +1052,7 @@ class _ListSmsWidgetState extends State<_ListSmsWidget> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    _infoBienlai('Người gửi', item.userName),
+                                    _infoBienlai(AppLocalizations.of(context)!.bqlNguoiGui, item.userName),
                                     Container(
                                       width: 164.w,
                                       padding: EdgeInsets.symmetric(
@@ -1071,7 +1072,7 @@ class _ListSmsWidgetState extends State<_ListSmsWidget> {
                                             MainAxisAlignment.spaceEvenly,
                                         children: [
                                           Text(
-                                            'Trạng thái',
+                                            AppLocalizations.of(context)!.bqlTrangThai,
                                             style: defaultText14M.copyWith(
                                               color: const Color(0xff8A8A8A),
                                             ),
@@ -1125,7 +1126,7 @@ class _ListBienlaiWidgetState extends State<_ListBienlaiWidget> {
     return widget.listBienlai.isEmpty
         ? Center(
             child: Text(
-            'Chưa có biên lai nào',
+            AppLocalizations.of(context)!.bqlChuaCoBienLaiNao,
             style: defaultText14M,
           ))
         : Expanded(
@@ -1215,7 +1216,7 @@ class _ListBienlaiWidgetState extends State<_ListBienlaiWidget> {
                                       Radius.circular(16.r),
                                     ),
                                   ),
-                                  child: Text('Chi tiết phiếu thu',
+                                  child: Text(AppLocalizations.of(context)!.bqlChiTietPhieuThu,
                                       style: defaultText14B.copyWith(
                                           color: Colors.white)),
                                 ),
@@ -1228,7 +1229,7 @@ class _ListBienlaiWidgetState extends State<_ListBienlaiWidget> {
                                   children: [
                                     _infoBienlai(
                                         'Số điện thoại', item.phoneChuHo),
-                                    _infoBienlai('Phòng', item.appartmentName),
+                                    _infoBienlai(AppLocalizations.of(context)!.bqlPhong, item.appartmentName),
                                   ],
                                 ),
                               ),
@@ -1251,9 +1252,9 @@ class _ListBienlaiWidgetState extends State<_ListBienlaiWidget> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    _infoBienlai('Tổng tiền',
+                                    _infoBienlai(AppLocalizations.of(context)!.bqlTongTien,
                                         '${formatVnIntString(item.totalFee)} VNĐ'),
-                                    _infoBienlai('SMS', item.totalSmsReceipts),
+                                    _infoBienlai(AppLocalizations.of(context)!.bqlSms, item.totalSmsReceipts),
                                   ],
                                 ),
                               ),
@@ -1263,7 +1264,7 @@ class _ListBienlaiWidgetState extends State<_ListBienlaiWidget> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    _infoBienlai('HTTT', item.paymentTypeText),
+                                    _infoBienlai(AppLocalizations.of(context)!.bqlHttt, item.paymentTypeText),
                                     Container(
                                       width: 164.w,
                                       padding: EdgeInsets.symmetric(
@@ -1283,7 +1284,7 @@ class _ListBienlaiWidgetState extends State<_ListBienlaiWidget> {
                                             MainAxisAlignment.spaceEvenly,
                                         children: [
                                           Text(
-                                            'Trạng thái',
+                                            AppLocalizations.of(context)!.bqlTrangThai,
                                             style: defaultText14M.copyWith(
                                               color: const Color(0xff8A8A8A),
                                             ),

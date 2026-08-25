@@ -1,3 +1,4 @@
+import 'package:ha_duong/l10n/app_localizations.dart';
 import 'dart:io';
 
 import 'package:flutter_svg/flutter_svg.dart';
@@ -45,7 +46,7 @@ class _InfoScreenState extends State<InfoScreen> {
           },
         ),
         title: Text(
-          'Thông tin tài khoản',
+          AppLocalizations.of(context)!.bqlThongTinTaiKhoan,
           style: defaultText18B,
         ),
       ),
@@ -143,7 +144,7 @@ class _InfoScreenState extends State<InfoScreen> {
               ],
             ),
             MyTextFormField(
-              labelText: 'Họ và tên',
+              labelText: AppLocalizations.of(context)!.bqlHoVaTen,
               controller: nameController,
               //keyboardType: TextInputType.phone,
               onChanged: (value) {
@@ -154,17 +155,17 @@ class _InfoScreenState extends State<InfoScreen> {
               hasIcon: true,
             ),
             MyTextFormField(
-              labelText: 'Chức vụ',
+              labelText: AppLocalizations.of(context)!.bqlChucVu,
               controller: TextEditingController(text: infoHomeModel.chucVu),
               hasIcon: false,
             ),
             MyTextFormField(
-              labelText: 'Số hiệu',
+              labelText: AppLocalizations.of(context)!.bqlSoHieu,
               controller: TextEditingController(text: infoHomeModel.code),
               hasIcon: false,
             ),
             MyTextFormField(
-              labelText: 'Email',
+              labelText: AppLocalizations.of(context)!.bqlEmail,
               controller: emailController,
               //keyboardType: TextInputType.phone,
               onChanged: (value) {
@@ -213,8 +214,8 @@ class _InfoScreenState extends State<InfoScreen> {
                                 const EdgeInsets.symmetric(horizontal: 10.0),
                             actions: <Widget>[
                               TextButton(
-                                child: const Text(
-                                  'OK',
+                                child: Text(
+                                  AppLocalizations.of(context)!.bqlOk,
                                 ),
                                 onPressed: () {
                                   Navigator.of(context).pop();
@@ -241,7 +242,7 @@ class _InfoScreenState extends State<InfoScreen> {
                 ),
                 child: Center(
                   child: Text(
-                    'Cập nhật',
+                    AppLocalizations.of(context)!.bqlCapNhat,
                     style: defaultText16B.copyWith(
                       color: isFilled
                           ? Colors.white

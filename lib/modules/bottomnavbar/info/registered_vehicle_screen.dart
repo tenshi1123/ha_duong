@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ha_duong/models/apartment_model.dart';
+import 'package:ha_duong/modules/bottomnavbar/info/resident_personal_screen.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
 import 'package:intl/intl.dart';
-
-import 'personal_screen.dart';
+import 'package:ha_duong/l10n/app_localizations.dart';
 
 class RegisteredVehicleScreen extends StatelessWidget {
   const RegisteredVehicleScreen({super.key, required this.listVehicle});
@@ -15,7 +15,7 @@ class RegisteredVehicleScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text('Phương tiện đăng ký'),
+        title: Text(AppLocalizations.of(context)!.registeredVehicles),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new),
           onPressed: () {
@@ -88,7 +88,7 @@ class VehicleItem extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    'Chủ xe',
+                    AppLocalizations.of(context)!.vehicleOwner,
                     style: defaultText14Re.copyWith(color: Colors.black),
                   ),
                 ],
@@ -127,7 +127,8 @@ class VehicleItem extends StatelessWidget {
           ),
         ),
         infoItem(
-          title: 'Chủ sở hữu',
+          context: context,
+          title: AppLocalizations.of(context)!.owner,
           info: vehicleModel.fullName,
         ),
         Divider(
@@ -138,7 +139,8 @@ class VehicleItem extends StatelessWidget {
           height: 24.h,
         ),
         infoItem(
-          title: 'Biển số xe',
+          context: context,
+          title: AppLocalizations.of(context)!.licensePlate,
           info: vehicleModel.licensePlates,
         ),
         Divider(
@@ -148,15 +150,10 @@ class VehicleItem extends StatelessWidget {
           indent: 16.w,
           height: 24.h,
         ),
-        infoItem(title: 'Liên hệ', info: vehicleModel.phone),
-        Divider(
-          color: const Color(0xffF0F0F0),
-          thickness: 1,
-          endIndent: 16.w,
-          indent: 16.w,
-          height: 24.h,
-        ),
-        infoItem(title: 'Đăng kí từ', info: vehicleModel.createAt),
+        infoItem(
+            context: context,
+            title: AppLocalizations.of(context)!.contact,
+            info: vehicleModel.phone),
         Divider(
           color: const Color(0xffF0F0F0),
           thickness: 1,
@@ -165,7 +162,19 @@ class VehicleItem extends StatelessWidget {
           height: 24.h,
         ),
         infoItem(
-            title: 'Phí gửi',
+            context: context,
+            title: AppLocalizations.of(context)!.registeredFrom,
+            info: vehicleModel.createAt),
+        Divider(
+          color: const Color(0xffF0F0F0),
+          thickness: 1,
+          endIndent: 16.w,
+          indent: 16.w,
+          height: 24.h,
+        ),
+        infoItem(
+            context: context,
+            title: AppLocalizations.of(context)!.parkingFee,
             info: '${formatCurrency(vehicleModel.fee)}đ/Tháng'),
       ],
     );

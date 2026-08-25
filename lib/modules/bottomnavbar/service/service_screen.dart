@@ -6,6 +6,7 @@ import 'package:ha_duong/repo/home_repo.dart';
 import '../../../utils/constants/styles.dart';
 import '../../../utils/widget/custom_dialog.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:ha_duong/l10n/app_localizations.dart';
 
 class ServiceScreen extends StatelessWidget {
   const ServiceScreen(
@@ -59,7 +60,7 @@ class ServiceScreen extends StatelessWidget {
                 // Padding(
                 //   padding: EdgeInsets.only(left: 16.w),
                 //   child: Text(
-                //     'Mô tả dịch vụ',
+                //     AppLocalizations.of(context)!.serviceDescription,
                 //     style: defaultText14B.copyWith(
                 //       color: const Color(0xff3C3C3C),
                 //     ),
@@ -128,7 +129,7 @@ class ServiceScreen extends StatelessWidget {
                     ),
                     child: Center(
                         child: Text(
-                      'Đăng ký dịch vụ',
+                      AppLocalizations.of(context)!.registerService,
                       style: defaultText14B.copyWith(color: Colors.white),
                     )),
                   ),

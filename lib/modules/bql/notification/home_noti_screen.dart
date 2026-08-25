@@ -1,3 +1,4 @@
+import 'package:ha_duong/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ha_duong/bql_model/home_model.dart';
@@ -63,7 +64,7 @@ class _ToaNhaSelectorScreenState extends State<ToaNhaSelectorScreen> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.h),
             child: Text(
-              "Chọn tòa nhà",
+              AppLocalizations.of(context)!.bqlChonToaNha1,
               style: defaultText16M,
             ),
           ),

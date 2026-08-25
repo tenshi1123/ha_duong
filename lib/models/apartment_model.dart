@@ -1,3 +1,4 @@
+import 'package:ha_duong/l10n/app_localizations.dart';
 class ApartmentModel {
   final String id;
   final String buildingId;
@@ -7,6 +8,7 @@ class ApartmentModel {
   final String buildingAlias;
   final String totalResidents;
   final String statusText;
+  final String hotline;
   ApartmentModel({
     required this.id,
     required this.buildingId,
@@ -16,6 +18,7 @@ class ApartmentModel {
     required this.buildingAlias,
     required this.totalResidents,
     required this.statusText,
+    required this.hotline,
   });
   factory ApartmentModel.fromJson(Map<String, dynamic> json) {
     return ApartmentModel(
@@ -23,10 +26,11 @@ class ApartmentModel {
       buildingId: json['building_id'] ?? '',
       name: json['name'] ?? '',
       numberFloors: json['number_floors'] ?? '',
-      acreage: json['acreage'] ?? 'không xác định',
+      acreage: json['acreage'] ?? 'Không xác định',
       buildingAlias: json['building_alias'] ?? '',
       totalResidents: json['total_residents'] ?? '',
       statusText: json['status_text'] ?? '',
+      hotline: json['hotline'] ?? '',
     );
   }
 }

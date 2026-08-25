@@ -1,3 +1,4 @@
+import 'package:ha_duong/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ha_duong/app.dart';
@@ -111,7 +112,7 @@ class _ChangeInfoScreenState extends State<ChangeInfoScreen> with RouteAware {
                 value: homeSelecteBuilding,
                 icon: Icon(Icons.keyboard_arrow_down, size: 20.sp),
                 hint: Text(
-                  'Chọn toà nhà',
+                  AppLocalizations.of(context)!.bqlChonToaNha,
                   style: defaultText14M,
                 ),
                 items: widget.listBuild.map((b) {
