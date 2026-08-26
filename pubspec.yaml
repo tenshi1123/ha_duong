@@ -52,6 +52,8 @@ dev_dependencies:
 
 dependency_overrides:
   font_awesome_flutter: ^11.0.0
+  camera_camera:
+    path: packages/camera_camera
 
 flutter:
   generate: true

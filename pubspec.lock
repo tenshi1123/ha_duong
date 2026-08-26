@@ -100,10 +100,9 @@ packages:
   camera_camera:
     dependency: "direct main"
     description:
-      name: camera_camera
-      sha256: fd2cffd6a015f588a5fef7e829ad8dff0789ccba0e9faea980d184a13b91e818
-      url: "https://pub.dev"
-    source: hosted
+      path: "packages/camera_camera"
+      relative: true
+    source: path
     version: "3.0.0"
   camera_platform_interface:
     dependency: transitive
