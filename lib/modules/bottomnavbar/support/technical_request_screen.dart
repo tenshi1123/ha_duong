@@ -33,11 +33,20 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
   final List<File> _imageFiles = [];
 
   Future<void> _pickImage(ImageSource source) async {
-    final XFile? pickedFile = await _picker.pickImage(source: source);
-    if (pickedFile != null) {
-      setState(() {
-        _imageFiles.add(File(pickedFile.path));
-      });
+    if (source == ImageSource.gallery) {
+      final List<XFile> pickedFiles = await _picker.pickMultiImage();
+      if (pickedFiles.isNotEmpty) {
+        setState(() {
+          _imageFiles.addAll(pickedFiles.map((e) => File(e.path)));
+        });
+      }
+    } else {
+      final XFile? pickedFile = await _picker.pickImage(source: source);
+      if (pickedFile != null) {
+        setState(() {
+          _imageFiles.add(File(pickedFile.path));
+        });
+      }
     }
   }
 
@@ -340,9 +349,37 @@ class _TechnicalRequestScreenState extends State<TechnicalRequestScreen> {
                                       mainAxisSpacing: 8,
                                     ),
                                     itemBuilder: (context, index) {
-                                      return Image.file(
-                                        _imageFiles[index],
-                                        fit: BoxFit.cover,
+                                      return Stack(
+                                        fit: StackFit.expand,
+                                        children: [
+                                          Image.file(
+                                            _imageFiles[index],
+                                            fit: BoxFit.cover,
+                                          ),
+                                          Positioned(
+                                            top: 4,
+                                            right: 4,
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  _imageFiles.removeAt(index);
+                                                });
+                                              },
+                                              child: Container(
+                                                padding: const EdgeInsets.all(2),
+                                                decoration: const BoxDecoration(
+                                                  color: Colors.white,
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: const Icon(
+                                                  Icons.close,
+                                                  color: Colors.red,
+                                                  size: 16,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       );
                                     },
                                   ),

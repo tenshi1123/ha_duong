@@ -8,6 +8,8 @@ import 'package:ha_duong/modules/bql/apartment/detail_apartment.dart';
 import 'package:ha_duong/modules/bql/bill/dien_nuoc_screen.dart';
 import 'package:ha_duong/modules/bql/home/home.dart';
 import 'package:ha_duong/utils/constants/styles.dart';
+import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ApartmentScreen extends StatefulWidget {
   const ApartmentScreen({super.key, required this.homeModel});
@@ -194,7 +196,9 @@ class _ApartmentScreenState extends State<ApartmentScreen> {
                                             controller: _searchController,
                                             style: TextStyle(fontSize: 14.sp),
                                             decoration: InputDecoration(
-                                              hintText: AppLocalizations.of(context)!.bqlTimKiemTenCanHo,
+                                              hintText:
+                                                  AppLocalizations.of(context)!
+                                                      .bqlTimKiemTenCanHo,
                                               hintStyle: TextStyle(
                                                   color: Colors.grey,
                                                   fontSize: 14.sp),
@@ -238,7 +242,8 @@ class _ApartmentScreenState extends State<ApartmentScreen> {
                                 // Dropdowns
                                 _buildDropdown(
                                   value: homeSelecteBuilding?.name,
-                                  hint: AppLocalizations.of(context)!.bqlChonToaNha,
+                                  hint: AppLocalizations.of(context)!
+                                      .bqlChonToaNha,
                                   items: buildings.map((b) => b.name).toList(),
                                   onChanged: (val) {
                                     final matched = buildings.firstWhere(
@@ -257,7 +262,8 @@ class _ApartmentScreenState extends State<ApartmentScreen> {
                                 const SizedBox(height: 12),
                                 _buildDropdown(
                                   value: selectedStatus?.name,
-                                  hint: AppLocalizations.of(context)!.bqlChonTrangThai,
+                                  hint: AppLocalizations.of(context)!
+                                      .bqlChonTrangThai,
                                   items: statuses.map((s) => s.name).toList(),
                                   onChanged: (val) {
                                     final matched = statuses.firstWhere(
@@ -359,7 +365,8 @@ class _ApartmentScreenState extends State<ApartmentScreen> {
                             pagedList.isEmpty
                                 ? Center(
                                     child: Text(
-                                      AppLocalizations.of(context)!.bqlKhongCoCanHoNao,
+                                      AppLocalizations.of(context)!
+                                          .bqlKhongCoCanHoNao,
                                       style: defaultText16M.copyWith(
                                           color: Colors.grey),
                                     ),
@@ -443,13 +450,20 @@ class _ApartmentScreenState extends State<ApartmentScreen> {
                                                           Colors.grey.shade300,
                                                       thickness: 1,
                                                     ),
-                                                    _buildDetailRow(AppLocalizations.of(context)!.bqlChuHo,
+                                                    _buildDetailRow(
+                                                        AppLocalizations.of(
+                                                                context)!
+                                                            .bqlChuHo,
                                                         item.fullName),
                                                     _buildDetailRow(
                                                         "Số điện thoại",
-                                                        item.phone),
+                                                        item.phone,
+                                                        isPhone: true,
+                                                        context: context),
                                                     _buildDetailRow(
-                                                        AppLocalizations.of(context)!.bqlTang,
+                                                        AppLocalizations.of(
+                                                                context)!
+                                                            .bqlTang,
                                                         item.numberFloor
                                                             .toString()),
                                                     _buildDetailRow(
@@ -461,7 +475,9 @@ class _ApartmentScreenState extends State<ApartmentScreen> {
                                                         item.totalPhuongTien
                                                             .toString()),
                                                     _buildDetailRow(
-                                                        AppLocalizations.of(context)!.bqlTinhTrang,
+                                                        AppLocalizations.of(
+                                                                context)!
+                                                            .bqlTinhTrang,
                                                         item.apartmentStatus),
                                                     _buildDetailRow(
                                                         "Mục đích sử dụng",
@@ -498,7 +514,9 @@ class _ApartmentScreenState extends State<ApartmentScreen> {
                                                           ),
                                                         ),
                                                         child: Text(
-                                                          AppLocalizations.of(context)!.bqlChiTiet,
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .bqlChiTiet,
                                                           style: defaultText14M
                                                               .copyWith(
                                                             color: Colors.white,
@@ -688,7 +706,8 @@ Widget _buildDropdown({
   );
 }
 
-Widget _buildDetailRow(String title, String value) {
+Widget _buildDetailRow(String title, String value,
+    {bool isPhone = false, BuildContext? context}) {
   return Padding(
     padding: EdgeInsets.symmetric(vertical: 8.h),
     child: Row(
@@ -698,10 +717,49 @@ Widget _buildDetailRow(String title, String value) {
         Expanded(child: Text(title)),
         SizedBox(
           width: 200.w,
-          child: Text(
-            ': $value',
-            style: const TextStyle(fontWeight: FontWeight.w600),
-          ),
+          child: isPhone && context != null
+              ? Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        ': $value',
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () async {
+                        final Uri launchUri = Uri(
+                          scheme: 'tel',
+                          path: value,
+                        );
+                        try {
+                          await launchUrl(launchUri);
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Không thể gọi điện')),
+                          );
+                        }
+                      },
+                      child:
+                          Icon(Icons.phone, size: 20.sp, color: Colors.green),
+                    ),
+                    SizedBox(width: 12.w),
+                    InkWell(
+                      onTap: () {
+                        Clipboard.setData(ClipboardData(text: value));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text('Đã sao chép số điện thoại')),
+                        );
+                      },
+                      child: Icon(Icons.copy, size: 20.sp, color: Colors.blue),
+                    ),
+                  ],
+                )
+              : Text(
+                  ': $value',
+                  style: const TextStyle(fontWeight: FontWeight.w600),
+                ),
         ),
       ],
     ),

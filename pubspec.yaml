@@ -4,7 +4,7 @@ description: "ha_duong App"
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 0.2.4+1
+version: 0.2.5+1
 
 environment:
   sdk: '>=3.4.0 <4.0.0'
@@ -51,7 +51,7 @@ dev_dependencies:
   flutter_lints: ^6.0.0
 
 dependency_overrides:
-  font_awesome_flutter: ^11.0.0
+  font_awesome_flutter: 10.9.1
   camera_camera:
     path: packages/camera_camera
 
